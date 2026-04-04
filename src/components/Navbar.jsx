@@ -83,19 +83,13 @@ export default function Navbar({ profile, theme, onToggleTheme }) {
             </a>
           ))}
 
-          <div className="nav-cta">
-            <Button href="#contact" variant="secondary" ariaLabel="Go to contact">
-              Contact me
-            </Button>
-          </div>
-
           <button
             className="btn btn-secondary nav-theme-btn"
             type="button"
             onClick={onToggleTheme}
             aria-label="Toggle background color theme"
           >
-            {theme === 'dark' ? 'Morning light' : 'Night light'}
+            {theme === 'dark' ? 'Morning' : 'Night'}
           </button>
         </nav>
       </div>

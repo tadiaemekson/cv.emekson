@@ -5,7 +5,7 @@ export default function Footer({ profile }) {
       <div className="container footer-inner">
         <span className="muted">(c) {year} {profile?.name ?? 'Your Name'}</span>
         <a className="text-link" href="#top">
-          Back to top ^
+          ^
         </a>
       </div>
     </footer>
