@@ -36,9 +36,9 @@ export default function Hero({ profile }) {
             <img className="profile-img" src={profileImg} alt={`${profile?.name ?? 'Student'} profile`} />
             <div className="profile-meta">
               <div className="profile-name">{profile?.name ?? 'Your Name'}</div>
-              <div className="profile-matricule">Matricule: {profile?.matricule ?? 'N/A'}</div>
               <div className="profile-role">{profile?.role ?? 'Full-Stack Developer Student'}</div>
-              <div className="profile-loc">{profile?.location ?? 'Your City'}</div>
+              <div className="profile-loc">University of Buea / {profile?.location ?? 'Your City'}</div>
+              <div className="profile-matricule">Buea Cameroon</div>
             </div>
           </div>
 
