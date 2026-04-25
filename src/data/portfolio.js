@@ -2,34 +2,38 @@ export const portfolio = {
   profile: {
     name: 'TADIA FONGE EMEKSON',
     matricule: 'CT22A133',
-    role: 'Full-Stack Developer Student',
-    location: 'College of Technology',
+    role: 'Software Engineer Student',
+    location: 'College of Technology of University of Buea',
     tagline: 'Building modern full-stack web applications with React.',
     bio: "I'm a full-stack developer student who enjoys turning ideas into clean, responsive web apps and sharing my work through practical projects.",
-    highlights: ['React', 'Node.js', 'SQL', 'Team Projects'],
+    highlights: ['PHP','React', 'Node.js', 'SQL', 'Team Projects'],
     values: ['Clean UI', 'Practical backend', 'Good teamwork'],
     stats: {
       projects: '3+',
       skills: '10+',
-      years: '1+',
+      years: '3+',
     },
   },
   skills: [
     {
       title: 'Frontend',
-      tags: ['React', 'JavaScript', 'HTML', 'CSS', 'Responsive UI'],
+      tags: ['React', 'JavaScript', 'HTML', 'CSS', 'Responsive UI' ,'Boostrap'],
     },
     {
       title: 'Backend',
-      tags: ['Node.js', 'REST APIs', 'Authentication', 'Testing'],
+      tags: ['PHP', 'Grocery-rud', 'Node.js', 'REST APIs', 'Authentication'],
     },
     {
       title: 'Database',
-      tags: ['SQL', 'MongoDB', 'Schema Design', 'Querying'],
+      tags: ['MySQL','SQL', 'MongoDB', 'Schema Design', 'Querying'],
     },
     {
       title: 'Tools',
       tags: ['Git/GitHub', 'VS Code', 'Docker Basics', 'CI (learning)'],
+    },
+    {
+      title: 'AI Tools used',
+      tags: ['Claude AI', 'ChatGPT', 'Cursor AI', 'Grok AI'],
     },
   ],
   projects: [
@@ -43,7 +47,8 @@ export const portfolio = {
       title: 'B-TECH Project',
       description: 'A B-TECH academic project built with PHP and Grocery CRUD for fast admin operations.',
       tech: ['PHP', 'Grocery CRUD', 'MySQL', 'Bootstrap'],
-      github: 'https://github.com/tadiaemekson/B_TECH_PROJECT.git',
+      github: 'https://emekb-tech.free.nf',
+      
     },
     {
       title: 'Clinic Management System',
@@ -53,12 +58,12 @@ export const portfolio = {
     },
   ],
   education: {
-    school: 'College of Technology',
-    degree: 'Full Stack (Student)',
-    department: 'Full Stack Department',
-    location: 'Your City',
+    school: 'College of Technology ',
+    degree: 'Software Engineering (Student)',
+    department: 'Software Department',
+    location: 'Molyko, Buea',
     summary: 'Focused on building real-world web applications across frontend, backend, and databases.',
-    gpa: '',
+    gpa: '...',
     highlights: ['Capstone projects', 'Team work', 'Hands-on labs'],
   },
   contact: {

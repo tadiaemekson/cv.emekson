@@ -51,7 +51,6 @@ export default function Navbar({ profile, theme, onToggleTheme }) {
       <div className="container navbar-inner">
         <a className="brand brand-wrap" href="#top" onClick={(e) => handleNavClick(e, 'top')}>
           <img className="brand-logo" src={logoImg} alt="EMEKSON logo" />
-          <span className="brand-text">{profile?.name ?? 'Emekson'}</span>
         </a>
 
         <button
@@ -81,16 +80,7 @@ export default function Navbar({ profile, theme, onToggleTheme }) {
             >
               {item.label}
             </a>
-          ))}
-
-          <button
-            className="btn btn-secondary nav-theme-btn"
-            type="button"
-            onClick={onToggleTheme}
-            aria-label="Toggle background color theme"
-          >
-            {theme === 'dark' ? 'Morning' : 'Night'}
-          </button>
+          ))}  
         </nav>
       </div>
     </header>

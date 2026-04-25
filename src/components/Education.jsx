@@ -3,11 +3,11 @@ export default function Education({ education }) {
     <section id="education" className="section">
       <div className="section-head">
         <p className="kicker">Education</p>
-        <h2 className="section-title">{education?.school ?? 'Your College'}</h2>
       </div>
 
       <div className="section-grid">
         <div className="card">
+          <h2 className="section-title">{education?.school ?? 'Your College'}</h2>
           <h3 className="card-title">{education?.degree ?? 'Full-Stack Program'} 2022-2026</h3>
           <p className="muted">
             {education?.department ?? 'College of Technology'} - {education?.location ?? ''}
