@@ -3,8 +3,9 @@ import { FaSun, FaMoon, FaBars, FaTimes } from 'react-icons/fa'
 
 import logoImg from '../assets/logo.png'
 
-export default function Navbar({ profile, theme, onToggleTheme }) {
+export default function Navbar({ theme, onToggleTheme }) {
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
   const items = useMemo(
     () => [
@@ -16,6 +17,14 @@ export default function Navbar({ profile, theme, onToggleTheme }) {
     ],
     [],
   )
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   function handleNavClick(e, id) {
     e.preventDefault()
@@ -39,7 +48,7 @@ export default function Navbar({ profile, theme, onToggleTheme }) {
   }, [open])
 
   return (
-    <header className="navbar">
+    <header className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
       {open && (
         <button
           type="button"
@@ -95,4 +104,3 @@ export default function Navbar({ profile, theme, onToggleTheme }) {
     </header>
   )
 }
-

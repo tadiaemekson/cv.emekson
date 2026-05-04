@@ -75,13 +75,18 @@ function App() {
 
   return (
     <div id="top">
+      <div className="mesh-background" aria-hidden="true">
+        <div className="mesh-blob blob-1"></div>
+        <div className="mesh-blob blob-2"></div>
+        <div className="mesh-blob blob-3"></div>
+      </div>
       <CustomCursor />
       <ScrollProgress />
       <AIAssistant />
       <a href="#main-content" className="skip-link">
         Skip to content
       </a>
-      <Navbar profile={portfolio.profile} theme={theme} onToggleTheme={toggleTheme} />
+      <Navbar theme={theme} onToggleTheme={toggleTheme} />
       <main id="main-content" className="main-content" tabIndex={-1}>
         <div className="animate-in" style={{ animationDelay: '0.1s' }}>
           <Hero profile={portfolio.profile} />

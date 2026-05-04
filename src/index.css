@@ -13,8 +13,17 @@
   --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
   --shadow-lg: 0 12px 24px -12px rgba(0,0,0,0.5);
+  
+  /* Glassmorphism Foundations */
   --glass-bg: rgba(10, 15, 10, 0.7);
   --glass-border: rgba(255, 255, 255, 0.05);
+  --glass-blur: 16px;
+  --glass-saturate: 180%;
+
+  /* Mesh Gradient Foundations */
+  --mesh-color-1: rgba(0, 255, 115, 0.15);
+  --mesh-color-2: rgba(0, 112, 243, 0.15);
+  --mesh-color-3: rgba(121, 40, 202, 0.15);
 
   --sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
@@ -31,7 +40,7 @@
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -moz-osx-smoothing: grayscale;
 
   @media (max-width: 1024px) {
     font-size: 15px;
@@ -48,6 +57,11 @@ body[data-theme='dark'] {
   --accent-bg: rgba(0, 255, 115, 0.1);
   --accent-border: rgba(0, 255, 115, 0.3);
   --social-bg: rgba(10, 20, 12, 0.8);
+  --glass-bg: rgba(10, 15, 10, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.05);
+  --mesh-color-1: rgba(0, 255, 115, 0.12);
+  --mesh-color-2: rgba(0, 112, 243, 0.15);
+  --mesh-color-3: rgba(121, 40, 202, 0.12);
   color-scheme: dark;
 }
 
@@ -65,6 +79,9 @@ body[data-theme='light'] {
   --social-bg: #ffffff;
   --glass-bg: rgba(255, 255, 255, 0.85);
   --glass-border: rgba(0, 0, 0, 0.08);
+  --mesh-color-1: rgba(16, 185, 129, 0.05);
+  --mesh-color-2: rgba(59, 130, 246, 0.05);
+  --mesh-color-3: rgba(139, 92, 246, 0.05);
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 12px 24px -12px rgba(0, 0, 0, 0.15);
