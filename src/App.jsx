@@ -11,10 +11,14 @@ import Education from './components/Education'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import AdminMessages from './components/AdminMessages'
+import AdminLogin from './components/AdminLogin'
+import CustomCursor from './components/CustomCursor'
+import ScrollProgress from './components/ScrollProgress'
 
 import { portfolio } from './data/portfolio'
 
 const THEME_STORAGE_KEY = 'portfolio-theme'
+const ADMIN_TOKEN_KEY = 'admin-token'
 
 function getInitialTheme() {
   if (typeof window === 'undefined') return 'dark'
@@ -25,8 +29,14 @@ function getInitialTheme() {
   return 'dark'
 }
 
+function getInitialAdminToken() {
+  if (typeof window === 'undefined') return null
+  return window.localStorage.getItem(ADMIN_TOKEN_KEY)
+}
+
 function App() {
   const [theme, setTheme] = useState(getInitialTheme)
+  const [adminToken, setAdminToken] = useState(getInitialAdminToken)
 
   useEffect(() => {
     document.body.setAttribute('data-theme', theme)
@@ -37,16 +47,26 @@ function App() {
     setTheme((curr) => (curr === 'dark' ? 'light' : 'dark'))
   }
 
+  function handleAdminLogin(token) {
+    setAdminToken(token)
+    window.localStorage.setItem(ADMIN_TOKEN_KEY, token)
+  }
+
   const isAdminPage = typeof window !== 'undefined' && window.location.pathname === '/admin'
 
   if (isAdminPage) {
     return (
       <div id="top">
+        <CustomCursor />
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
         <main id="main-content" className="main-content admin-main" tabIndex={-1}>
-          <AdminMessages />
+          {adminToken ? (
+            <AdminMessages token={adminToken} />
+          ) : (
+            <AdminLogin onLogin={handleAdminLogin} />
+          )}
         </main>
       </div>
     )
@@ -54,17 +74,31 @@ function App() {
 
   return (
     <div id="top">
+      <CustomCursor />
+      <ScrollProgress />
       <a href="#main-content" className="skip-link">
         Skip to content
       </a>
       <Navbar profile={portfolio.profile} theme={theme} onToggleTheme={toggleTheme} />
       <main id="main-content" className="main-content" tabIndex={-1}>
-        <Hero profile={portfolio.profile} />
-        <About profile={portfolio.profile} />
-        <Skills skills={portfolio.skills} />
-        <Projects projects={portfolio.projects} />
-        <Education education={portfolio.education} />
-        <Contact contact={portfolio.contact} />
+        <div className="animate-in" style={{ animationDelay: '0.1s' }}>
+          <Hero profile={portfolio.profile} />
+        </div>
+        <div className="animate-in" style={{ animationDelay: '0.2s' }}>
+          <About profile={portfolio.profile} />
+        </div>
+        <div className="animate-in" style={{ animationDelay: '0.3s' }}>
+          <Skills skills={portfolio.skills} />
+        </div>
+        <div className="animate-in" style={{ animationDelay: '0.4s' }}>
+          <Projects projects={portfolio.projects} />
+        </div>
+        <div className="animate-in" style={{ animationDelay: '0.5s' }}>
+          <Education education={portfolio.education} />
+        </div>
+        <div className="animate-in" style={{ animationDelay: '0.6s' }}>
+          <Contact contact={portfolio.contact} />
+        </div>
       </main>
       <Footer profile={portfolio.profile} />
     </div>

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
+import { FaSun, FaMoon, FaBars, FaTimes } from 'react-icons/fa'
 
 import logoImg from '../assets/logo.png'
-import Button from './Button'
 
 export default function Navbar({ profile, theme, onToggleTheme }) {
   const [open, setOpen] = useState(false)
@@ -53,18 +53,27 @@ export default function Navbar({ profile, theme, onToggleTheme }) {
           <img className="brand-logo" src={logoImg} alt="EMEKSON logo" />
         </a>
 
-        <button
-          className="nav-toggle"
-          type="button"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          aria-expanded={open}
-          aria-controls="primary-nav"
-          onClick={() => setOpen((v) => !v)}
-        >
-          <span className="nav-toggle-line" />
-          <span className="nav-toggle-line" />
-          <span className="nav-toggle-line" />
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <button
+            className="btn btn-ghost"
+            onClick={onToggleTheme}
+            aria-label="Toggle theme"
+            style={{ padding: '8px', borderRadius: '50%', width: '40px', height: '40px' }}
+          >
+            {theme === 'dark' ? <FaSun /> : <FaMoon />}
+          </button>
+
+          <button
+            className="nav-toggle"
+            type="button"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-expanded={open}
+            aria-controls="primary-nav"
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <FaTimes /> : <FaBars />}
+          </button>
+        </div>
 
         <nav
           id="primary-nav"

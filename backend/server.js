@@ -14,8 +14,29 @@ const port = process.env.PORT || 5000
 const dataDir = path.join(__dirname, 'data')
 const messagesFile = path.join(dataDir, 'messages.json')
 
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123'
+
 app.use(cors())
 app.use(express.json())
+
+// Simple middleware to check admin secret
+const requireAdmin = (req, res, next) => {
+  const secret = req.headers['x-admin-secret']
+  if (secret === ADMIN_PASSWORD) {
+    next()
+  } else {
+    res.status(401).json({ ok: false, error: 'Unauthorized' })
+  }
+}
+
+app.post('/api/admin/login', (req, res) => {
+  const { password } = req.body ?? {}
+  if (password === ADMIN_PASSWORD) {
+    res.json({ ok: true, token: ADMIN_PASSWORD })
+  } else {
+    res.status(401).json({ ok: false, error: 'Invalid password' })
+  }
+})
 
 async function ensureStorage() {
   await fs.mkdir(dataDir, { recursive: true })
@@ -39,7 +60,7 @@ app.get('/api/health', (_req, res) => {
   res.json({ ok: true })
 })
 
-app.get('/api/messages', async (_req, res) => {
+app.get('/api/messages', requireAdmin, async (_req, res) => {
   try {
     const messages = await readMessages()
     return res.json({ ok: true, messages })

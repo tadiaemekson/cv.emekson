@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { FaSync, FaUser, FaEnvelope, FaClock, FaArrowLeft } from 'react-icons/fa'
 
 function formatDate(iso) {
   const date = new Date(iso)
@@ -6,7 +7,7 @@ function formatDate(iso) {
   return date.toLocaleString()
 }
 
-export default function AdminMessages() {
+export default function AdminMessages({ token }) {
   const [messages, setMessages] = useState([])
   const [status, setStatus] = useState('loading')
   const [error, setError] = useState('')
@@ -15,7 +16,9 @@ export default function AdminMessages() {
     setStatus('loading')
     setError('')
     try {
-      const res = await fetch('/api/messages')
+      const res = await fetch('/api/messages', {
+        headers: { 'X-Admin-Secret': token }
+      })
       if (!res.ok) throw new Error('Could not fetch messages.')
       const data = await res.json()
       setMessages(Array.isArray(data?.messages) ? data.messages : [])
@@ -24,7 +27,7 @@ export default function AdminMessages() {
       setStatus('error')
       setError('Failed to load messages. Make sure backend is running.')
     }
-  }, [])
+  }, [token])
 
   useEffect(() => {
     loadMessages()
@@ -33,13 +36,14 @@ export default function AdminMessages() {
   return (
     <div className="admin-page">
       <p className="admin-back">
-        <a className="text-link" href="/">
-          Back to portfolio
+        <a className="text-link" href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+          <FaArrowLeft /> Back to portfolio
         </a>
       </p>
       <div className="admin-head">
         <h1 className="section-title">Admin - Contact Messages</h1>
-        <button className="btn btn-secondary" type="button" onClick={loadMessages}>
+        <button className="btn btn-secondary" type="button" onClick={loadMessages} disabled={status === 'loading'}>
+          <FaSync className={status === 'loading' ? 'animate-spin' : ''} style={{ marginRight: '8px' }} />
           Refresh
         </button>
       </div>
@@ -55,10 +59,10 @@ export default function AdminMessages() {
         <div className="admin-list">
           {messages.map((item) => (
             <article key={item.id} className="card admin-card">
-              <p><strong>Name:</strong> {item.name}</p>
-              <p><strong>Email:</strong> {item.email}</p>
-              <p><strong>Time:</strong> {formatDate(item.createdAt)}</p>
-              <p><strong>Message:</strong></p>
+              <p><FaUser style={{ color: 'var(--accent)', marginRight: '8px' }} /><strong>Name:</strong> {item.name}</p>
+              <p><FaEnvelope style={{ color: 'var(--accent)', marginRight: '8px' }} /><strong>Email:</strong> {item.email}</p>
+              <p><FaClock style={{ color: 'var(--accent)', marginRight: '8px' }} /><strong>Time:</strong> {formatDate(item.createdAt)}</p>
+              <p style={{ marginTop: '12px', borderTop: '1px solid var(--border)', paddingTop: '12px' }}><strong>Message:</strong></p>
               <p className="muted admin-message-body">{item.message}</p>
             </article>
           ))}

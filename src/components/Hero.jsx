@@ -1,6 +1,9 @@
 import profileImg from '../assets/profile.png'
+import { FaProjectDiagram, FaEnvelope } from 'react-icons/fa'
 
 import Button from './Button'
+import ResumeButton from './ResumeButton'
+import TechScene from './TechScene'
 
 export default function Hero({ profile }) {
   return (
@@ -15,45 +18,35 @@ export default function Hero({ profile }) {
 
           <div className="hero-actions">
             <Button href="#projects" variant="primary" ariaLabel="Jump to projects">
-              View Projects
+              <FaProjectDiagram style={{ marginRight: '8px' }} /> View Projects
             </Button>
-            <Button href="#contact" variant="ghost" ariaLabel="Jump to contact">
-              Contact
+            <Button href="#contact" variant="secondary" ariaLabel="Jump to contact">
+              <FaEnvelope style={{ marginRight: '8px' }} /> Contact Me
             </Button>
           </div>
-
-          <div className="hero-badges" aria-label="Quick highlights">
-            {(profile?.highlights ?? ['React', 'Node.js', 'SQL']).slice(0, 3).map((t) => (
-              <span key={t} className="badge">
-                {t}
-              </span>
-            ))}
-          </div>
+          <ResumeButton />
         </div>
 
         <div className="hero-media">
-          <div className="profile-card">
-            <img className="profile-img" src={profileImg} alt={`${profile?.name ?? 'Student'} profile`} />
-            <div className="profile-meta">
-              <div className="profile-name">{profile?.name ?? 'Your Name'}</div>
-              <div className="profile-role">{profile?.role ?? 'Full-Stack Developer Student'}</div>
-              <div className="profile-loc">{profile?.location ?? 'Your City'}</div>
-              <div className="profile-matricule">Buea Cameroon</div>
-            </div>
-          </div>
-
-          <div className="hero-stats">
-            <div className="stat">
-              <div className="stat-value">{profile?.stats?.projects ?? '3+'}</div>
-              <div className="stat-label">Projects</div>
-            </div>
-            <div className="stat">
-              <div className="stat-value">{profile?.stats?.skills ?? '10+'}</div>
-              <div className="stat-label">Skills</div>
-            </div>
-            <div className="stat">
-              <div className="stat-value">{profile?.stats?.years ?? '1+'}</div>
-              <div className="stat-label">Learning</div>
+          <div className="hero-scene-wrapper" style={{ position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <TechScene />
+            <div className="profile-overlay" style={{ marginTop: '-80px', zIndex: 10, position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <img className="profile-img" src={profileImg} alt={`${profile?.name ?? 'Student'} profile`} style={{ width: '120px', height: '120px' }} />
+              
+              <div className="hero-stats" style={{ marginTop: '24px' }}>
+                <div className="stat">
+                  <span className="stat-value">{profile?.stats?.projects ?? '3+'}</span>
+                  <span className="stat-label">Projects</span>
+                </div>
+                <div className="stat">
+                  <span className="stat-value">{profile?.stats?.skills ?? '10+'}</span>
+                  <span className="stat-label">Skills</span>
+                </div>
+                <div className="stat">
+                  <span className="stat-value">{profile?.stats?.years ?? '1+'}</span>
+                  <span className="stat-label">Years</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

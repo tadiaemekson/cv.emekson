@@ -40,12 +40,14 @@ export const portfolio = {
     {
       title: 'First Project (Bootstrap Practice)',
       description: 'A project where I learned how to build responsive pages and components using Bootstrap.',
+      details: 'This project focused on mastering the Bootstrap 5 grid system and utility classes. I built a series of responsive landing pages, implementing navigation bars, carousels, and card components. Key challenges included customizing Bootstrap defaults and ensuring cross-browser compatibility.',
       tech: ['HTML', 'CSS', 'Bootstrap', 'JavaScript'],
       github: 'https://github.com/tadiaemekson/first_project.git',
     },
     {
       title: 'B-TECH Project',
       description: 'A B-TECH academic project built with PHP and Grocery CRUD for fast admin operations.',
+      details: 'Developed for academic purposes, this system streamlines administrative tasks using PHP and the Grocery CRUD library. It features a robust back-office for managing student records, course enrollments, and grades. The project emphasized rapid application development and secure database interactions.',
       tech: ['PHP', 'Grocery CRUD', 'MySQL', 'Bootstrap'],
       github: 'https://emekb-tech.free.nf',
       
@@ -53,6 +55,7 @@ export const portfolio = {
     {
       title: 'Clinic Management System',
       description: 'A clinic management system built with PHP to manage patient records and clinic workflows.',
+      details: 'A comprehensive solution for small to medium-sized clinics. Built with pure PHP, it manages patient registration, appointment scheduling, and electronic health records (EHR). I implemented custom authentication and role-based access control (RBAC) for doctors, nurses, and admin staff.',
       tech: ['PHP', 'MySQL', 'Bootstrap', 'CRUD'],
       github: 'https://github.com/tadiaemekson/clinic_management_system.git',
     },

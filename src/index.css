@@ -1,62 +1,72 @@
 :root {
-  --text: #c6d1c9;
+  --text: #a1b0a7;
   --text-h: #ffffff;
-  --bg: #060806;
-  --border: #213226;
-  --code-bg: #121812;
-  --accent: #2ecc71;
-  --accent-bg: rgba(46, 204, 113, 0.2);
-  --accent-border: rgba(46, 204, 113, 0.55);
-  --social-bg: rgba(16, 28, 18, 0.82);
-  --shadow:
-    rgba(0, 0, 0, 0.58) 0 14px 24px -12px, rgba(0, 0, 0, 0.34) 0 8px 12px -8px;
+  --bg: #030503;
+  --bg-subtle: #0a0f0a;
+  --border: #1a261d;
+  --code-bg: #0d140e;
+  --accent: #00ff73;
+  --accent-muted: #00d661;
+  --accent-bg: rgba(0, 255, 115, 0.1);
+  --accent-border: rgba(0, 255, 115, 0.3);
+  --social-bg: rgba(10, 20, 12, 0.8);
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+  --shadow-lg: 0 12px 24px -12px rgba(0,0,0,0.5);
+  --glass-bg: rgba(10, 15, 10, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.05);
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
+  font: 16px/1.6 var(--sans);
+  letter-spacing: -0.01em;
   color-scheme: dark;
   color: var(--text);
   background: var(--bg);
+  background-image: 
+    radial-gradient(circle at 2px 2px, var(--border) 1px, transparent 0);
+  background-size: 40px 40px;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
   @media (max-width: 1024px) {
-    font-size: 16px;
+    font-size: 15px;
   }
 }
 
 body[data-theme='dark'] {
-  --text: #c6d1c9;
+  --text: #a1b0a7;
   --text-h: #ffffff;
-  --bg: #060806;
-  --border: #213226;
-  --code-bg: #121812;
-  --accent: #2ecc71;
-  --accent-bg: rgba(46, 204, 113, 0.2);
-  --accent-border: rgba(46, 204, 113, 0.55);
-  --social-bg: rgba(16, 28, 18, 0.82);
-  --shadow:
-    rgba(0, 0, 0, 0.58) 0 14px 24px -12px, rgba(0, 0, 0, 0.34) 0 8px 12px -8px;
+  --bg: #030503;
+  --bg-subtle: #0a0f0a;
+  --border: #1a261d;
+  --accent: #00ff73;
+  --accent-bg: rgba(0, 255, 115, 0.1);
+  --accent-border: rgba(0, 255, 115, 0.3);
+  --social-bg: rgba(10, 20, 12, 0.8);
   color-scheme: dark;
 }
 
 body[data-theme='light'] {
-  --text: #2a382d;
+  --text: #4a554d;
   --text-h: #0a120c;
-  --bg: #ffffff;
-  --border: #cdddcf;
-  --code-bg: #f2f7f2;
-  --accent: #1d9d55;
-  --accent-bg: rgba(29, 157, 85, 0.12);
-  --accent-border: rgba(29, 157, 85, 0.38);
-  --social-bg: rgba(240, 247, 241, 0.95);
-  --shadow:
-    rgba(33, 69, 44, 0.12) 0 12px 20px -10px, rgba(33, 69, 44, 0.08) 0 6px 12px -6px;
+  --bg: #f8faf9;
+  --bg-subtle: #ffffff;
+  --border: #e2e8e4;
+  --code-bg: #f0f4f1;
+  --accent: #10b981;
+  --accent-bg: rgba(16, 185, 129, 0.1);
+  --accent-border: rgba(16, 185, 129, 0.3);
+  --social-bg: rgba(255, 255, 255, 0.9);
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 24px -12px rgba(0,0,0,0.15);
   color-scheme: light;
 }
 
