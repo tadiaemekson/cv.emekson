@@ -82,7 +82,7 @@ export default function ResumeButton() {
   }
 
   return (
-    <button onClick={downloadResume} className="btn btn-primary" style={{ marginTop: '12px' }}>
+    <button onClick={downloadResume} className="btn btn-primary" style={{ marginTop: '12px', color: 'inherit' }}>
       <HiOutlineDocumentDownload style={{ marginRight: '8px', fontSize: '20px' }} />
       Download Resume (PDF)
     </button>

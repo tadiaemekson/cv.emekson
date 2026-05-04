@@ -14,6 +14,7 @@ import AdminMessages from './components/AdminMessages'
 import AdminLogin from './components/AdminLogin'
 import CustomCursor from './components/CustomCursor'
 import ScrollProgress from './components/ScrollProgress'
+import AIAssistant from './components/AIAssistant'
 
 import { portfolio } from './data/portfolio'
 
@@ -76,6 +77,7 @@ function App() {
     <div id="top">
       <CustomCursor />
       <ScrollProgress />
+      <AIAssistant />
       <a href="#main-content" className="skip-link">
         Skip to content
       </a>
