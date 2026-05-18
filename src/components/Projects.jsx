@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { FaGithub, FaInfoCircle, FaStar, FaCodeBranch } from 'react-icons/fa'
 import ProjectModal from './ProjectModal'
 
-function ProjectCard({ project, onClick }) {
+function ProjectCard({ project, onClick, projectsSection }) {
   const [stats, setStats] = useState(null)
 
   useEffect(() => {
@@ -67,37 +67,46 @@ function ProjectCard({ project, onClick }) {
       <div className="project-links" onClick={e => e.stopPropagation()}>
         {project.github && (
           <a className="text-link" href={project.github} target="_blank" rel="noreferrer" style={{ fontSize: '14px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-            <FaGithub /> Source
+            <FaGithub /> {projectsSection?.source ?? 'Source'}
           </a>
         )}
         <button className="text-link" onClick={onClick} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: '14px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-          <FaInfoCircle /> Details
+          <FaInfoCircle /> {projectsSection?.details ?? 'Details'}
         </button>
       </div>
     </article>
   )
 }
 
-export default function Projects({ projects }) {
+export default function Projects({ projects, projectsSection, ui }) {
   const [selectedProject, setSelectedProject] = useState(null)
 
   return (
     <section id="projects" className="section">
       <div className="section-head">
-        <p className="kicker">Projects</p>
-        <h2 className="section-title">Things I've built (and learned from)</h2>
+        <p className="kicker">{projectsSection?.kicker ?? 'Projects'}</p>
+        <h2 className="section-title">{projectsSection?.title ?? "Things I've built (and learned from)"}</h2>
       </div>
 
       <div className="project-grid">
         {(projects ?? []).map((p) => (
-          <ProjectCard key={p.title} project={p} onClick={() => setSelectedProject(p)} />
+          <ProjectCard 
+            key={p.title} 
+            project={p} 
+            onClick={() => setSelectedProject(p)} 
+            ui={ui}
+            projectsSection={projectsSection}
+          />
         ))}
       </div>
 
       {selectedProject && (
-        <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+        <ProjectModal 
+          project={selectedProject} 
+          onClose={() => setSelectedProject(null)} 
+          ui={ui}
+        />
       )}
     </section>
   )
 }
-

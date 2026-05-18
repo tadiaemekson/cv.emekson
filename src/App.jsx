@@ -19,6 +19,7 @@ import AIAssistant from './components/AIAssistant'
 import { portfolio } from './data/portfolio'
 
 const THEME_STORAGE_KEY = 'portfolio-theme'
+const LANG_STORAGE_KEY = 'portfolio-lang'
 const ADMIN_TOKEN_KEY = 'admin-token'
 
 function getInitialTheme() {
@@ -30,6 +31,13 @@ function getInitialTheme() {
   return 'dark'
 }
 
+function getInitialLang() {
+  if (typeof window === 'undefined') return 'en'
+  const saved = window.localStorage.getItem(LANG_STORAGE_KEY)
+  if (saved === 'en' || saved === 'fr') return saved
+  return 'en'
+}
+
 function getInitialAdminToken() {
   if (typeof window === 'undefined') return null
   return window.localStorage.getItem(ADMIN_TOKEN_KEY)
@@ -37,6 +45,7 @@ function getInitialAdminToken() {
 
 function App() {
   const [theme, setTheme] = useState(getInitialTheme)
+  const [lang, setLang] = useState(getInitialLang)
   const [adminToken, setAdminToken] = useState(getInitialAdminToken)
 
   useEffect(() => {
@@ -44,8 +53,16 @@ function App() {
     window.localStorage.setItem(THEME_STORAGE_KEY, theme)
   }, [theme])
 
+  useEffect(() => {
+    window.localStorage.setItem(LANG_STORAGE_KEY, lang)
+  }, [lang])
+
   function toggleTheme() {
     setTheme((curr) => (curr === 'dark' ? 'light' : 'dark'))
+  }
+
+  function toggleLang() {
+    setLang((curr) => (curr === 'en' ? 'fr' : 'en'))
   }
 
   function handleAdminLogin(token) {
@@ -54,6 +71,8 @@ function App() {
   }
 
   const isAdminPage = typeof window !== 'undefined' && window.location.pathname === '/admin'
+
+  const content = portfolio[lang]
 
   if (isAdminPage) {
     return (
@@ -82,32 +101,66 @@ function App() {
       </div>
       <CustomCursor />
       <ScrollProgress />
-      <AIAssistant />
+      <AIAssistant key={lang} portfolio={content} aiContent={content.ai} />
       <a href="#main-content" className="skip-link">
         Skip to content
       </a>
-      <Navbar theme={theme} onToggleTheme={toggleTheme} />
+      <Navbar 
+        theme={theme} 
+        onToggleTheme={toggleTheme} 
+        lang={lang} 
+        onToggleLang={toggleLang}
+        navLabels={content.nav}
+      />
       <main id="main-content" className="main-content" tabIndex={-1}>
         <div className="animate-in" style={{ animationDelay: '0.1s' }}>
-          <Hero profile={portfolio.profile} />
+          <Hero 
+            profile={content.profile} 
+            heroContent={content.hero} 
+            content={content}
+            ui={content.ui}
+          />
         </div>
         <div className="animate-in" style={{ animationDelay: '0.2s' }}>
-          <About profile={portfolio.profile} />
+          <About 
+            profile={content.profile} 
+            aboutContent={content.about} 
+          />
         </div>
         <div className="animate-in" style={{ animationDelay: '0.3s' }}>
-          <Skills skills={portfolio.skills} />
+          <Skills skills={content.skills} />
         </div>
         <div className="animate-in" style={{ animationDelay: '0.4s' }}>
-          <Projects projects={portfolio.projects} />
+          <Projects 
+            projects={content.projects} 
+            projectsSection={content.projectsSection}
+            ui={content.ui} 
+          />
         </div>
         <div className="animate-in" style={{ animationDelay: '0.5s' }}>
-          <Education education={portfolio.education} />
+          <Education 
+            education={content.education} 
+            educationHistory={content.educationHistory} 
+            experience={content.experience}
+            languages={content.languages}
+            qualities={content.qualities}
+            interests={content.interests}
+            educationSection={content.educationSection}
+            ui={content.ui}
+          />
         </div>
         <div className="animate-in" style={{ animationDelay: '0.6s' }}>
-          <Contact contact={portfolio.contact} />
+          <Contact 
+            contact={content.contact} 
+            contactSection={content.contactSection}
+          />
         </div>
       </main>
-      <Footer profile={portfolio.profile} />
+      <Footer 
+        profile={content.profile} 
+        footerLabels={content.footer} 
+        navLabels={content.nav}
+      />
     </div>
   )
 }

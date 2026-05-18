@@ -1,14 +1,15 @@
-export default function Footer({ profile }) {
+export default function Footer({ profile, footerLabels }) {
   const year = new Date().getFullYear()
   return (
     <footer className="footer">
       <div className="container footer-inner">
-        <span className="muted">(c) {year} {profile?.name ?? 'Your Name'}</span>
-        <a className="text-link" href="#top">
+        <span className="muted">
+          &copy; {year} {profile?.name ?? 'TADIA FONGE EMEKSON'}. {footerLabels?.rights ?? 'All rights reserved.'}
+        </span>
+        <a className="text-link" href="#top" title={footerLabels?.backToTop ?? 'Back to top'}>
           ^
         </a>
       </div>
     </footer>
   )
 }
-

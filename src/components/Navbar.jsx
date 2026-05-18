@@ -3,19 +3,19 @@ import { FaSun, FaMoon, FaBars, FaTimes } from 'react-icons/fa'
 
 import logoImg from '../assets/logo.png'
 
-export default function Navbar({ theme, onToggleTheme }) {
+export default function Navbar({ theme, onToggleTheme, lang, onToggleLang, navLabels }) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
   const items = useMemo(
     () => [
-      { id: 'about', label: 'About' },
-      { id: 'skills', label: 'Skills' },
-      { id: 'projects', label: 'Projects' },
-      { id: 'education', label: 'Education' },
-      { id: 'contact', label: 'Contact' },
+      { id: 'about', label: navLabels.about },
+      { id: 'skills', label: navLabels.skills },
+      { id: 'projects', label: navLabels.projects },
+      { id: 'education', label: navLabels.education },
+      { id: 'contact', label: navLabels.contact },
     ],
-    [],
+    [navLabels],
   )
 
   useEffect(() => {
@@ -62,7 +62,28 @@ export default function Navbar({ theme, onToggleTheme }) {
           <img className="brand-logo" src={logoImg} alt="EMEKSON logo" />
         </a>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <button
+            className="btn btn-ghost"
+            onClick={onToggleLang}
+            aria-label="Toggle language"
+            style={{ 
+              padding: '8px', 
+              borderRadius: '8px', 
+              fontSize: '0.875rem', 
+              fontWeight: '600',
+              border: '1px solid var(--border-color)',
+              minWidth: '40px',
+              height: '40px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'var(--text-color)'
+            }}
+          >
+            {lang.toUpperCase()}
+          </button>
+
           <button
             className="btn btn-ghost"
             onClick={onToggleTheme}

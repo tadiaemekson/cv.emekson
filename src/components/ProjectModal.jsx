@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { FaGithub, FaExternalLinkAlt, FaTimes } from 'react-icons/fa'
 
-export default function ProjectModal({ project, onClose }) {
+export default function ProjectModal({ project, onClose, ui }) {
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === 'Escape') onClose()
@@ -49,11 +49,11 @@ export default function ProjectModal({ project, onClose }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center'
-        }}>
+        }} aria-label={ui?.close ?? 'Close'}>
           <FaTimes />
         </button>
 
-        <p className="kicker">Case Study</p>
+        <p className="kicker">{ui?.caseStudy ?? 'Case Study'}</p>
         <h2 className="section-title" style={{ fontSize: '32px', marginBottom: '16px' }}>{project.title}</h2>
         
         <div className="tag-row" style={{ marginBottom: '24px' }}>
@@ -63,19 +63,19 @@ export default function ProjectModal({ project, onClose }) {
         </div>
 
         <div style={{ marginBottom: '32px' }}>
-          <h3 className="card-title">Project Overview</h3>
+          <h3 className="card-title">{ui?.projectOverview ?? 'Project Overview'}</h3>
           <p className="muted" style={{ lineHeight: '1.8' }}>{project.details || project.description}</p>
         </div>
 
         <div className="hero-actions" style={{ marginTop: '20px' }}>
           {project.github && (
             <a href={project.github} target="_blank" rel="noreferrer" className="btn btn-primary">
-              <FaGithub style={{ marginRight: '8px' }} /> View Repository
+              <FaGithub style={{ marginRight: '8px' }} /> {ui?.viewRepository ?? 'View Repository'}
             </a>
           )}
           {project.demo && (
             <a href={project.demo} target="_blank" rel="noreferrer" className="btn btn-secondary">
-              <FaExternalLinkAlt style={{ marginRight: '8px' }} /> Live Preview
+              <FaExternalLinkAlt style={{ marginRight: '8px' }} /> {ui?.livePreview ?? 'Live Preview'}
             </a>
           )}
         </div>

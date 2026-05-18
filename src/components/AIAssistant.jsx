@@ -1,17 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
 import { FaRobot, FaTimes, FaPaperPlane, FaRegCommentDots } from 'react-icons/fa'
-import { portfolio } from '../data/portfolio'
 
-const INITIAL_MESSAGE = {
-  id: 1,
-  text: "Hi there! I'm EMEKSON's AI assistant. How can I help you learn more about his work today?",
-  sender: 'ai',
-  time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-}
-
-export default function AIAssistant() {
+export default function AIAssistant({ portfolio, aiContent }) {
   const [isOpen, setIsOpen] = useState(false)
-  const [messages, setMessages] = useState([INITIAL_MESSAGE])
+  const [messages, setMessages] = useState([{
+    id: 1,
+    text: aiContent?.initial ?? "Hi there!",
+    sender: 'ai',
+    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  }])
   const [inputValue, setInputValue] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const messagesEndRef = useRef(null)
@@ -26,30 +23,31 @@ export default function AIAssistant() {
 
   const generateResponse = (userText) => {
     const input = userText.toLowerCase()
-    let response = "That's a great question! I'm still learning, but you can find more details in the sections above. Would you like to see EMEKSON's projects or contact him directly?"
+    let response = aiContent?.fallback ?? "I'm still learning."
     let shouldClose = false
 
-    if (input.includes('hello') || input.includes('hi')) {
-      response = "Hello! I'm here to help you navigate EMEKSON's portfolio. What would you like to know?"
-    } else if (input.includes('thank')) {
-      response = "You're very welcome! I'm glad I could help. Let me know if you need anything else!"
-    } else if (input.includes('bye') || input.includes('goodbye') || input.includes('close')) {
-      response = "Goodbye! It was a pleasure chatting with you. I'll close the chat now to let you browse. Feel free to open me again if you need anything!"
+    if (input.includes('hello') || input.includes('hi') || input.includes('bonjour') || input.includes('salut')) {
+      response = aiContent?.hello
+    } else if (input.includes('thank') || input.includes('merci')) {
+      response = aiContent?.thanks
+    } else if (input.includes('bye') || input.includes('au revoir') || input.includes('close')) {
+      response = aiContent?.bye
       shouldClose = true
-    } else if (input.includes('project') || input.includes('build')) {
-      response = `EMEKSON has built several interesting projects like the ${portfolio.projects.map(p => p.title).join(', ')}. You can click on them to see full case studies!`
-    } else if (input.includes('skill') || input.includes('tech') || input.includes('know')) {
-      const topSkills = portfolio.skills[0].tags.slice(0, 3).join(', ')
-      response = `He is highly skilled in ${topSkills}, and much more. Check out the Skills section for the full list!`
+    } else if (input.includes('project') || input.includes('build') || input.includes('projet')) {
+      const list = portfolio.projects.map(p => p.title).join(', ')
+      response = aiContent?.projects.replace('{list}', list)
+    } else if (input.includes('skill') || input.includes('tech') || input.includes('compétence')) {
+      const top = portfolio.skills[0].tags.slice(0, 3).join(', ')
+      response = aiContent?.skills.replace('{top}', top)
     } else if (input.includes('contact') || input.includes('email') || input.includes('reach')) {
-      response = `You can reach EMEKSON at ${portfolio.contact.email} or by using the contact form at the bottom of the page.`
-    } else if (input.includes('who') || input.includes('about')) {
+      response = aiContent?.contact.replace('{email}', portfolio.contact.email)
+    } else if (input.includes('who') || input.includes('about') || input.includes('qui')) {
       response = portfolio.profile.bio
-    } else if (input.includes('education') || input.includes('study')) {
-      response = `He is currently studying ${portfolio.education.degree} at ${portfolio.education.school}.`
+    } else if (input.includes('education') || input.includes('study') || input.includes('étude')) {
+      response = aiContent?.education.replace('{degree}', portfolio.education.degree).replace('{school}', portfolio.education.school)
     }
 
-    return { text: response, shouldClose }
+    return { text: response || aiContent?.fallback, shouldClose }
   }
 
   const handleSend = (e) => {
@@ -142,8 +140,8 @@ export default function AIAssistant() {
           }}>
             <FaRobot fontSize="20px" />
             <div>
-              <div style={{ fontWeight: '800', fontSize: '14px', lineHeight: 1 }}>EMEKSON AI</div>
-              <div style={{ fontSize: '10px', opacity: 0.8 }}>Online & ready to help</div>
+              <div style={{ fontWeight: '800', fontSize: '14px', lineHeight: 1 }}>{aiContent?.name ?? 'EMEKSON AI'}</div>
+              <div style={{ fontSize: '10px', opacity: 0.8 }}>{aiContent?.status ?? 'Online'}</div>
             </div>
           </div>
 
@@ -201,7 +199,7 @@ export default function AIAssistant() {
               className="input"
               value={inputValue}
               onChange={e => setInputValue(e.target.value)}
-              placeholder="Ask me anything..."
+              placeholder={aiContent?.placeholder ?? "Ask me anything..."}
               style={{ padding: '8px 14px', borderRadius: '20px', fontSize: '13px' }}
             />
             <button type="submit" className="btn btn-primary" style={{
