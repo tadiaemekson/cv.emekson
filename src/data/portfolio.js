@@ -30,7 +30,7 @@ export const portfolio = {
       name: 'TADIA FONGE EMEKSON',
       matricule: 'CT22A133',
       role: 'Software Engineering Student | Junior Full-Stack Developer',
-      location: 'BUEA, Cameroon',
+      location: 'Douala, Cameroon',
       highlights: ['PHP', 'React', 'Node.js', 'SQL', 'Team Projects'],
       values: ['Clean UI', 'Practical backend', 'Good teamwork'],
       stats: {
@@ -108,7 +108,7 @@ export const portfolio = {
       summary: 'Focused on building real-world web applications across frontend, backend, and databases.',
       gpa: '...',
       highlights: ['Capstone projects', 'Team work', 'Hands-on labs'],
-      period: '2022 – Present',
+      period: '2023 – Present',
     },
     educationHistory: [
       {
@@ -119,18 +119,18 @@ export const portfolio = {
       },
       {
         degree: 'Scientific Baccalaureate – Series D',
-        school: 'Government Bilingual High School Gouache',
+        school: 'Government Bilingual High School Gouache Bafoussam',
         location: 'Bafoussam, Cameroon',
         period: '2021 – 2022',
       },
       {
         degree: 'Scientific Probatoire – Series D',
-        school: 'Government Bilingual High School Gouache',
+        school: 'Government Bilingual High School Gouache Bafoussam',
         location: 'Bafoussam, Cameroon',
         period: '2020 – 2021',
       },
       {
-        degree: 'BEPC',
+        degree: 'BEPC – Series A4 Spanish',
         school: 'Government Bilingual High School Bafoussam Rural',
         location: 'Bafoussam, Cameroon',
         period: '2016 – 2017',
@@ -146,16 +146,23 @@ export const portfolio = {
       {
         title: 'Academic Internship',
         company: 'KIAMA SA',
-        location: 'Yaounde, Cameroon',
+        location: 'Douala, Cameroon',
         period: 'July – September 2024',
-        details: ['Participated in software development and administrative tasks.'],
+        details: [
+          'Worked on a project of building a website to help track workers availability to work and show different task of the company.',
+          'Participated in software development and administrative tasks.'
+        ],
       },
       {
         title: 'Academic Internship',
         company: 'SIGERIS Sarl',
         location: 'Bafoussam, Cameroon',
         period: 'June – August 2023',
-        details: ['Assisted in IT maintenance and network administration.'],
+        details: [
+          'Worked on a project requiring deep knowledge of how Grocery CRUD is working.',
+          'Implemented CRUD operations using the PHP programming language.',
+          'Assisted in IT maintenance and network administration.'
+        ],
       },
       {
         title: 'Family Assistance – Construction Works',
@@ -215,7 +222,7 @@ export const portfolio = {
       linkedin: 'https://www.linkedin.com/in/tadia-fonge-emekson',
       facebook: 'https://www.facebook.com/tadia.fonge.emekson',
       whatsapp: 'https://wa.me/237655648766',
-      location: 'BUEA, Cameroon',
+      location: 'Douala, Cameroon',
       form: {
         name: 'Name',
         email: 'Email',
@@ -294,7 +301,7 @@ export const portfolio = {
       name: 'TADIA FONGE EMEKSON',
       matricule: 'CT22A133',
       role: 'Étudiant en Génie Logiciel | Développeur Full-Stack Junior',
-      location: 'BUEA, Cameroun',
+      location: 'Douala, Cameroun',
       highlights: ['PHP', 'React', 'Node.js', 'SQL', "Projets d'équipe"],
       values: ['Interface propre', 'Backend pratique', "Bon travail d'équipe"],
       stats: {
@@ -341,7 +348,7 @@ export const portfolio = {
       },
       {
         title: 'Projet Académique B-TECH',
-        description: "Conception et développement d'un projet de gestion académique utilisant PHP et Grocery CRUD pour des opérations administratives rapides.",
+        description: "Conception et développement d'un projet de gestion académique utilisant PHP et Grocery CRUD for des opérations administratives rapides.",
         details: "Développé à des fins académiques, ce système rationalise les tâches administratives en utilisant PHP et la bibliothèque Grocery CRUD. Il dispose d'un back-office robuste pour la gestion des dossiers des étudiants, des inscriptions aux cours et des notes. Le projet a mis l'accent sur le développement rapide d'applications et les interactions sécurisées avec la base de données.",
         tech: ['PHP', 'Grocery CRUD', 'MySQL', 'Bootstrap'],
         github: 'https://emekb-tech.free.nf',
@@ -372,7 +379,7 @@ export const portfolio = {
       summary: "Axé sur la création d'applications web réelles sur le frontend, le backend et les bases de données.",
       gpa: '...',
       highlights: ["Projets de fin d'études", "Travail d'équipe", 'Travaux pratiques'],
-      period: '2022 – Présent',
+      period: '2023 – Présent',
     },
     educationHistory: [
       {
@@ -383,13 +390,13 @@ export const portfolio = {
       },
       {
         degree: 'Baccalauréat Scientifique – Série D',
-        school: 'Lycée Bilingue de Gouache',
+        school: 'Lycée Bilingue de Gouache Bafoussam',
         location: 'Bafoussam, Cameroun',
         period: '2021 – 2022',
       },
       {
         degree: 'Probatoire Scientifique – Série D',
-        school: 'Lycée Bilingue de Gouache',
+        school: 'Lycée Bilingue de Gouache Bafoussam',
         location: 'Bafoussam, Cameroun',
         period: '2020 – 2021',
       },
@@ -410,16 +417,23 @@ export const portfolio = {
       {
         title: 'Stage Académique',
         company: 'KIAMA SA',
-        location: 'Yaounde, Cameroun',
+        location: 'Douala, Cameroun',
         period: 'Juillet – Septembre 2024',
-        details: ['Participation au développement de logiciels et aux tâches administratives.'],
+        details: [
+          'Développement d\'un site web pour aider à suivre la disponibilité des travailleurs et afficher les différentes tâches de l\'entreprise.',
+          'Participation au développement de logiciels et aux tâches administratives.'
+        ],
       },
       {
         title: 'Stage Académique',
         company: 'SIGERIS Sarl',
         location: 'Bafoussam, Cameroun',
         period: 'Juin – Août 2023',
-        details: ["Aide à la maintenance informatique et à l'administration réseau."],
+        details: [
+          'Travail sur un projet nécessitant de bien comprendre le fonctionnement de Grocery CRUD.',
+          'Mise en œuvre d\'opérations CRUD en utilisant le langage de programmation PHP.',
+          'Aide à la maintenance informatique et à l\'administration réseau.'
+        ],
       },
       {
         title: 'Assistance Familiale – Travaux de Construction',
@@ -479,7 +493,7 @@ export const portfolio = {
       linkedin: 'https://www.linkedin.com/in/tadia-fonge-emekson',
       facebook: 'https://www.facebook.com/tadia.fonge.emekson',
       whatsapp: 'https://wa.me/237655648766',
-      location: 'BUEA, Cameroun',
+      location: 'Douala, Cameroun',
       form: {
         name: 'Nom',
         email: 'Email',
