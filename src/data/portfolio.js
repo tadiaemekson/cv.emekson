@@ -30,7 +30,7 @@ export const portfolio = {
       name: 'TADIA FONGE EMEKSON',
       matricule: 'CT22A133',
       role: 'Software Engineering Student | Junior Full-Stack Developer',
-      location: 'Douala, Cameroon',
+      location: 'Buea, Cameroon',
       highlights: ['PHP', 'React', 'Node.js', 'SQL', 'Team Projects'],
       values: ['Clean UI', 'Practical backend', 'Good teamwork'],
       stats: {
@@ -222,7 +222,7 @@ export const portfolio = {
       linkedin: 'https://www.linkedin.com/in/tadia-fonge-emekson',
       facebook: 'https://www.facebook.com/tadia.fonge.emekson',
       whatsapp: 'https://wa.me/237655648766',
-      location: 'Douala, Cameroon',
+      location: 'Buea, Cameroon',
       form: {
         name: 'Name',
         email: 'Email',
@@ -301,7 +301,7 @@ export const portfolio = {
       name: 'TADIA FONGE EMEKSON',
       matricule: 'CT22A133',
       role: 'Étudiant en Génie Logiciel | Développeur Full-Stack Junior',
-      location: 'Douala, Cameroun',
+      location: 'Buea, Cameroun',
       highlights: ['PHP', 'React', 'Node.js', 'SQL', "Projets d'équipe"],
       values: ['Interface propre', 'Backend pratique', "Bon travail d'équipe"],
       stats: {
@@ -348,7 +348,7 @@ export const portfolio = {
       },
       {
         title: 'Projet Académique B-TECH',
-        description: "Conception et développement d'un projet de gestion académique utilisant PHP et Grocery CRUD for des opérations administratives rapides.",
+        description: "Conception et développement d'un projet de gestion académique utilisant PHP et Grocery CRUD pour des opérations administratives rapides.",
         details: "Développé à des fins académiques, ce système rationalise les tâches administratives en utilisant PHP et la bibliothèque Grocery CRUD. Il dispose d'un back-office robuste pour la gestion des dossiers des étudiants, des inscriptions aux cours et des notes. Le projet a mis l'accent sur le développement rapide d'applications et les interactions sécurisées avec la base de données.",
         tech: ['PHP', 'Grocery CRUD', 'MySQL', 'Bootstrap'],
         github: 'https://emekb-tech.free.nf',
@@ -386,7 +386,7 @@ export const portfolio = {
         degree: 'B-TECH en Génie Logiciel (En cours)',
         school: 'College of Technology – Université de Buea',
         location: 'Molyko, Buea, Cameroun',
-        period: '2022 – Présent',
+        period: '2022 – Present',
       },
       {
         degree: 'Baccalauréat Scientifique – Série D',
@@ -493,7 +493,7 @@ export const portfolio = {
       linkedin: 'https://www.linkedin.com/in/tadia-fonge-emekson',
       facebook: 'https://www.facebook.com/tadia.fonge.emekson',
       whatsapp: 'https://wa.me/237655648766',
-      location: 'Douala, Cameroun',
+      location: 'Buea, Cameroun',
       form: {
         name: 'Nom',
         email: 'Email',
