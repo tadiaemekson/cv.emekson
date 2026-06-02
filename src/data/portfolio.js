@@ -31,26 +31,26 @@ export const portfolio = {
       matricule: 'CT22A133',
       role: 'Software Engineering Student | Junior Full-Stack Developer',
       location: 'Buea, Cameroon',
-      highlights: ['PHP', 'React', 'Node.js', 'SQL', 'Team Projects'],
+      highlights: ['React', 'Laravel', 'Node.js', 'SQL', 'Offline-First'],
       values: ['Clean UI', 'Practical backend', 'Good teamwork'],
       stats: {
-        projects: '3+',
-        skills: '10+',
+        projects: '6+',
+        skills: '12+',
         years: '3+',
       },
     },
     skills: [
       {
         title: 'Frontend Development',
-        tags: ['HTML5', 'CSS3', 'JavaScript', 'React', 'Bootstrap', 'Responsive UI Design'],
+        tags: ['HTML5', 'CSS3', 'JavaScript', 'TypeScript', 'React', 'Tailwind CSS', 'Bootstrap', 'Responsive UI Design'],
       },
       {
         title: 'Backend Development',
-        tags: ['PHP', 'Node.js', 'REST APIs', 'Authentication Systems', 'Grocery CRUD'],
+        tags: ['PHP', 'Laravel', 'Node.js', 'Express', 'REST APIs', 'Authentication Systems', 'Grocery CRUD'],
       },
       {
         title: 'Database Management',
-        tags: ['MySQL', 'SQL', 'MongoDB', 'Database Schema Design'],
+        tags: ['MySQL', 'SQL', 'MongoDB', 'IndexedDB (Dexie)', 'Database Schema Design'],
       },
       {
         title: 'Tools & Technologies',
@@ -69,6 +69,20 @@ export const portfolio = {
     },
     projects: [
       {
+        title: 'PartoCare',
+        description: 'A digital obstetrical health platform and decision support system designed to improve maternal and neonatal health monitoring.',
+        details: 'Developed to reduce maternal and neonatal mortality in Cameroon, this platform replaces paper partographs with a responsive digital interface. Features include an automated early warning system for labor complications (stalled dilation, pre-eclampsia, fetal distress) via standardized color alerts, and a coordinated referral framework for patient transfer. The frontend implements an Offline-First approach using Dexie.js (IndexedDB) for remote clinics.',
+        tech: ['React', 'Vite', 'TypeScript', 'Tailwind CSS', 'Dexie.js (IndexedDB)', 'Laravel', 'MySQL'],
+        github: 'https://github.com/tadiaemekson/PARTOCARE.git',
+      },
+      {
+        title: 'Gourmet Restaurant Platform',
+        description: 'A premium full-stack restaurant ordering and table reservation platform with a luxury cinematic design.',
+        details: 'A complete full-stack web application featuring a customized "Black & Gold" cinematic layout. Implements filterable menus via MongoDB, an interactive shopping cart powered by Zustand state management, a secure table reservation booking system, JWT-based authentication, and WebSockets integration for real-time delivery tracking.',
+        tech: ['React 19', 'Vite', 'Tailwind CSS', 'Framer Motion', 'Zustand', 'Node.js', 'Express', 'MongoDB Atlas'],
+        github: 'https://github.com/tadiaemekson/restaurant_app.git',
+      },
+      {
         title: 'Clinic Management System',
         description: 'Developed a clinic management application designed to manage patient records and support clinic operations efficiently.',
         details: 'A comprehensive solution for small to medium-sized clinics. Built with pure PHP, it manages patient registration, appointment scheduling, and electronic health records (EHR). I implemented custom authentication and role-based access control (RBAC) for doctors, nurses, and admin staff.',
@@ -81,6 +95,13 @@ export const portfolio = {
         details: 'Developed for academic purposes, this system streamlines administrative tasks using PHP and the Grocery CRUD library. It features a robust back-office for managing student records, course enrollments, and grades. The project emphasized rapid application development and secure database interactions.',
         tech: ['PHP', 'Grocery CRUD', 'MySQL', 'Bootstrap'],
         github: 'https://emekb-tech.free.nf',
+      },
+      {
+        title: 'Node.js Practice Server',
+        description: 'A backend development environment built to practice Node.js request routing and template rendering.',
+        details: 'A server-side rendered application practicing custom HTTP request routing, EJS templating, event logging, dynamic mock user directories, and localized JSON data storage.',
+        tech: ['Node.js', 'Express', 'EJS', 'UUID', 'Local JSON'],
+        github: 'https://github.com/tadiaemekson/NodeJs_project.git',
       },
       {
         title: 'Bootstrap Practice Project',
@@ -302,26 +323,26 @@ export const portfolio = {
       matricule: 'CT22A133',
       role: 'Étudiant en Génie Logiciel | Développeur Full-Stack Junior',
       location: 'Buea, Cameroun',
-      highlights: ['PHP', 'React', 'Node.js', 'SQL', "Projets d'équipe"],
+      highlights: ['React', 'Laravel', 'Node.js', 'SQL', 'Offline-First'],
       values: ['Interface propre', 'Backend pratique', "Bon travail d'équipe"],
       stats: {
-        projects: '3+',
-        skills: '10+',
+        projects: '6+',
+        skills: '12+',
         years: '3+',
       },
     },
     skills: [
       {
         title: 'Développement Frontend',
-        tags: ['HTML5', 'CSS3', 'JavaScript', 'React', 'Bootstrap', 'Design UI Réactif'],
+        tags: ['HTML5', 'CSS3', 'JavaScript', 'TypeScript', 'React', 'Tailwind CSS', 'Bootstrap', 'Design UI Réactif'],
       },
       {
         title: 'Développement Backend',
-        tags: ['PHP', 'Node.js', 'APIs REST', "Systèmes d'Authentification", 'Grocery CRUD'],
+        tags: ['PHP', 'Laravel', 'Node.js', 'Express', 'APIs REST', "Systèmes d'Authentification", 'Grocery CRUD'],
       },
       {
         title: 'Gestion de Bases de Données',
-        tags: ['MySQL', 'SQL', 'MongoDB', 'Conception de Schéma de Base de Données'],
+        tags: ['MySQL', 'SQL', 'MongoDB', 'IndexedDB (Dexie)', 'Conception de Schéma de Base de Données'],
       },
       {
         title: 'Outils & Technologies',
@@ -340,6 +361,20 @@ export const portfolio = {
     },
     projects: [
       {
+        title: 'PartoCare',
+        description: "Une plateforme de santé obstétricale numérique et un système d'aide à la décision pour le suivi de la maternité.",
+        details: "Développée pour réduire la mortalité maternelle et néonatale au Cameroun, cette plateforme remplace le partogramme papier traditionnel par une interface numérique réactive. Elle intègre un système d'alerte automatisé pour les anomalies de travail (dilatation stagnante, pré-éclampsie, souffrance fœtale) et un protocole de référence coordonné pour les transferts. L'application utilise une approche Offline-First avec Dexie.js (IndexedDB) pour fonctionner sans connexion internet dans les zones reculées.",
+        tech: ['React', 'Vite', 'TypeScript', 'Tailwind CSS', 'Dexie.js (IndexedDB)', 'Laravel', 'MySQL'],
+        github: 'https://github.com/tadiaemekson/PARTOCARE.git',
+      },
+      {
+        title: 'Plateforme de Restauration Gourmet',
+        description: "Une plateforme haut de gamme de commande et de réservation de tables au design cinématographique luxueux.",
+        details: "Une solution complète avec une esthétique visuelle luxueuse 'Noir & Or'. Comprend un menu dynamique filtrable connecté à MongoDB, un panier interactif animé géré par Zustand, un système sécurisé de réservation de tables, une authentification JWT et l'intégration de WebSockets pour le suivi des livraisons en temps réel.",
+        tech: ['React 19', 'Vite', 'Tailwind CSS', 'Framer Motion', 'Zustand', 'Node.js', 'Express', 'MongoDB Atlas'],
+        github: 'https://github.com/tadiaemekson/restaurant_app.git',
+      },
+      {
         title: 'Système de Gestion de Clinique',
         description: "Développement d'une application de gestion de clinique conçue pour gérer les dossiers des patients et soutenir efficacement les opérations de la clinique.",
         details: "Une solution complète pour les petites et moyennes cliniques. Construit en PHP pur, il gère l'enregistrement des patients, la prise de rendez-vous et les dossiers de santé informatisés (DSI). J'ai implémenté une authentification personnalisée et un contrôle d'accès basé sur les rôles (RBAC) pour les médecins, les infirmières et le personnel administratif.",
@@ -352,6 +387,13 @@ export const portfolio = {
         details: "Développé à des fins académiques, ce système rationalise les tâches administratives en utilisant PHP et la bibliothèque Grocery CRUD. Il dispose d'un back-office robuste pour la gestion des dossiers des étudiants, des inscriptions aux cours et des notes. Le projet a mis l'accent sur le développement rapide d'applications et les interactions sécurisées avec la base de données.",
         tech: ['PHP', 'Grocery CRUD', 'MySQL', 'Bootstrap'],
         github: 'https://emekb-tech.free.nf',
+      },
+      {
+        title: "Serveur d'Entraînement Node.js",
+        description: "Un serveur backend d'apprentissage conçu pour pratiquer le routage de requêtes et le rendu de modèles EJS.",
+        details: "Une application avec rendu côté serveur pratiquant le routage HTTP, les modèles EJS, la journalisation des événements, la gestion d'un annuaire d'utilisateurs factices et le stockage de données au format JSON local.",
+        tech: ['Node.js', 'Express', 'EJS', 'UUID', 'JSON Local'],
+        github: 'https://github.com/tadiaemekson/NodeJs_project.git',
       },
       {
         title: 'Projet de Pratique Bootstrap',
