@@ -54,7 +54,7 @@ function SmallShapes() {
 
 export default function TechScene() {
   return (
-    <div className="tech-scene-container" style={{ width: '100%', height: '400px', position: 'relative' }}>
+    <div className="tech-scene-container">
       <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
         <ambientLight intensity={0.5} />
         <directionalLight position={[10, 10, 5]} intensity={1} />
