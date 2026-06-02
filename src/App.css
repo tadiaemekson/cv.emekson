@@ -444,7 +444,7 @@ body[data-theme='light'] .btn-secondary {
 
 /* Navbar */
 .navbar {
-  position: fixed;
+  position: absolute;
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
@@ -458,18 +458,6 @@ body[data-theme='light'] .btn-secondary {
   border-radius: 24px;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 32px rgba(0, 0, 0, 0.1);
-}
-
-.navbar-scrolled {
-  top: 10px;
-  width: 85%;
-  border-color: var(--accent-border);
-  background: rgba(15, 20, 15, 0.8);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-body[data-theme='light'] .navbar-scrolled {
-  background: rgba(255, 255, 255, 0.9);
 }
 
 .navbar-inner {
@@ -575,10 +563,6 @@ body[data-theme='light'] .navbar-scrolled {
     border-inline: none;
   }
 
-  .navbar-scrolled {
-    top: 0;
-    width: 100%;
-  }
 
   .nav-toggle {
     display: flex;

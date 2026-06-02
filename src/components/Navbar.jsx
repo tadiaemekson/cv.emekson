@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
-import { FaSun, FaMoon, FaBars, FaTimes } from 'react-icons/fa'
+import { FaBars, FaTimes } from 'react-icons/fa'
 
 import logoImg from '../assets/logo.png'
 
-export default function Navbar({ theme, onToggleTheme, lang, onToggleLang, navLabels }) {
+export default function Navbar({ lang, onToggleLang, navLabels }) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -82,15 +82,6 @@ export default function Navbar({ theme, onToggleTheme, lang, onToggleLang, navLa
             }}
           >
             {lang.toUpperCase()}
-          </button>
-
-          <button
-            className="btn btn-ghost"
-            onClick={onToggleTheme}
-            aria-label="Toggle theme"
-            style={{ padding: '8px', borderRadius: '50%', width: '40px', height: '40px' }}
-          >
-            {theme === 'dark' ? <FaSun /> : <FaMoon />}
           </button>
 
           <button

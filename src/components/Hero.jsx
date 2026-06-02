@@ -1,4 +1,4 @@
-import profileImg from '../assets/profile.png'
+import profileImg from '../assets/profile.jpg'
 import { FaProjectDiagram, FaEnvelope } from 'react-icons/fa'
 
 import Button from './Button'
@@ -31,7 +31,7 @@ export default function Hero({ profile, heroContent, content, ui }) {
           <div className="hero-scene-wrapper" style={{ position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <TechScene />
             <div className="profile-overlay" style={{ marginTop: '-80px', zIndex: 10, position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <img className="profile-img" src={profileImg} alt={`${profile?.name ?? 'Student'} profile`} style={{ width: '120px', height: '120px' }} />
+              <img className="profile-img" src={profileImg} alt={`${profile?.name ?? 'Student'} profile`} style={{ width: '240px', height: '240px', objectFit: 'cover' }} />
               
               <div className="hero-stats" style={{ marginTop: '24px' }}>
                 <div className="stat">

@@ -18,18 +18,8 @@ import AIAssistant from './components/AIAssistant'
 
 import { portfolio } from './data/portfolio'
 
-const THEME_STORAGE_KEY = 'portfolio-theme'
 const LANG_STORAGE_KEY = 'portfolio-lang'
 const ADMIN_TOKEN_KEY = 'admin-token'
-
-function getInitialTheme() {
-  if (typeof window === 'undefined') return 'dark'
-
-  const saved = window.localStorage.getItem(THEME_STORAGE_KEY)
-  if (saved === 'light' || saved === 'dark') return saved
-
-  return 'dark'
-}
 
 function getInitialLang() {
   if (typeof window === 'undefined') return 'en'
@@ -44,22 +34,17 @@ function getInitialAdminToken() {
 }
 
 function App() {
-  const [theme, setTheme] = useState(getInitialTheme)
+  const theme = 'dark'
   const [lang, setLang] = useState(getInitialLang)
   const [adminToken, setAdminToken] = useState(getInitialAdminToken)
 
   useEffect(() => {
     document.body.setAttribute('data-theme', theme)
-    window.localStorage.setItem(THEME_STORAGE_KEY, theme)
   }, [theme])
 
   useEffect(() => {
     window.localStorage.setItem(LANG_STORAGE_KEY, lang)
   }, [lang])
-
-  function toggleTheme() {
-    setTheme((curr) => (curr === 'dark' ? 'light' : 'dark'))
-  }
 
   function toggleLang() {
     setLang((curr) => (curr === 'en' ? 'fr' : 'en'))
@@ -106,8 +91,6 @@ function App() {
         Skip to content
       </a>
       <Navbar 
-        theme={theme} 
-        onToggleTheme={toggleTheme} 
         lang={lang} 
         onToggleLang={toggleLang}
         navLabels={content.nav}
