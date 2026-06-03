@@ -102,6 +102,7 @@ function App() {
             heroContent={content.hero} 
             content={content}
             ui={content.ui}
+            lang={lang}
           />
         </div>
         <div className="animate-in" style={{ animationDelay: '0.2s' }}>

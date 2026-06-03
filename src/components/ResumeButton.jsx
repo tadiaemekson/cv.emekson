@@ -206,7 +206,7 @@ export default function ResumeButton({ portfolio, ui }) {
   }
 
   return (
-    <button onClick={downloadResume} className="btn btn-primary" style={{ marginTop: '12px', color: 'inherit' }}>
+    <button onClick={downloadResume} className="btn btn-glass-pill btn-resume">
       <HiOutlineDocumentDownload style={{ marginRight: '8px', fontSize: '20px' }} />
       {ui?.downloadCV ?? 'Download Resume (PDF)'}
     </button>

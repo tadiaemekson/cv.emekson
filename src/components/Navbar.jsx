@@ -62,40 +62,6 @@ export default function Navbar({ lang, onToggleLang, navLabels }) {
           <img className="brand-logo" src={logoImg} alt="EMEKSON logo" />
         </a>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <button
-            className="btn btn-ghost"
-            onClick={onToggleLang}
-            aria-label="Toggle language"
-            style={{ 
-              padding: '8px', 
-              borderRadius: '8px', 
-              fontSize: '0.875rem', 
-              fontWeight: '600',
-              border: '1px solid var(--border-color)',
-              minWidth: '40px',
-              height: '40px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'var(--text-color)'
-            }}
-          >
-            {lang.toUpperCase()}
-          </button>
-
-          <button
-            className="nav-toggle"
-            type="button"
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            aria-expanded={open}
-            aria-controls="primary-nav"
-            onClick={() => setOpen((v) => !v)}
-          >
-            {open ? <FaTimes /> : <FaBars />}
-          </button>
-        </div>
-
         <nav
           id="primary-nav"
           className={`nav-links ${open ? 'nav-links-open' : ''}`}
@@ -112,6 +78,35 @@ export default function Navbar({ lang, onToggleLang, navLabels }) {
             </a>
           ))}  
         </nav>
+
+        <div className="nav-controls-group">
+          <button
+            className="btn-lang"
+            onClick={onToggleLang}
+            aria-label="Toggle language"
+          >
+            {lang.toUpperCase()}
+          </button>
+
+          <a 
+            href="#contact" 
+            className="btn-contact-pill"
+            onClick={(e) => handleNavClick(e, 'contact')}
+          >
+            {lang === 'en' ? 'Contact Me' : 'Me contacter'}
+          </a>
+
+          <button
+            className="nav-toggle"
+            type="button"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-expanded={open}
+            aria-controls="primary-nav"
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <FaTimes /> : <FaBars />}
+          </button>
+        </div>
       </div>
     </header>
   )

@@ -173,6 +173,7 @@ export const portfolio = {
           'Worked on a project of building a website to help track workers availability to work and show different task of the company.',
           'Participated in software development and administrative tasks.'
         ],
+        certKey: 'kiama',
       },
       {
         title: 'Academic Internship',
@@ -184,6 +185,7 @@ export const portfolio = {
           'Implemented CRUD operations using the PHP programming language.',
           'Assisted in IT maintenance and network administration.'
         ],
+        certKey: 'sigeris',
       },
       {
         title: 'Family Assistance – Construction Works',
@@ -274,6 +276,7 @@ export const portfolio = {
       projectOverview: 'Project Overview',
       viewRepository: 'View Repository',
       livePreview: 'Live Preview',
+      viewCertificate: 'View Certificate',
     },
     ai: {
       name: 'EMEKSON AI',
@@ -465,6 +468,7 @@ export const portfolio = {
           'Développement d\'un site web pour aider à suivre la disponibilité des travailleurs et afficher les différentes tâches de l\'entreprise.',
           'Participation au développement de logiciels et aux tâches administratives.'
         ],
+        certKey: 'kiama',
       },
       {
         title: 'Stage Académique',
@@ -476,6 +480,7 @@ export const portfolio = {
           'Mise en œuvre d\'opérations CRUD en utilisant le langage de programmation PHP.',
           'Aide à la maintenance informatique et à l\'administration réseau.'
         ],
+        certKey: 'sigeris',
       },
       {
         title: 'Assistance Familiale – Travaux de Construction',
@@ -566,6 +571,7 @@ export const portfolio = {
       projectOverview: 'Aperçu du Projet',
       viewRepository: 'Voir le Dépôt',
       livePreview: 'Aperçu en Direct',
+      viewCertificate: "Voir l'attestation",
     },
     ai: {
       name: 'EMEKSON AI',

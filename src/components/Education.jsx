@@ -1,3 +1,9 @@
+import { useState } from 'react'
+import { FaAward } from 'react-icons/fa'
+import CertificateModal from './CertificateModal'
+import certKiama from '../assets/cert-kiama.jpg'
+import certSigeris from '../assets/cert-sigeris.jpg'
+
 export default function Education({ 
   education, 
   educationHistory, 
@@ -5,8 +11,16 @@ export default function Education({
   languages, 
   qualities, 
   interests, 
-  educationSection 
+  educationSection,
+  ui
 }) {
+  const [selectedCert, setSelectedCert] = useState(null)
+
+  const certificates = {
+    kiama: certKiama,
+    sigeris: certSigeris
+  }
+
   const internships = (experience ?? []).filter(exp => 
     exp.title.toLowerCase().includes('internship') || exp.title.toLowerCase().includes('stage')
   )
@@ -45,7 +59,36 @@ export default function Education({
                 <p className="muted" style={{ fontSize: '0.9em' }}>
                    {exp.company} | {exp.period}
                 </p>
-                <p className="muted" style={{ fontSize: '0.85em', marginTop: '4px' }}>{exp.details[0]}</p>
+                <p className="muted" style={{ fontSize: '0.85em', marginTop: '4px', marginBottom: '8px' }}>{exp.details[0]}</p>
+                {exp.certKey && (
+                  <button
+                    onClick={() => setSelectedCert({
+                      imageSrc: certificates[exp.certKey],
+                      title: exp.title,
+                      company: exp.company,
+                      period: exp.period
+                    })}
+                    className="btn-view-cert"
+                    style={{
+                      background: 'rgba(16, 185, 129, 0.1)',
+                      border: '1px solid rgba(16, 185, 129, 0.25)',
+                      color: 'var(--accent)',
+                      padding: '6px 14px',
+                      borderRadius: '999px',
+                      fontSize: '0.78rem',
+                      fontWeight: '700',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      transition: 'all 0.3s ease',
+                      marginTop: '4px'
+                    }}
+                  >
+                    <FaAward />
+                    {ui?.viewCertificate ?? 'View Certificate'}
+                  </button>
+                )}
               </div>
             ))}
           </div>
@@ -101,6 +144,16 @@ export default function Education({
           </div>
         </div>
       </div>
+
+      <CertificateModal
+        isOpen={!!selectedCert}
+        onClose={() => setSelectedCert(null)}
+        imageSrc={selectedCert?.imageSrc}
+        title={selectedCert?.title}
+        company={selectedCert?.company}
+        period={selectedCert?.period}
+        ui={ui}
+      />
     </section>
   )
 }

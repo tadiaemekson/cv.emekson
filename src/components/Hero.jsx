@@ -5,48 +5,61 @@ import Button from './Button'
 import ResumeButton from './ResumeButton'
 import TechScene from './TechScene'
 
-export default function Hero({ profile, heroContent, content, ui }) {
+export default function Hero({ profile, heroContent, content, ui, lang }) {
   return (
     <section id="home" className="section hero-section">
       <div className="hero-grid">
-        <div className="hero-copy">
-          <p className="kicker">{heroContent?.kicker ?? 'Full-Stack Developer Student'}</p>
-          <h1 className="hero-title">
-            {profile?.name ?? 'Your Name'}
-          </h1>
-          <p className="hero-subtitle">{heroContent?.tagline ?? 'Building modern web apps with React.'}</p>
-
-          <div className="hero-actions">
-            <Button href="#projects" variant="primary" ariaLabel="Jump to projects">
-              <FaProjectDiagram style={{ marginRight: '8px' }} /> {heroContent?.viewProjects ?? 'View Projects'}
-            </Button>
-            <Button href="#contact" variant="secondary" ariaLabel="Jump to contact">
-              <FaEnvelope style={{ marginRight: '8px' }} /> {heroContent?.contactMe ?? 'Contact Me'}
-            </Button>
-          </div>
-          <ResumeButton portfolio={content} ui={ui} />
-        </div>
-
+        {/* Left Column: Media (Photo & 3D elements) */}
         <div className="hero-media">
           <div className="hero-scene-wrapper" style={{ position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <TechScene />
             <div className="profile-overlay" style={{ marginTop: '-80px', zIndex: 10, position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <img className="profile-img" src={profileImg} alt={`${profile?.name ?? 'Student'} profile`} style={{ width: '240px', height: '240px', objectFit: 'cover' }} />
-              
-              <div className="hero-stats" style={{ marginTop: '24px' }}>
-                <div className="stat">
-                  <span className="stat-value">{profile?.stats?.projects ?? '3+'}</span>
-                  <span className="stat-label">{heroContent?.stats?.projects ?? 'Projects'}</span>
-                </div>
-                <div className="stat">
-                  <span className="stat-value">{profile?.stats?.skills ?? '10+'}</span>
-                  <span className="stat-label">{heroContent?.stats?.skills ?? 'Skills'}</span>
-                </div>
-                <div className="stat">
-                  <span className="stat-value">{profile?.stats?.years ?? '1+'}</span>
-                  <span className="stat-label">{heroContent?.stats?.years ?? 'Years'}</span>
-                </div>
-              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: Copy (Text, Actions, Stats) */}
+        <div className="hero-copy">
+          <div className="availability-tag">
+            <span className="dot"></span>
+            {lang === 'en' ? 'OPEN FOR WORK • BUEA, CAMEROON' : 'DISPONIBLE EN DIRECT • BUEA, CAMEROUN'}
+          </div>
+
+          <h1 className="hero-title">
+            Tadia Fonge <br />
+            <span className="gradient-text">EMEKSON</span>
+          </h1>
+
+          <p className="hero-subtitle">{profile?.role ?? heroContent?.kicker}</p>
+          <p className="hero-description">{heroContent?.tagline ?? 'Building modern full-stack web applications with React.'}</p>
+
+          <div className="hero-actions">
+            <a href="#contact" className="btn btn-gradient-pill">
+              <FaEnvelope style={{ marginRight: '8px' }} /> {heroContent?.contactMe ?? 'Contact Me'}
+            </a>
+            <a href="#projects" className="btn btn-glass-pill">
+              <FaProjectDiagram style={{ marginRight: '8px' }} /> {heroContent?.viewProjects ?? 'View Projects'}
+            </a>
+            <ResumeButton portfolio={content} ui={ui} />
+          </div>
+
+          <div className="hero-stats-grid">
+            <div className="stat-card">
+              <span className="stat-number">{profile?.stats?.years ?? '3+'}</span>
+              <span className="stat-desc">{lang === 'en' ? 'Years of study' : "Années d'études"}</span>
+            </div>
+            <div className="stat-card">
+              <span className="stat-number">{profile?.stats?.projects ?? '6+'}</span>
+              <span className="stat-desc">{lang === 'en' ? 'Projects built' : 'Projets réalisés'}</span>
+            </div>
+            <div className="stat-card">
+              <span className="stat-number">{profile?.stats?.skills ?? '12+'}</span>
+              <span className="stat-desc">{lang === 'en' ? 'Skills mastered' : 'Compétences'}</span>
+            </div>
+            <div className="stat-card">
+              <span className="stat-number">100%</span>
+              <span className="stat-desc">{lang === 'en' ? 'Commitment' : 'Engagement'}</span>
             </div>
           </div>
         </div>

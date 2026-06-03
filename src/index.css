@@ -35,8 +35,9 @@
   color: var(--text);
   background: var(--bg);
   background-image: 
-    radial-gradient(circle at 2px 2px, var(--border) 1px, transparent 0);
-  background-size: 40px 40px;
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 50px 50px;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
