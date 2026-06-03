@@ -34,7 +34,7 @@ export const portfolio = {
       highlights: ['React', 'Laravel', 'Node.js', 'SQL', 'Offline-First'],
       values: ['Clean UI', 'Practical backend', 'Good teamwork'],
       stats: {
-        projects: '6+',
+        projects: '8+',
         skills: '12+',
         years: '3+',
       },
@@ -68,6 +68,13 @@ export const portfolio = {
       details: 'Details',
     },
     projects: [
+      {
+        title: 'ExchangeCompare Africa',
+        description: 'A SaaS platform for comparing money transfer exchange rates, fees, and delivery times across Africa.',
+        details: 'Developed to help users find the most cost-effective ways to transfer money across Africa. ExchangeCompare Africa features a real-time comparison engine for exchange rates and fees across multiple providers. Built with an API-First architecture, it includes secure user and admin dashboards, custom rate alerts, and a SaaS subscription management system. The backend leverages Laravel 12 and MySQL, while the modern frontend is built with React, TypeScript, TailwindCSS, and ShadCN UI.',
+        tech: ['Laravel 12', 'React', 'TypeScript', 'Tailwind CSS', 'ShadCN UI', 'MySQL', 'API-First'],
+        github: 'https://github.com/tadiaemekson/exchangecompare-africa.git',
+      },
       {
         title: 'PartoCare',
         description: 'A digital obstetrical health platform and decision support system designed to improve maternal and neonatal health monitoring.',
@@ -336,7 +343,7 @@ export const portfolio = {
       highlights: ['React', 'Laravel', 'Node.js', 'SQL', 'Offline-First'],
       values: ['Interface propre', 'Backend pratique', "Bon travail d'équipe"],
       stats: {
-        projects: '6+',
+        projects: '8+',
         skills: '12+',
         years: '3+',
       },
@@ -370,6 +377,13 @@ export const portfolio = {
       details: 'Détails',
     },
     projects: [
+      {
+        title: 'ExchangeCompare Africa',
+        description: 'Une plateforme SaaS de comparaison de taux de change, de frais et de délais de transfert de fonds en Afrique.',
+        details: "Conçue pour aider les utilisateurs à trouver les meilleurs taux pour leurs transferts de fonds en Afrique. ExchangeCompare Africa propose un moteur de comparaison en temps réel des taux de change et des frais des différents fournisseurs. Développée avec une architecture API-First, l'application comprend un tableau de bord utilisateur, un panneau d'administration, des alertes de taux personnalisées et un système d'abonnement SaaS. Le backend est propulsé par Laravel 12 et MySQL, tandis que le frontend moderne est construit avec React, TypeScript, TailwindCSS et ShadCN UI.",
+        tech: ['Laravel 12', 'React', 'TypeScript', 'Tailwind CSS', 'ShadCN UI', 'MySQL', 'API-First'],
+        github: 'https://github.com/tadiaemekson/exchangecompare-africa.git',
+      },
       {
         title: 'PartoCare',
         description: "Une plateforme de santé obstétricale numérique et un système d'aide à la décision pour le suivi de la maternité.",
