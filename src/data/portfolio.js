@@ -70,8 +70,8 @@ export const portfolio = {
     projects: [
       {
         title: 'ExchangeCompare Africa',
-        description: 'A SaaS platform for comparing money transfer exchange rates, fees, and delivery times across Africa.',
-        details: 'Developed to help users find the most cost-effective ways to transfer money across Africa. ExchangeCompare Africa features a real-time comparison engine for exchange rates and fees across multiple providers. Built with an API-First architecture, it includes secure user and admin dashboards, custom rate alerts, and a SaaS subscription management system. The backend leverages Laravel 12 and MySQL, while the modern frontend is built with React, TypeScript, TailwindCSS, and ShadCN UI.',
+        description: 'A SaaS platform for comparing money transfer, bank, and crypto exchange rates and fees across Africa.',
+        details: 'Developed to help users find the most cost-effective ways to transfer money and convert cryptocurrencies across Africa. ExchangeCompare Africa features a real-time comparison engine for exchange rates and fees across traditional banks (Ecobank, Société Générale, UBA), fintechs (Wise, WorldRemit), and crypto exchanges (Binance, Coinbase). Built with an API-First architecture, it includes secure user/admin dashboards, custom rate alerts, category filters, and a SaaS subscription system. The backend leverages Laravel 12 and MySQL, while the modern frontend is built with React, TypeScript, TailwindCSS, and ShadCN UI.',
         tech: ['Laravel 12', 'React', 'TypeScript', 'Tailwind CSS', 'ShadCN UI', 'MySQL', 'API-First'],
         github: 'https://github.com/tadiaemekson/exchangecompare-africa.git',
       },
@@ -379,8 +379,8 @@ export const portfolio = {
     projects: [
       {
         title: 'ExchangeCompare Africa',
-        description: 'Une plateforme SaaS de comparaison de taux de change, de frais et de délais de transfert de fonds en Afrique.',
-        details: "Conçue pour aider les utilisateurs à trouver les meilleurs taux pour leurs transferts de fonds en Afrique. ExchangeCompare Africa propose un moteur de comparaison en temps réel des taux de change et des frais des différents fournisseurs. Développée avec une architecture API-First, l'application comprend un tableau de bord utilisateur, un panneau d'administration, des alertes de taux personnalisées et un système d'abonnement SaaS. Le backend est propulsé par Laravel 12 et MySQL, tandis que le frontend moderne est construit avec React, TypeScript, TailwindCSS et ShadCN UI.",
+        description: 'Une plateforme SaaS de comparaison des frais et taux de change de transferts d\'argent, de banques et de cryptomonnaies en Afrique.',
+        details: "Conçue pour aider les utilisateurs à trouver les meilleurs taux pour transférer de l'argent et convertir des cryptomonnaies en Afrique. ExchangeCompare Africa intègre un comparateur en temps réel des taux et des frais parmi les banques traditionnelles (Ecobank, Société Générale, UBA), les fintechs (Wise, WorldRemit) et les plateformes de cryptomonnaies (Binance, Coinbase). Développée avec une architecture API-First, elle comprend des tableaux de bord utilisateur/admin, des filtres de catégories par onglets, des alertes de taux personnalisées et un système d'abonnement SaaS. Le backend utilise Laravel 12/MySQL et le frontend moderne utilise React, TypeScript, TailwindCSS et ShadCN UI.",
         tech: ['Laravel 12', 'React', 'TypeScript', 'Tailwind CSS', 'ShadCN UI', 'MySQL', 'API-First'],
         github: 'https://github.com/tadiaemekson/exchangecompare-africa.git',
       },
