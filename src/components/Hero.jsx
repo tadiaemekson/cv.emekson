@@ -44,6 +44,12 @@ export default function Hero({ profile, heroContent, content, ui, lang }) {
             <ResumeButton portfolio={content} ui={ui} />
           </div>
 
+          <div style={{ marginTop: '20px', marginBottom: '10px' }}>
+            <a href="#education" className="btn-cert-cta">
+              {lang === 'en' ? 'View my certifications →' : 'Voir mes certifications →'}
+            </a>
+          </div>
+
           <div className="hero-stats-grid">
             <div className="stat-card">
               <span className="stat-number">{profile?.stats?.years ?? '3+'}</span>

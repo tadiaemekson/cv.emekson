@@ -508,11 +508,6 @@ body[data-theme='light'] .btn-secondary {
   transform: rotate(-5deg) scale(1.05);
 }
 
-/* Blending filter to make Tadia's white logo blend perfectly in dark mode */
-body[data-theme='dark'] .brand-logo {
-  filter: invert(1) contrast(1.2);
-}
-
 .nav-link {
   color: var(--text-h);
   text-decoration: none;
@@ -956,6 +951,29 @@ body[data-theme='dark'] .brand-logo {
 .btn-view-cert:active {
   transform: translateY(0);
 }
+
+.btn-cert-cta {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.05);
+  border: 1px solid rgba(16, 185, 129, 0.15);
+}
+
+.btn-cert-cta:hover {
+  background: rgba(16, 185, 129, 0.12) !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);
+  transform: translateX(3px);
+}
+
 
 @keyframes fadeIn {
   from { opacity: 0; }
