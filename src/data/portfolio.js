@@ -83,6 +83,13 @@ export const portfolio = {
         github: 'https://github.com/tadiaemekson/restaurant_app.git',
       },
       {
+        title: 'Premium Personal Portfolio',
+        description: 'A premium, responsive portfolio website demonstrating full-stack engineering, 3D graphics, and custom AI assistant integration.',
+        details: 'A full-stack personal portfolio showcasing web development skills. It features a responsive layout designed with premium glassmorphism aesthetics, a 3D animated canvas using Three.js (@react-three/fiber/drei), a custom interactive AI assistant to guide recruiters, and an Express/Node.js backend for managing inquiries securely.',
+        tech: ['React', 'Vite', 'Three.js', 'Node.js', 'Express', 'CSS Grid'],
+        github: 'https://github.com/tadiaemekson/cv.emekson.git',
+      },
+      {
         title: 'Clinic Management System',
         description: 'Developed a clinic management application designed to manage patient records and support clinic operations efficiently.',
         details: 'A comprehensive solution for small to medium-sized clinics. Built with pure PHP, it manages patient registration, appointment scheduling, and electronic health records (EHR). I implemented custom authentication and role-based access control (RBAC) for doctors, nurses, and admin staff.',
@@ -376,6 +383,13 @@ export const portfolio = {
         details: "Une solution complète avec une esthétique visuelle luxueuse 'Noir & Or'. Comprend un menu dynamique filtrable connecté à MongoDB, un panier interactif animé géré par Zustand, un système sécurisé de réservation de tables, une authentification JWT et l'intégration de WebSockets pour le suivi des livraisons en temps réel.",
         tech: ['React 19', 'Vite', 'Tailwind CSS', 'Framer Motion', 'Zustand', 'Node.js', 'Express', 'MongoDB Atlas'],
         github: 'https://github.com/tadiaemekson/restaurant_app.git',
+      },
+      {
+        title: 'Portfolio Personnel Premium',
+        description: "Un site web portfolio personnel haut de gamme démontrant l'ingénierie full-stack, des graphismes 3D et l'intégration d'un assistant IA.",
+        details: "Un site portfolio personnel full-stack mettant en valeur mes compétences. Il présente une interface réactive conçue avec une esthétique de glassmorphisme, une scène 3D animée avec Three.js, un assistant IA interactif personnalisé pour guider les visiteurs, et un backend Express/Node.js pour stocker et gérer les messages en toute sécurité.",
+        tech: ['React', 'Vite', 'Three.js', 'Node.js', 'Express', 'CSS Grid'],
+        github: 'https://github.com/tadiaemekson/cv.emekson.git',
       },
       {
         title: 'Système de Gestion de Clinique',
