@@ -7,8 +7,9 @@ This file provides instructional context for Gemini CLI when working on this por
 This is a full-stack personal portfolio application for **TADIA FONGE EMEKSON**. It consists of a React frontend and a Node.js backend.
 
 - **Frontend:** Built with React 19 and Vite 8. It uses functional components and Vanilla CSS for styling.
-- **Backend:** A Node.js Express server that handles contact form submissions.
-- **Data Persistence:** Messages from the contact form are stored in a local JSON file: `backend/data/messages.json`.
+- **Backend:** A Node.js Express server that handles contact form submissions, integrates with Supabase for persistent storage, and uses Resend for email notifications.
+- **Data Persistence:** Messages from the contact form are stored in a Supabase PostgreSQL database (with a seamless fallback to `backend/data/messages.json` if offline/unconfigured).
+- **Email Delivery:** Resend API is configured to send real-time notification emails on each form submission.
 - **Portfolio Data:** The core content of the portfolio (profile, skills, projects, education, contact info) is centralized in `src/data/portfolio.js`.
 
 ## Architecture & Integration

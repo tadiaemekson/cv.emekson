@@ -5,9 +5,17 @@ import cors from 'cors'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import dotenv from 'dotenv'
+import { Resend } from 'resend'
+import { createClient } from '@supabase/supabase-js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+
+// Load .env from root or backend directory
+dotenv.config({ path: path.join(__dirname, '..', '.env') })
+dotenv.config({ path: path.join(__dirname, '.env') })
+
 const app = express()
 const port = process.env.PORT || 5000
 
@@ -15,6 +23,17 @@ const dataDir = path.join(__dirname, 'data')
 const messagesFile = path.join(dataDir, 'messages.json')
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123'
+const CONTACT_NOTIFICATION_EMAIL = process.env.CONTACT_NOTIFICATION_EMAIL || 'tadiaemekson@gmail.com'
+const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev'
+
+// Initialize Resend
+const resendApiKey = process.env.RESEND_API_KEY
+const resend = resendApiKey ? new Resend(resendApiKey) : null
+
+// Initialize Supabase
+const supabaseUrl = process.env.SUPABASE_URL
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY
+const supabase = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey) : null
 
 app.use(cors())
 app.use(express.json())
@@ -47,23 +66,51 @@ async function ensureStorage() {
   }
 }
 
-async function readMessages() {
+async function readLocalMessages() {
   const raw = await fs.readFile(messagesFile, 'utf8')
   return JSON.parse(raw)
 }
 
-async function writeMessages(messages) {
+async function saveLocalMessage(cleanMessage) {
+  const messages = await readLocalMessages()
+  messages.unshift(cleanMessage)
   await fs.writeFile(messagesFile, JSON.stringify(messages, null, 2), 'utf8')
 }
 
 app.get('/api/health', (_req, res) => {
-  res.json({ ok: true })
+  res.json({
+    ok: true,
+    services: {
+      supabase: Boolean(supabase),
+      resend: Boolean(resend),
+    },
+  })
 })
 
 app.get('/api/messages', requireAdmin, async (_req, res) => {
   try {
-    const messages = await readMessages()
-    return res.json({ ok: true, messages })
+    if (supabase) {
+      const { data, error } = await supabase
+        .from('messages')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      if (!error && data) {
+        // Map to uniform structure
+        const formatted = data.map((item) => ({
+          id: item.id,
+          name: item.name,
+          email: item.email,
+          message: item.message,
+          createdAt: item.created_at || item.createdAt,
+        }))
+        return res.json({ ok: true, messages: formatted, source: 'supabase' })
+      }
+      console.warn('Supabase read error, falling back to local file:', error?.message)
+    }
+
+    const messages = await readLocalMessages()
+    return res.json({ ok: true, messages, source: 'local' })
   } catch (error) {
     return res.status(500).json({
       ok: false,
@@ -99,11 +146,74 @@ app.post('/api/contact', async (req, res) => {
       })
     }
 
-    const messages = await readMessages()
-    messages.unshift(cleanMessage)
-    await writeMessages(messages)
+    let savedToSupabase = false
 
-    return res.status(201).json({ ok: true })
+    // 1. Save to Supabase if configured
+    if (supabase) {
+      try {
+        const { error } = await supabase.from('messages').insert([
+          {
+            name: cleanMessage.name,
+            email: cleanMessage.email,
+            message: cleanMessage.message,
+            created_at: cleanMessage.createdAt,
+          },
+        ])
+
+        if (error) {
+          console.warn('Supabase insert failed, saving locally:', error.message)
+        } else {
+          savedToSupabase = true
+        }
+      } catch (err) {
+        console.warn('Supabase exception, saving locally:', err.message)
+      }
+    }
+
+    // Always keep local backup or fallback if Supabase is not ready
+    if (!savedToSupabase) {
+      await saveLocalMessage(cleanMessage)
+    }
+
+    // 2. Send email notification via Resend
+    let emailSent = false
+    if (resend) {
+      try {
+        const emailResult = await resend.emails.send({
+          from: `Portfolio Contact <${RESEND_FROM_EMAIL}>`,
+          to: [CONTACT_NOTIFICATION_EMAIL],
+          replyTo: cleanMessage.email,
+          subject: `[Portfolio] Nouveau message de ${cleanMessage.name}`,
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e4e4e7; borderRadius: 8px;">
+              <h2 style="color: #0f172a; border-bottom: 2px solid #10b981; padding-bottom: 8px;">Nouveau message de contact</h2>
+              <p><strong>Nom :</strong> ${cleanMessage.name}</p>
+              <p><strong>Email :</strong> <a href="mailto:${cleanMessage.email}">${cleanMessage.email}</a></p>
+              <p><strong>Date :</strong> ${new Date().toLocaleString()}</p>
+              <div style="margin-top: 16px;">
+                <strong>Message :</strong>
+                <div style="background-color: #f8fafc; border-left: 4px solid #10b981; padding: 14px; margin-top: 6px; white-space: pre-wrap; font-size: 14px; line-height: 1.6;">${cleanMessage.message}</div>
+              </div>
+              <hr style="margin-top: 24px; border: none; border-top: 1px solid #e4e4e7;" />
+              <p style="font-size: 12px; color: #64748b; text-align: center;">Ce message a été envoyé depuis le formulaire de votre portfolio.</p>
+            </div>
+          `,
+        })
+        if (emailResult && !emailResult.error) {
+          emailSent = true
+        } else {
+          console.warn('Resend email send error:', emailResult?.error)
+        }
+      } catch (err) {
+        console.warn('Resend send exception:', err.message)
+      }
+    }
+
+    return res.status(201).json({
+      ok: true,
+      savedToSupabase,
+      emailSent,
+    })
   } catch (error) {
     return res.status(500).json({
       ok: false,
@@ -117,10 +227,11 @@ ensureStorage()
   .then(() => {
     app.listen(port, () => {
       console.log(`Backend running on http://localhost:${port}`)
+      console.log(`- Supabase integration: ${supabase ? 'ACTIVE' : 'STANDBY (add SUPABASE_URL & SUPABASE_ANON_KEY to .env)'}`)
+      console.log(`- Resend email notifications: ${resend ? 'ACTIVE' : 'DISABLED'}`)
     })
   })
   .catch((error) => {
     console.error('Backend startup failed:', error)
     process.exit(1)
   })
-
