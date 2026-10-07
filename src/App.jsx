@@ -10,16 +10,17 @@ import Projects from './components/Projects'
 import Education from './components/Education'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
-import AdminMessages from './components/AdminMessages'
+import AdminDashboard from './components/AdminDashboard'
 import AdminLogin from './components/AdminLogin'
 import CustomCursor from './components/CustomCursor'
 import ScrollProgress from './components/ScrollProgress'
 import AIAssistant from './components/AIAssistant'
 
-import { portfolio } from './data/portfolio'
+import { portfolio as defaultPortfolio } from './data/portfolio'
 
 const LANG_STORAGE_KEY = 'portfolio-lang'
 const ADMIN_TOKEN_KEY = 'admin-token'
+const PORTFOLIO_CUSTOM_KEY = 'portfolio-custom-data'
 
 function getInitialLang() {
   if (typeof window === 'undefined') return 'en'
@@ -33,10 +34,25 @@ function getInitialAdminToken() {
   return window.localStorage.getItem(ADMIN_TOKEN_KEY)
 }
 
+function getInitialPortfolio() {
+  if (typeof window === 'undefined') return defaultPortfolio
+  try {
+    const saved = window.localStorage.getItem(PORTFOLIO_CUSTOM_KEY)
+    if (saved) {
+      const parsed = JSON.parse(saved)
+      if (parsed?.en && parsed?.fr) return parsed
+    }
+  } catch {
+    // fallback
+  }
+  return defaultPortfolio
+}
+
 function App() {
   const theme = 'dark'
   const [lang, setLang] = useState(getInitialLang)
   const [adminToken, setAdminToken] = useState(getInitialAdminToken)
+  const [portfolioData, setPortfolioData] = useState(getInitialPortfolio)
 
   useEffect(() => {
     document.body.setAttribute('data-theme', theme)
@@ -45,6 +61,21 @@ function App() {
   useEffect(() => {
     window.localStorage.setItem(LANG_STORAGE_KEY, lang)
   }, [lang])
+
+  // Fetch live portfolio data from backend/Supabase on load
+  useEffect(() => {
+    fetch('/api/portfolio')
+      .then(res => res.json())
+      .then(data => {
+        if (data?.portfolio?.en && data?.portfolio?.fr) {
+          setPortfolioData(data.portfolio)
+          window.localStorage.setItem(PORTFOLIO_CUSTOM_KEY, JSON.stringify(data.portfolio))
+        }
+      })
+      .catch(() => {
+        // use default/local cache
+      })
+  }, [])
 
   function toggleLang() {
     setLang((curr) => (curr === 'en' ? 'fr' : 'en'))
@@ -55,9 +86,19 @@ function App() {
     window.localStorage.setItem(ADMIN_TOKEN_KEY, token)
   }
 
+  function handleAdminLogout() {
+    setAdminToken(null)
+    window.localStorage.removeItem(ADMIN_TOKEN_KEY)
+  }
+
+  function handlePortfolioUpdate(newData) {
+    setPortfolioData(newData)
+    window.localStorage.setItem(PORTFOLIO_CUSTOM_KEY, JSON.stringify(newData))
+  }
+
   const isAdminPage = typeof window !== 'undefined' && window.location.pathname === '/admin'
 
-  const content = portfolio[lang]
+  const content = portfolioData[lang] || defaultPortfolio[lang]
 
   if (isAdminPage) {
     return (
@@ -68,7 +109,12 @@ function App() {
         </a>
         <main id="main-content" className="main-content admin-main" tabIndex={-1}>
           {adminToken ? (
-            <AdminMessages token={adminToken} />
+            <AdminDashboard
+              token={adminToken}
+              onLogout={handleAdminLogout}
+              initialPortfolio={portfolioData}
+              onPortfolioUpdate={handlePortfolioUpdate}
+            />
           ) : (
             <AdminLogin onLogin={handleAdminLogin} />
           )}

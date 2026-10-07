@@ -21,6 +21,7 @@ const port = process.env.PORT || 5000
 
 const dataDir = path.join(__dirname, 'data')
 const messagesFile = path.join(dataDir, 'messages.json')
+const portfolioFile = path.join(dataDir, 'portfolio.json')
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123'
 const CONTACT_NOTIFICATION_EMAIL = process.env.CONTACT_NOTIFICATION_EMAIL || 'tadiaemekson@gmail.com'
@@ -36,7 +37,7 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABAS
 const supabase = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey) : null
 
 app.use(cors())
-app.use(express.json())
+app.use(express.json({ limit: '10mb' }))
 
 // Simple middleware to check admin secret
 const requireAdmin = (req, res, next) => {
@@ -67,14 +68,31 @@ async function ensureStorage() {
 }
 
 async function readLocalMessages() {
-  const raw = await fs.readFile(messagesFile, 'utf8')
-  return JSON.parse(raw)
+  try {
+    const raw = await fs.readFile(messagesFile, 'utf8')
+    return JSON.parse(raw)
+  } catch {
+    return []
+  }
 }
 
 async function saveLocalMessage(cleanMessage) {
   const messages = await readLocalMessages()
   messages.unshift(cleanMessage)
   await fs.writeFile(messagesFile, JSON.stringify(messages, null, 2), 'utf8')
+}
+
+async function readLocalPortfolio() {
+  try {
+    const raw = await fs.readFile(portfolioFile, 'utf8')
+    return JSON.parse(raw)
+  } catch {
+    return null
+  }
+}
+
+async function saveLocalPortfolio(data) {
+  await fs.writeFile(portfolioFile, JSON.stringify(data, null, 2), 'utf8')
 }
 
 app.get('/api/health', (_req, res) => {
@@ -87,6 +105,78 @@ app.get('/api/health', (_req, res) => {
   })
 })
 
+// === PORTFOLIO CONTENT APIS ===
+app.get('/api/portfolio', async (_req, res) => {
+  try {
+    if (supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('portfolio_settings')
+          .select('content')
+          .eq('key', 'main_portfolio')
+          .single()
+
+        if (!error && data?.content) {
+          return res.json({ ok: true, portfolio: data.content, source: 'supabase' })
+        }
+      } catch (err) {
+        console.warn('Supabase portfolio read exception:', err.message)
+      }
+    }
+
+    const localData = await readLocalPortfolio()
+    if (localData) {
+      return res.json({ ok: true, portfolio: localData, source: 'local' })
+    }
+
+    return res.json({ ok: true, portfolio: null, source: 'default' })
+  } catch (error) {
+    return res.status(500).json({ ok: false, error: error.message })
+  }
+})
+
+app.post('/api/portfolio', requireAdmin, async (req, res) => {
+  try {
+    const { portfolio } = req.body ?? {}
+    if (!portfolio || typeof portfolio !== 'object') {
+      return res.status(400).json({ ok: false, error: 'Invalid portfolio data payload' })
+    }
+
+    let savedToSupabase = false
+    if (supabase) {
+      try {
+        const { error } = await supabase
+          .from('portfolio_settings')
+          .upsert({
+            key: 'main_portfolio',
+            content: portfolio,
+            updated_at: new Date().toISOString()
+          }, { onConflict: 'key' })
+
+        if (!error) {
+          savedToSupabase = true
+        } else {
+          console.warn('Supabase portfolio upsert warning:', error.message)
+        }
+      } catch (err) {
+        console.warn('Supabase portfolio upsert exception:', err.message)
+      }
+    }
+
+    await saveLocalPortfolio(portfolio)
+
+    return res.json({
+      ok: true,
+      savedToSupabase,
+      savedToLocal: true,
+      message: 'Portfolio content updated successfully!'
+    })
+  } catch (error) {
+    return res.status(500).json({ ok: false, error: error.message })
+  }
+})
+
+// === MESSAGES APIS ===
 app.get('/api/messages', requireAdmin, async (_req, res) => {
   try {
     if (supabase) {
@@ -96,7 +186,6 @@ app.get('/api/messages', requireAdmin, async (_req, res) => {
         .order('created_at', { ascending: false })
 
       if (!error && data) {
-        // Map to uniform structure
         const formatted = data.map((item) => ({
           id: item.id,
           name: item.name,
@@ -117,6 +206,29 @@ app.get('/api/messages', requireAdmin, async (_req, res) => {
       error: 'Failed to read messages.',
       detail: error instanceof Error ? error.message : 'Unknown error',
     })
+  }
+})
+
+app.post('/api/messages/delete', requireAdmin, async (req, res) => {
+  try {
+    const { id } = req.body ?? {}
+    if (!id) return res.status(400).json({ ok: false, error: 'Message ID required' })
+
+    if (supabase) {
+      try {
+        await supabase.from('messages').delete().eq('id', id)
+      } catch (err) {
+        console.warn('Supabase delete error:', err.message)
+      }
+    }
+
+    const messages = await readLocalMessages()
+    const filtered = messages.filter(m => String(m.id) !== String(id))
+    await fs.writeFile(messagesFile, JSON.stringify(filtered, null, 2), 'utf8')
+
+    return res.json({ ok: true, message: 'Message deleted successfully' })
+  } catch (error) {
+    return res.status(500).json({ ok: false, error: error.message })
   }
 })
 
@@ -160,17 +272,16 @@ app.post('/api/contact', async (req, res) => {
           },
         ])
 
-        if (error) {
-          console.warn('Supabase insert failed, saving locally:', error.message)
-        } else {
+        if (!error) {
           savedToSupabase = true
+        } else {
+          console.warn('Supabase insert failed, saving locally:', error.message)
         }
       } catch (err) {
         console.warn('Supabase exception, saving locally:', err.message)
       }
     }
 
-    // Always keep local backup or fallback if Supabase is not ready
     if (!savedToSupabase) {
       await saveLocalMessage(cleanMessage)
     }
@@ -185,7 +296,7 @@ app.post('/api/contact', async (req, res) => {
           replyTo: cleanMessage.email,
           subject: `[Portfolio] Nouveau message de ${cleanMessage.name}`,
           html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e4e4e7; borderRadius: 8px;">
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e4e4e7; border-radius: 8px;">
               <h2 style="color: #0f172a; border-bottom: 2px solid #10b981; padding-bottom: 8px;">Nouveau message de contact</h2>
               <p><strong>Nom :</strong> ${cleanMessage.name}</p>
               <p><strong>Email :</strong> <a href="mailto:${cleanMessage.email}">${cleanMessage.email}</a></p>
@@ -227,7 +338,7 @@ ensureStorage()
   .then(() => {
     app.listen(port, () => {
       console.log(`Backend running on http://localhost:${port}`)
-      console.log(`- Supabase integration: ${supabase ? 'ACTIVE' : 'STANDBY (add SUPABASE_URL & SUPABASE_ANON_KEY to .env)'}`)
+      console.log(`- Supabase integration: ${supabase ? 'ACTIVE' : 'STANDBY'}`)
       console.log(`- Resend email notifications: ${resend ? 'ACTIVE' : 'DISABLED'}`)
     })
   })

@@ -20,7 +20,7 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABAS
 const supabase = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey) : null
 
 app.use(cors())
-app.use(express.json())
+app.use(express.json({ limit: '10mb' }))
 
 // Simple middleware to check admin secret
 const requireAdmin = (req, res, next) => {
@@ -52,6 +52,70 @@ app.get('/api/health', (_req, res) => {
   })
 })
 
+// === PORTFOLIO CONTENT APIS (Vercel Serverless) ===
+app.get('/api/portfolio', async (_req, res) => {
+  try {
+    if (supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('portfolio_settings')
+          .select('content')
+          .eq('key', 'main_portfolio')
+          .single()
+
+        if (!error && data?.content) {
+          return res.json({ ok: true, portfolio: data.content, source: 'supabase' })
+        }
+      } catch (err) {
+        console.warn('Supabase portfolio read exception:', err.message)
+      }
+    }
+
+    return res.json({ ok: true, portfolio: null, source: 'default' })
+  } catch (error) {
+    return res.status(500).json({ ok: false, error: error.message })
+  }
+})
+
+app.post('/api/portfolio', requireAdmin, async (req, res) => {
+  try {
+    const { portfolio } = req.body ?? {}
+    if (!portfolio || typeof portfolio !== 'object') {
+      return res.status(400).json({ ok: false, error: 'Invalid portfolio data payload' })
+    }
+
+    let savedToSupabase = false
+    if (supabase) {
+      try {
+        const { error } = await supabase
+          .from('portfolio_settings')
+          .upsert({
+            key: 'main_portfolio',
+            content: portfolio,
+            updated_at: new Date().toISOString()
+          }, { onConflict: 'key' })
+
+        if (!error) {
+          savedToSupabase = true
+        } else {
+          console.warn('Supabase portfolio upsert warning on Vercel:', error.message)
+        }
+      } catch (err) {
+        console.warn('Supabase portfolio upsert exception on Vercel:', err.message)
+      }
+    }
+
+    return res.json({
+      ok: true,
+      savedToSupabase,
+      message: 'Portfolio content updated successfully on Vercel!'
+    })
+  } catch (error) {
+    return res.status(500).json({ ok: false, error: error.message })
+  }
+})
+
+// === MESSAGES APIS ===
 app.get('/api/messages', requireAdmin, async (_req, res) => {
   try {
     if (supabase) {
@@ -80,6 +144,25 @@ app.get('/api/messages', requireAdmin, async (_req, res) => {
       error: 'Failed to read messages.',
       detail: error instanceof Error ? error.message : 'Unknown error',
     })
+  }
+})
+
+app.post('/api/messages/delete', requireAdmin, async (req, res) => {
+  try {
+    const { id } = req.body ?? {}
+    if (!id) return res.status(400).json({ ok: false, error: 'Message ID required' })
+
+    if (supabase) {
+      try {
+        await supabase.from('messages').delete().eq('id', id)
+      } catch (err) {
+        console.warn('Supabase delete error:', err.message)
+      }
+    }
+
+    return res.json({ ok: true, message: 'Message deleted successfully' })
+  } catch (error) {
+    return res.status(500).json({ ok: false, error: error.message })
   }
 })
 
