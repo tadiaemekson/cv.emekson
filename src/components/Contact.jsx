@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react'
-import { FaGithub, FaLinkedin, FaFacebook, FaWhatsapp, FaEnvelope, FaPhoneAlt, FaUser } from 'react-icons/fa'
+import { useState } from 'react'
+import { FaGithub, FaLinkedin, FaFacebook, FaWhatsapp, FaEnvelope, FaPhoneAlt, FaCheck, FaCopy, FaUser } from 'react-icons/fa'
 import { IoSend } from 'react-icons/io5'
 
 export default function Contact({ contact, contactSection }) {
@@ -8,14 +8,16 @@ export default function Contact({ contact, contactSection }) {
   const [message, setMessage] = useState('')
   const [status, setStatus] = useState('idle')
   const [feedback, setFeedback] = useState('')
+  const [copiedField, setCopiedField] = useState(null)
 
-  const emailTo = contact?.email ?? 'your@email.com'
-  const phones = contact?.phones ?? []
+  const emailTo = contact?.email ?? 'tadiaemekson@gmail.com'
+  const phones = contact?.phones ?? ['+237 671-550-845', '+237 687-321-447']
 
-  const subject = useMemo(() => {
-    const from = name ? `From: ${name}` : 'New message'
-    return `${from} - Portfolio Contact`
-  }, [name])
+  const handleCopy = (text, fieldName) => {
+    navigator.clipboard.writeText(text)
+    setCopiedField(fieldName)
+    setTimeout(() => setCopiedField(null), 2500)
+  }
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -27,7 +29,7 @@ export default function Contact({ contact, contactSection }) {
 
     if (!payload.name || !payload.email || !payload.message) {
       setStatus('error')
-      setFeedback(contact?.form?.error || 'Please fill in name, email, and message.')
+      setFeedback(contact?.form?.error || 'Please fill in your name, email, and message.')
       return
     }
 
@@ -45,19 +47,18 @@ export default function Contact({ contact, contactSection }) {
           throw new Error(data?.error || contact?.form?.error || 'Failed to send message.')
         }
         setStatus('success')
-        setFeedback(contact?.form?.success || 'Message sent successfully. Thank you!')
+        setFeedback(contact?.form?.success || 'Your message has been sent successfully. Thank you!')
         setName('')
         setEmail('')
         setMessage('')
       })
       .catch(() => {
         const body = `Name: ${payload.name}\nEmail: ${payload.email}\n\nMessage:\n${payload.message}`
-        const href = `mailto:${encodeURIComponent(emailTo)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-          body,
-        )}`
+        const href = `mailto:${encodeURIComponent(emailTo)}?subject=${encodeURIComponent(
+          `Portfolio Contact from ${payload.name}`,
+        )}&body=${encodeURIComponent(body)}`
         setStatus('error')
-        // Fallback message could also be translated
-        setFeedback('Backend unavailable, opening your email app instead.')
+        setFeedback('Server temporarily busy, opening your default email app...')
         window.location.href = href
       })
   }
@@ -65,133 +66,184 @@ export default function Contact({ contact, contactSection }) {
   return (
     <section id="contact" className="section contact-section">
       <div className="section-head">
-        <p className="kicker">{contactSection?.kicker ?? 'Contact'}</p>
-        <h2 className="section-title">{contactSection?.title ?? "Let's build something together"}</h2>
+        <p className="kicker">{contactSection?.kicker ?? 'Get in Touch'}</p>
+        <h2 className="section-title">{contactSection?.title ?? "Let's Build Something Exceptional Together"}</h2>
+        <p className="section-subtitle">
+          Have an exciting project, internship opportunity, or question? Send a message or reach out directly.
+        </p>
       </div>
 
-      <div className="contact-grid">
+      <div className="contact-grid-modern">
+        {/* Left Column: Direct Contact Cards & Socials */}
         <div className="card">
-          <h3 className="card-title">{contactSection?.labels?.details ?? 'Contact details'}</h3>
-          <div className="contact-details">
-            <p className="muted">
-              <FaUser style={{ marginRight: '8px', color: 'var(--accent)' }} />
-              <strong>{contactSection?.labels?.fullName ?? 'Name'}:</strong> {contact?.fullName ?? 'Your Name'}
-            </p>
-            {phones.map((phone) => (
-              <p key={phone} className="muted">
-                <FaPhoneAlt style={{ marginRight: '8px', color: 'var(--accent)' }} />
-                <strong>{contactSection?.labels?.phone ?? 'Phone'}:</strong>{' '}
-                <a className="text-link" href={`tel:${phone.replace(/-/g, '')}`}>
-                  {phone}
+          <h3 className="card-title" style={{ marginBottom: '18px', fontSize: '18px' }}>
+            {contactSection?.labels?.details ?? 'Direct Contact'}
+          </h3>
+
+          {/* Email Quick Card with Copy */}
+          <div className="quick-contact-card">
+            <div className="quick-contact-info">
+              <FaEnvelope className="quick-contact-icon" />
+              <div>
+                <p className="quick-contact-label">Email</p>
+                <a href={`mailto:${emailTo}`} className="quick-contact-val text-link" style={{ color: 'var(--text-h)' }}>
+                  {emailTo}
                 </a>
-              </p>
-            ))}
-            <p className="muted">
-              <FaEnvelope style={{ marginRight: '8px', color: 'var(--accent)' }} />
-              <strong>{contactSection?.labels?.email ?? 'Email'}:</strong>{' '}
-              <a className="text-link" href={`mailto:${emailTo}`}>
-                {emailTo}
-              </a>
-            </p>
+              </div>
+            </div>
+            <button 
+              className="btn-copy-action"
+              onClick={() => handleCopy(emailTo, 'email')}
+              title="Copy Email"
+            >
+              {copiedField === 'email' ? <><FaCheck /> Copied</> : <><FaCopy /> Copy</>}
+            </button>
           </div>
 
-          <h3 className="card-title" style={{ marginTop: 24 }}>{contactSection?.labels?.social ?? 'Social links'}</h3>
-          <div className="contact-links">
+          {/* Phone Quick Cards with Copy */}
+          {phones.map((phone, idx) => (
+            <div key={phone} className="quick-contact-card">
+              <div className="quick-contact-info">
+                <FaPhoneAlt className="quick-contact-icon" />
+                <div>
+                  <p className="quick-contact-label">Phone {idx + 1}</p>
+                  <a href={`tel:${phone.replace(/\s+/g, '')}`} className="quick-contact-val text-link" style={{ color: 'var(--text-h)' }}>
+                    {phone}
+                  </a>
+                </div>
+              </div>
+              <button 
+                className="btn-copy-action"
+                onClick={() => handleCopy(phone, `phone-${idx}`)}
+                title="Copy Phone"
+              >
+                {copiedField === `phone-${idx}` ? <><FaCheck /> Copied</> : <><FaCopy /> Copy</>}
+              </button>
+            </div>
+          ))}
+
+          <h3 className="card-title" style={{ marginTop: '28px', marginBottom: '14px', fontSize: '16px' }}>
+            {contactSection?.labels?.social ?? 'Social Ecosystem'}
+          </h3>
+          <div className="social-pill-row">
             {contact?.github && (
-              <a className="social-icon-link" href={contact.github} target="_blank" rel="noreferrer" aria-label="GitHub">
-                <FaGithub className="social-icon-svg" />
+              <a className="social-pill" href={contact.github} target="_blank" rel="noreferrer" aria-label="GitHub" title="GitHub">
+                <FaGithub />
               </a>
             )}
             {contact?.linkedin && (
-              <a
-                className="social-icon-link"
-                href={contact.linkedin}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="LinkedIn"
-              >
-                <FaLinkedin className="social-icon-svg" />
-              </a>
-            )}
-            {contact?.facebook && (
-              <a
-                className="social-icon-link"
-                href={contact.facebook}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Facebook"
-              >
-                <FaFacebook className="social-icon-svg" />
+              <a className="social-pill" href={contact.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" title="LinkedIn">
+                <FaLinkedin />
               </a>
             )}
             {contact?.whatsapp && (
-              <a
-                className="social-icon-link"
-                href={contact.whatsapp}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="WhatsApp"
-              >
-                <FaWhatsapp className="social-icon-svg" />
+              <a className="social-pill" href={contact.whatsapp} target="_blank" rel="noreferrer" aria-label="WhatsApp" title="WhatsApp">
+                <FaWhatsapp />
               </a>
             )}
-            <a className="social-icon-link" href={`mailto:${emailTo}`} aria-label="Email">
-              <FaEnvelope className="social-icon-svg" />
+            {contact?.facebook && (
+              <a className="social-pill" href={contact.facebook} target="_blank" rel="noreferrer" aria-label="Facebook" title="Facebook">
+                <FaFacebook />
+              </a>
+            )}
+            <a className="social-pill" href={`mailto:${emailTo}`} aria-label="Email" title="Direct Email">
+              <FaEnvelope />
             </a>
           </div>
         </div>
 
-        <form className="card contact-form" onSubmit={handleSubmit}>
-          <h3 className="card-title">{contact?.form?.send ?? 'Send a message'}</h3>
+        {/* Right Column: Contact Form */}
+        <form className="card contact-form-modern" onSubmit={handleSubmit}>
+          <h3 className="card-title" style={{ marginBottom: '8px', fontSize: '20px' }}>
+            {contact?.form?.send ?? 'Send a Message'}
+          </h3>
+          <p className="muted" style={{ fontSize: '14px', marginBottom: '16px' }}>
+            I typically respond within 24 hours.
+          </p>
 
-          <label className="field">
-            <span className="field-label">{contact?.form?.name ?? 'Your name'}</span>
+          <div className="form-group">
+            <label className="form-label" htmlFor="contact-name">
+              {contact?.form?.name ?? 'Your Name'}
+            </label>
             <input
-              className="input"
+              id="contact-name"
+              className="modern-input"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="..."
+              placeholder="e.g. Alex Johnson"
               autoComplete="name"
+              required
             />
-          </label>
+          </div>
 
-          <label className="field">
-            <span className="field-label">{contact?.form?.email ?? 'Your email'}</span>
+          <div className="form-group">
+            <label className="form-label" htmlFor="contact-email">
+              {contact?.form?.email ?? 'Your Email'}
+            </label>
             <input
-              className="input"
+              id="contact-email"
+              type="email"
+              className="modern-input"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="..."
+              placeholder="e.g. alex@company.com"
               autoComplete="email"
-              type="email"
+              required
             />
-          </label>
+          </div>
 
-          <label className="field">
-            <span className="field-label">{contact?.form?.message ?? 'Message'}</span>
+          <div className="form-group">
+            <label className="form-label" htmlFor="contact-message">
+              {contact?.form?.message ?? 'Your Message'}
+            </label>
             <textarea
-              className="textarea"
+              id="contact-message"
+              className="modern-textarea"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="..."
+              placeholder="Tell me about your project, goals, or inquiry..."
               rows={5}
+              required
             />
-          </label>
+          </div>
 
           <button
-            className="btn btn-primary contact-submit"
+            className="btn btn-primary"
             type="submit"
             disabled={status === 'loading'}
+            style={{ width: '100%', marginTop: '6px', borderRadius: '12px', padding: '14px' }}
           >
-            {status === 'loading' ? (contact?.form?.sending ?? 'Sending...') : <><IoSend style={{ marginRight: '8px' }} /> {contact?.form?.send ?? 'Send message'}</>}
+            {status === 'loading' ? (
+              contact?.form?.sending ?? 'Sending Message...'
+            ) : (
+              <>
+                <IoSend style={{ marginRight: '6px' }} />
+                {contact?.form?.send ?? 'Send Message'}
+              </>
+            )}
           </button>
-          <p
-            className={`contact-note ${status === 'error' ? 'contact-note-error' : ''} ${status === 'success' ? 'contact-note-success' : ''}`}
-            role="status"
-            aria-live="polite"
-          >
-            {feedback}
-          </p>
+
+          {feedback && (
+            <p
+              className={`contact-note ${status === 'error' ? 'contact-note-error' : ''} ${
+                status === 'success' ? 'contact-note-success' : ''
+              }`}
+              style={{
+                padding: '12px 16px',
+                borderRadius: '12px',
+                background: status === 'error' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)',
+                border: `1px solid ${status === 'error' ? 'rgba(239, 68, 68, 0.3)' : 'rgba(16, 185, 129, 0.3)'}`,
+                color: status === 'error' ? '#f87171' : 'var(--accent)',
+                fontWeight: '600',
+                fontSize: '14px',
+                marginTop: '8px'
+              }}
+              role="status"
+              aria-live="polite"
+            >
+              {feedback}
+            </p>
+          )}
         </form>
       </div>
     </section>

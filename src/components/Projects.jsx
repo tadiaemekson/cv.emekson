@@ -1,13 +1,23 @@
 import { useEffect, useState } from 'react'
-import { FaGithub, FaInfoCircle, FaStar, FaCodeBranch } from 'react-icons/fa'
+import { FaGithub, FaExternalLinkAlt, FaStar, FaCodeBranch, FaLayerGroup, FaRocket, FaHeartbeat, FaCode } from 'react-icons/fa'
+import { SiLaravel, SiReact, SiNodedotjs, SiPhp } from 'react-icons/si'
 import ProjectModal from './ProjectModal'
+
+const projectHeaderIcons = {
+  'ExchangeCompare Africa': <SiLaravel />,
+  'PartoCare': <FaHeartbeat />,
+  'Gourmet Restaurant Platform': <SiReact />,
+  'Premium Personal Portfolio': <FaRocket />,
+  'Clinic Management System': <SiPhp />,
+  'B-TECH Academic Project': <FaCode />,
+  'Node.js Practice Server': <SiNodedotjs />,
+}
 
 function ProjectCard({ project, onClick, projectsSection }) {
   const [stats, setStats] = useState(null)
 
   useEffect(() => {
-    if (project.github) {
-      // Extract owner and repo from github URL
+    if (project.github && project.github.includes('github.com')) {
       const match = project.github.match(/github\.com\/([^/]+)\/([^/.]+)/)
       if (match) {
         const [, owner, repo] = match
@@ -18,7 +28,6 @@ function ProjectCard({ project, onClick, projectsSection }) {
               setStats({
                 stars: data.stargazers_count,
                 forks: data.forks_count,
-                language: data.language,
               })
             }
           })
@@ -27,52 +36,63 @@ function ProjectCard({ project, onClick, projectsSection }) {
     }
   }, [project.github])
 
+  const icon = projectHeaderIcons[project.title] || <FaRocket />
+
   return (
-    <article className="card project-card" onClick={onClick} style={{ cursor: 'pointer' }}>
-      <div className="project-top">
-        <div>
-          <h3 className="card-title project-title">{project.title}</h3>
-          <p className="muted" style={{ fontSize: '14px', marginBottom: '12px' }}>{project.description}</p>
+    <article className="card project-card-modern" onClick={onClick}>
+      <div className="project-card-banner">
+        <div className="project-badge-icon">
+          {icon}
         </div>
-      </div>
-
-      {stats && (
-        <div className="project-stats" style={{ display: 'flex', gap: '12px', marginBottom: '12px', fontSize: '12px', fontWeight: '700', color: 'var(--accent)' }}>
-          {stats.stars > 0 && (
-            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <FaStar /> {stats.stars}
-            </span>
-          )}
-          {stats.forks > 0 && (
-            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <FaCodeBranch /> {stats.forks}
-            </span>
-          )}
-          {stats.language && (
-            <span style={{ opacity: 0.7 }}>
-              {stats.language}
-            </span>
-          )}
-        </div>
-      )}
-
-      <div className="tag-row" aria-label={`${project.title} tech tags`}>
-        {(project.tech ?? []).slice(0, 8).map((t) => (
-          <span key={t} className="tag">
-            {t}
-          </span>
-        ))}
-      </div>
-
-      <div className="project-links" onClick={e => e.stopPropagation()}>
-        {project.github && (
-          <a className="text-link" href={project.github} target="_blank" rel="noreferrer" style={{ fontSize: '14px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-            <FaGithub /> {projectsSection?.source ?? 'Source'}
-          </a>
+        {stats && (stats.stars > 0 || stats.forks > 0) && (
+          <div style={{ display: 'flex', gap: '10px', fontSize: '12px', fontWeight: '700', color: 'var(--accent)' }}>
+            {stats.stars > 0 && (
+              <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <FaStar /> {stats.stars}
+              </span>
+            )}
+            {stats.forks > 0 && (
+              <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <FaCodeBranch /> {stats.forks}
+              </span>
+            )}
+          </div>
         )}
-        <button className="text-link" onClick={onClick} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontSize: '14px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-          <FaInfoCircle /> {projectsSection?.details ?? 'Details'}
-        </button>
+      </div>
+
+      <div className="project-card-body">
+        <h3 className="project-card-title">{project.title}</h3>
+        <p className="project-card-desc">{project.description}</p>
+
+        <div className="project-tag-row">
+          {(project.tech ?? []).slice(0, 5).map((t) => (
+            <span key={t} className="tag-pill">
+              {t}
+            </span>
+          ))}
+          {(project.tech ?? []).length > 5 && (
+            <span className="tag-pill" style={{ color: 'var(--accent)' }}>
+              +{project.tech.length - 5}
+            </span>
+          )}
+        </div>
+
+        <div className="project-card-footer" onClick={(e) => e.stopPropagation()}>
+          <button className="project-btn-details" onClick={onClick}>
+            {projectsSection?.details ?? 'Explore Details'} →
+          </button>
+          {project.github && (
+            <a 
+              className="project-btn-github" 
+              href={project.github} 
+              target="_blank" 
+              rel="noreferrer"
+              title="GitHub Repository"
+            >
+              <FaGithub /> {projectsSection?.source ?? 'Code'}
+            </a>
+          )}
+        </div>
       </div>
     </article>
   )
@@ -80,16 +100,67 @@ function ProjectCard({ project, onClick, projectsSection }) {
 
 export default function Projects({ projects, projectsSection, ui }) {
   const [selectedProject, setSelectedProject] = useState(null)
+  const [activeFilter, setActiveFilter] = useState('all')
+
+  const filteredProjects = (projects ?? []).filter((p) => {
+    if (activeFilter === 'all') return true
+    const title = p.title.toLowerCase()
+    const desc = (p.description + (p.details || '')).toLowerCase()
+    const tech = (p.tech || []).join(' ').toLowerCase()
+
+    if (activeFilter === 'saas') {
+      return title.includes('exchange') || title.includes('restaurant') || desc.includes('saas')
+    }
+    if (activeFilter === 'health') {
+      return title.includes('partocare') || title.includes('clinic') || desc.includes('health')
+    }
+    if (activeFilter === 'fullstack') {
+      return tech.includes('react') || tech.includes('laravel') || tech.includes('node')
+    }
+    return true
+  })
 
   return (
     <section id="projects" className="section">
       <div className="section-head">
-        <p className="kicker">{projectsSection?.kicker ?? 'Projects'}</p>
-        <h2 className="section-title">{projectsSection?.title ?? "Things I've built (and learned from)"}</h2>
+        <p className="kicker">{projectsSection?.kicker ?? 'Featured Projects'}</p>
+        <h2 className="section-title">{projectsSection?.title ?? "Featured Work & Engineering Projects"}</h2>
+        <p className="section-subtitle">
+          Real-world applications spanning SaaS financial tools, offline-first digital healthcare, and full-stack web platforms.
+        </p>
       </div>
 
-      <div className="project-grid">
-        {(projects ?? []).map((p) => (
+      {/* Filter Tabs */}
+      <div className="filter-tabs-wrapper">
+        <button 
+          className={`filter-tab ${activeFilter === 'all' ? 'active' : ''}`}
+          onClick={() => setActiveFilter('all')}
+        >
+          <FaLayerGroup /> All Projects ({(projects ?? []).length})
+        </button>
+        <button 
+          className={`filter-tab ${activeFilter === 'saas' ? 'active' : ''}`}
+          onClick={() => setActiveFilter('saas')}
+        >
+          <FaRocket /> SaaS & Fintech
+        </button>
+        <button 
+          className={`filter-tab ${activeFilter === 'health' ? 'active' : ''}`}
+          onClick={() => setActiveFilter('health')}
+        >
+          <FaHeartbeat /> HealthTech & Systems
+        </button>
+        <button 
+          className={`filter-tab ${activeFilter === 'fullstack' ? 'active' : ''}`}
+          onClick={() => setActiveFilter('fullstack')}
+        >
+          <FaCode /> Full-Stack Stack
+        </button>
+      </div>
+
+      {/* Projects Grid */}
+      <div className="projects-grid-modern">
+        {filteredProjects.map((p) => (
           <ProjectCard 
             key={p.title} 
             project={p} 

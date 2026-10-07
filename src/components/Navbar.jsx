@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
-import { FaBars, FaTimes } from 'react-icons/fa'
-
+import { FaBars, FaTimes, FaEnvelope } from 'react-icons/fa'
 import logoImg from '../assets/logo.png'
 
 export default function Navbar({ lang, onToggleLang, navLabels }) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [activeSection, setActiveSection] = useState('home')
 
   const items = useMemo(
     () => [
@@ -21,14 +21,34 @@ export default function Navbar({ lang, onToggleLang, navLabels }) {
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20)
+
+      // Scroll Spy Logic
+      const sections = ['about', 'skills', 'projects', 'education', 'contact']
+      const scrollPos = window.scrollY + 160
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i])
+        if (el && el.offsetTop <= scrollPos) {
+          setActiveSection(sections[i])
+          return
+        }
+      }
+      if (window.scrollY < 200) {
+        setActiveSection('home')
+      }
     }
-    window.addEventListener('scroll', handleScroll)
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   function handleNavClick(e, id) {
     e.preventDefault()
     setOpen(false)
+    if (id === 'top' || id === 'home') {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
     const el = document.getElementById(id)
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
@@ -41,12 +61,6 @@ export default function Navbar({ lang, onToggleLang, navLabels }) {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [])
 
-  useEffect(() => {
-    if (typeof document === 'undefined') return
-    document.body.classList.toggle('nav-drawer-open', open)
-    return () => document.body.classList.remove('nav-drawer-open')
-  }, [open])
-
   return (
     <header className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
       {open && (
@@ -57,9 +71,10 @@ export default function Navbar({ lang, onToggleLang, navLabels }) {
           onClick={() => setOpen(false)}
         />
       )}
-      <div className="container navbar-inner">
-        <a className="brand brand-wrap" href="#top" onClick={(e) => handleNavClick(e, 'top')}>
+      <div className="navbar-inner">
+        <a className="brand-wrap" href="#top" onClick={(e) => handleNavClick(e, 'top')}>
           <img className="brand-logo" src={logoImg} alt="EMEKSON logo" />
+          <span className="brand-title">EMEKSON<span style={{ color: 'var(--accent)' }}>.</span></span>
         </a>
 
         <nav
@@ -70,13 +85,13 @@ export default function Navbar({ lang, onToggleLang, navLabels }) {
           {items.map((item) => (
             <a
               key={item.id}
-              className="nav-link"
+              className={`nav-link ${activeSection === item.id ? 'active' : ''}`}
               href={`#${item.id}`}
               onClick={(e) => handleNavClick(e, item.id)}
             >
               {item.label}
             </a>
-          ))}  
+          ))}
         </nav>
 
         <div className="nav-controls-group">
@@ -84,8 +99,9 @@ export default function Navbar({ lang, onToggleLang, navLabels }) {
             className="btn-lang"
             onClick={onToggleLang}
             aria-label="Toggle language"
+            title="Switch Language"
           >
-            {lang.toUpperCase()}
+            {lang === 'en' ? '🇫🇷 FR' : '🇬🇧 EN'}
           </button>
 
           <a 
@@ -93,7 +109,8 @@ export default function Navbar({ lang, onToggleLang, navLabels }) {
             className="btn-contact-pill"
             onClick={(e) => handleNavClick(e, 'contact')}
           >
-            {lang === 'en' ? 'Contact Me' : 'Me contacter'}
+            <FaEnvelope style={{ marginRight: '6px' }} />
+            {lang === 'en' ? 'Hire Me' : 'Me Recruter'}
           </a>
 
           <button
