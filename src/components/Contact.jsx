@@ -1,17 +1,22 @@
 import { useState } from 'react'
-import { FaGithub, FaLinkedin, FaFacebook, FaWhatsapp, FaEnvelope, FaPhoneAlt, FaCheck, FaCopy, FaUser } from 'react-icons/fa'
+import {
+  FaGithub, FaLinkedin, FaFacebook, FaWhatsapp, FaEnvelope,
+  FaPhoneAlt, FaCheck, FaCopy, FaCheckCircle, FaPaperPlane,
+  FaClock, FaRedo
+} from 'react-icons/fa'
 import { IoSend } from 'react-icons/io5'
 
-export default function Contact({ contact, contactSection }) {
+export default function Contact({ contact, contactSection, lang = 'en' }) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
   const [status, setStatus] = useState('idle')
   const [feedback, setFeedback] = useState('')
   const [copiedField, setCopiedField] = useState(null)
+  const [lastSubmitted, setLastSubmitted] = useState({ name: '', email: '' })
 
   const emailTo = contact?.email ?? 'tadiaemekson@gmail.com'
-  const phones = contact?.phones ?? ['+237 671-550-845', '+237 687-321-447']
+  const phones = contact?.phones ?? ['+237 655 648 766', '+237 674 725 952']
 
   const handleCopy = (text, fieldName) => {
     navigator.clipboard.writeText(text)
@@ -46,8 +51,8 @@ export default function Contact({ contact, contactSection }) {
           const data = await res.json().catch(() => ({}))
           throw new Error(data?.error || contact?.form?.error || 'Failed to send message.')
         }
+        setLastSubmitted({ name: payload.name, email: payload.email })
         setStatus('success')
-        setFeedback(contact?.form?.success || 'Your message has been sent successfully. Thank you!')
         setName('')
         setEmail('')
         setMessage('')
@@ -58,10 +63,26 @@ export default function Contact({ contact, contactSection }) {
           `Portfolio Contact from ${payload.name}`,
         )}&body=${encodeURIComponent(body)}`
         setStatus('error')
-        setFeedback('Server temporarily busy, opening your default email app...')
+        setFeedback(
+          lang === 'fr' 
+            ? 'Serveur momentanément occupé, redirection vers votre application mail...' 
+            : 'Server temporarily busy, opening your default email app...'
+        )
         window.location.href = href
       })
   }
+
+  const handleResetForm = () => {
+    setStatus('idle')
+    setFeedback('')
+  }
+
+  const whatsappMessage = encodeURIComponent(
+    `Hello Tadia! I just sent you a message from your portfolio.`
+  )
+  const whatsappUrl = contact?.whatsapp 
+    ? `${contact.whatsapp}?text=${whatsappMessage}`
+    : `https://wa.me/237655648766?text=${whatsappMessage}`
 
   return (
     <section id="contact" className="section contact-section">
@@ -152,99 +173,156 @@ export default function Contact({ contact, contactSection }) {
           </div>
         </div>
 
-        {/* Right Column: Contact Form */}
-        <form className="card contact-form-modern" onSubmit={handleSubmit}>
-          <h3 className="card-title" style={{ marginBottom: '8px', fontSize: '20px' }}>
-            {contact?.form?.send ?? 'Send a Message'}
-          </h3>
-          <p className="muted" style={{ fontSize: '14px', marginBottom: '16px' }}>
-            I typically respond within 24 hours.
-          </p>
+        {/* Right Column: Dynamic Form or Celebration Thank You Card */}
+        {status === 'success' ? (
+          <div className="celebration-thankyou-card">
+            <div className="celebration-icon-wrapper">
+              <div className="celebration-ring"></div>
+              <FaCheckCircle className="celebration-icon" />
+            </div>
 
-          <div className="form-group">
-            <label className="form-label" htmlFor="contact-name">
-              {contact?.form?.name ?? 'Your Name'}
-            </label>
-            <input
-              id="contact-name"
-              className="modern-input"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Alex Johnson"
-              autoComplete="name"
-              required
-            />
-          </div>
+            <h3 className="celebration-title">
+              {lang === 'fr' 
+                ? `Merci beaucoup, ${lastSubmitted.name || 'cher visiteur'} ! 🎉` 
+                : `Thank You, ${lastSubmitted.name || 'Friend'}! 🎉`}
+            </h3>
 
-          <div className="form-group">
-            <label className="form-label" htmlFor="contact-email">
-              {contact?.form?.email ?? 'Your Email'}
-            </label>
-            <input
-              id="contact-email"
-              type="email"
-              className="modern-input"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="e.g. alex@company.com"
-              autoComplete="email"
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="form-label" htmlFor="contact-message">
-              {contact?.form?.message ?? 'Your Message'}
-            </label>
-            <textarea
-              id="contact-message"
-              className="modern-textarea"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Tell me about your project, goals, or inquiry..."
-              rows={5}
-              required
-            />
-          </div>
-
-          <button
-            className="btn btn-primary"
-            type="submit"
-            disabled={status === 'loading'}
-            style={{ width: '100%', marginTop: '6px', borderRadius: '12px', padding: '14px' }}
-          >
-            {status === 'loading' ? (
-              contact?.form?.sending ?? 'Sending Message...'
-            ) : (
-              <>
-                <IoSend style={{ marginRight: '6px' }} />
-                {contact?.form?.send ?? 'Send Message'}
-              </>
-            )}
-          </button>
-
-          {feedback && (
-            <p
-              className={`contact-note ${status === 'error' ? 'contact-note-error' : ''} ${
-                status === 'success' ? 'contact-note-success' : ''
-              }`}
-              style={{
-                padding: '12px 16px',
-                borderRadius: '12px',
-                background: status === 'error' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)',
-                border: `1px solid ${status === 'error' ? 'rgba(239, 68, 68, 0.3)' : 'rgba(16, 185, 129, 0.3)'}`,
-                color: status === 'error' ? '#f87171' : 'var(--accent)',
-                fontWeight: '600',
-                fontSize: '14px',
-                marginTop: '8px'
-              }}
-              role="status"
-              aria-live="polite"
-            >
-              {feedback}
+            <p className="celebration-desc">
+              {lang === 'fr'
+                ? `Votre message a bien été transmis. Une notification a été envoyée sur mon téléphone et je vous répondrai à ${lastSubmitted.email || 'votre adresse email'} dès que possible.`
+                : `Your message has been delivered directly to my inbox. An instant notification was dispatched to my phone and I will get back to you at ${lastSubmitted.email || 'your email'} shortly.`}
             </p>
-          )}
-        </form>
+
+            <div className="celebration-info-box">
+              <div className="celebration-info-item">
+                <FaPaperPlane style={{ color: 'var(--accent)' }} />
+                <span>
+                  <strong>{lang === 'fr' ? 'Statut :' : 'Delivery Status:'}</strong>{' '}
+                  {lang === 'fr' ? 'Email transmis & Enregistré' : 'Email Dispatched & Stored'}
+                </span>
+              </div>
+              <div className="celebration-info-item">
+                <FaClock style={{ color: 'var(--accent-cyan)' }} />
+                <span>
+                  <strong>{lang === 'fr' ? 'Délai de réponse estimé :' : 'Estimated Response Time:'}</strong>{' '}
+                  {lang === 'fr' ? 'Moins de 24 heures' : 'Within 12 – 24 Hours'}
+                </span>
+              </div>
+            </div>
+
+            <div className="celebration-actions">
+              <a 
+                href={whatsappUrl} 
+                target="_blank" 
+                rel="noreferrer" 
+                className="celebration-whatsapp-btn"
+              >
+                <FaWhatsapp fontSize="18px" />
+                {lang === 'fr' ? 'Échange direct sur WhatsApp' : 'Quick Chat on WhatsApp'}
+              </a>
+
+              <button 
+                onClick={handleResetForm}
+                className="btn btn-secondary"
+                style={{ borderRadius: '999px', padding: '12px 22px', fontSize: '14px' }}
+              >
+                <FaRedo style={{ marginRight: '6px' }} />
+                {lang === 'fr' ? 'Envoyer un autre message' : 'Send Another Message'}
+              </button>
+            </div>
+          </div>
+        ) : (
+          <form className="card contact-form-modern" onSubmit={handleSubmit}>
+            <h3 className="card-title" style={{ marginBottom: '8px', fontSize: '20px' }}>
+              {contact?.form?.send ?? 'Send a Message'}
+            </h3>
+            <p className="muted" style={{ fontSize: '14px', marginBottom: '16px' }}>
+              {lang === 'fr' ? 'Je réponds généralement sous 24 heures.' : 'I typically respond within 24 hours.'}
+            </p>
+
+            <div className="form-group">
+              <label className="form-label" htmlFor="contact-name">
+                {contact?.form?.name ?? 'Your Name'}
+              </label>
+              <input
+                id="contact-name"
+                className="modern-input"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder={lang === 'fr' ? 'Ex. Jean Dupont' : 'e.g. Alex Johnson'}
+                autoComplete="name"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label" htmlFor="contact-email">
+                {contact?.form?.email ?? 'Your Email'}
+              </label>
+              <input
+                id="contact-email"
+                type="email"
+                className="modern-input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={lang === 'fr' ? 'Ex. jean@societe.com' : 'e.g. alex@company.com'}
+                autoComplete="email"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label" htmlFor="contact-message">
+                {contact?.form?.message ?? 'Your Message'}
+              </label>
+              <textarea
+                id="contact-message"
+                className="modern-textarea"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder={lang === 'fr' ? 'Décrivez votre projet, opportunité ou question...' : 'Tell me about your project, goals, or inquiry...'}
+                rows={5}
+                required
+              />
+            </div>
+
+            <button
+              className="btn btn-primary"
+              type="submit"
+              disabled={status === 'loading'}
+              style={{ width: '100%', marginTop: '6px', borderRadius: '12px', padding: '14px' }}
+            >
+              {status === 'loading' ? (
+                contact?.form?.sending ?? 'Sending Message...'
+              ) : (
+                <>
+                  <IoSend style={{ marginRight: '6px' }} />
+                  {contact?.form?.send ?? 'Send Message'}
+                </>
+              )}
+            </button>
+
+            {feedback && (
+              <p
+                className="contact-note contact-note-error"
+                style={{
+                  padding: '12px 16px',
+                  borderRadius: '12px',
+                  background: 'rgba(239, 68, 68, 0.1)',
+                  border: '1px solid rgba(239, 68, 68, 0.3)',
+                  color: '#f87171',
+                  fontWeight: '600',
+                  fontSize: '14px',
+                  marginTop: '8px'
+                }}
+                role="status"
+                aria-live="polite"
+              >
+                {feedback}
+              </p>
+            )}
+          </form>
+        )}
       </div>
     </section>
   )

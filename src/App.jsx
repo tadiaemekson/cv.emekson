@@ -137,6 +137,7 @@ function App() {
           <Contact 
             contact={content.contact} 
             contactSection={content.contactSection}
+            lang={lang}
           />
         </div>
       </main>
