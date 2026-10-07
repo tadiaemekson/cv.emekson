@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { FaSync, FaUser, FaEnvelope, FaClock, FaArrowLeft } from 'react-icons/fa'
+import logoImg from '../assets/logo.png'
 
 function formatDate(iso) {
   const date = new Date(iso)
@@ -35,13 +36,22 @@ export default function AdminMessages({ token }) {
 
   return (
     <div className="admin-page">
-      <p className="admin-back">
-        <a className="text-link" href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-          <FaArrowLeft /> Back to portfolio
-        </a>
-      </p>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
+        <p className="admin-back" style={{ margin: 0 }}>
+          <a className="text-link" href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+            <FaArrowLeft /> Back to portfolio
+          </a>
+        </p>
+
+        <img 
+          src={logoImg} 
+          alt="EMEKSON Logo" 
+          style={{ width: '36px', height: '36px', borderRadius: '10px', border: '1px solid var(--accent-border)' }} 
+        />
+      </div>
+
       <div className="admin-head">
-        <h1 className="section-title">Admin - Contact Messages</h1>
+        <h1 className="section-title">Contact Submissions</h1>
         <button className="btn btn-secondary" type="button" onClick={loadMessages} disabled={status === 'loading'}>
           <FaSync className={status === 'loading' ? 'animate-spin' : ''} style={{ marginRight: '8px' }} />
           Refresh
@@ -71,4 +81,3 @@ export default function AdminMessages({ token }) {
     </div>
   )
 }
-

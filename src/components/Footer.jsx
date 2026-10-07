@@ -1,4 +1,5 @@
 import { FaArrowUp } from 'react-icons/fa'
+import logoImg from '../assets/logo.png'
 
 export default function Footer({ profile }) {
   const currentYear = new Date().getFullYear()
@@ -10,13 +11,26 @@ export default function Footer({ profile }) {
   return (
     <footer className="footer">
       <div className="footer-inner">
-        <div>
-          <p style={{ fontWeight: '700', color: 'var(--text-h)', marginBottom: '4px' }}>
-            {profile?.name ?? 'TADIA FONGE EMEKSON'}
-          </p>
-          <p className="muted" style={{ fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            Built with React, Vite & Three.js • © {currentYear} All rights reserved.
-          </p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <img 
+            src={logoImg} 
+            alt="EMEKSON logo" 
+            style={{ 
+              width: '40px', 
+              height: '40px', 
+              borderRadius: '10px', 
+              objectFit: 'cover',
+              border: '1px solid var(--border)' 
+            }} 
+          />
+          <div>
+            <p style={{ fontWeight: '700', color: 'var(--text-h)', marginBottom: '2px' }}>
+              {profile?.name ?? 'TADIA FONGE EMEKSON'}
+            </p>
+            <p className="muted" style={{ fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              Full-Stack Developer • © {currentYear} All rights reserved.
+            </p>
+          </div>
         </div>
 
         <button 

@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
-import { FaRobot, FaTimes, FaPaperPlane, FaRegCommentDots } from 'react-icons/fa'
+import { FaTimes, FaPaperPlane } from 'react-icons/fa'
+import logoImg from '../assets/logo.png'
 
 export default function AIAssistant({ portfolio, aiContent }) {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState([{
     id: 1,
-    text: aiContent?.initial ?? "Hi there!",
+    text: aiContent?.initial ?? "Hi there! I'm Emekson's AI Assistant. How can I help you?",
     sender: 'ai',
     time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   }])
@@ -85,74 +86,110 @@ export default function AIAssistant({ portfolio, aiContent }) {
 
   return (
     <>
-      {/* Floating Toggle Button */}
+      {/* Floating Toggle Button with Logo */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="ai-toggle-btn"
         style={{
           position: 'fixed',
-          bottom: '30px',
-          right: '30px',
-          width: '60px',
-          height: '60px',
+          bottom: '28px',
+          right: '28px',
+          width: '58px',
+          height: '58px',
           borderRadius: '50%',
-          backgroundColor: 'var(--accent)',
-          color: '#000',
-          border: 'none',
-          boxShadow: '0 4px 20px rgba(0, 255, 115, 0.4)',
+          backgroundColor: 'var(--bg-subtle)',
+          border: '2px solid var(--accent)',
+          boxShadow: '0 4px 24px rgba(16, 185, 129, 0.4)',
           cursor: 'pointer',
           zIndex: 1000,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '24px',
+          padding: '4px',
           transition: 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
         }}
+        aria-label="AI Assistant"
         onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
         onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
       >
-        {isOpen ? <FaTimes /> : <FaRegCommentDots />}
+        {isOpen ? (
+          <FaTimes style={{ color: 'var(--accent)', fontSize: '20px' }} />
+        ) : (
+          <img 
+            src={logoImg} 
+            alt="AI Assistant" 
+            style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} 
+          />
+        )}
       </button>
 
       {/* Chat Window */}
       {isOpen && (
         <div className="ai-chat-window card" style={{
           position: 'fixed',
-          bottom: '100px',
-          right: '30px',
+          bottom: '96px',
+          right: '28px',
           width: '350px',
-          height: '500px',
+          height: '490px',
           zIndex: 1000,
           display: 'flex',
           flexDirection: 'column',
           padding: 0,
           overflow: 'hidden',
-          animation: 'fadeInUp 0.4s ease'
+          animation: 'fadeInUp 0.3s ease',
+          border: '1px solid var(--accent-border)',
+          boxShadow: 'var(--shadow-lg)'
         }}>
           {/* Header */}
           <div style={{
-            padding: '16px 20px',
-            backgroundColor: 'var(--accent)',
-            color: '#000',
+            padding: '14px 18px',
+            backgroundColor: 'var(--bg)',
+            borderBottom: '1px solid var(--border)',
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'space-between',
             gap: '12px'
           }}>
-            <FaRobot fontSize="20px" />
-            <div>
-              <div style={{ fontWeight: '800', fontSize: '14px', lineHeight: 1 }}>{aiContent?.name ?? 'EMEKSON AI'}</div>
-              <div style={{ fontSize: '10px', opacity: 0.8 }}>{aiContent?.status ?? 'Online'}</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <img 
+                src={logoImg} 
+                alt="AI Assistant Logo" 
+                style={{ width: '32px', height: '32px', borderRadius: '8px', objectFit: 'cover', border: '1px solid var(--accent-border)' }} 
+              />
+              <div>
+                <div style={{ fontWeight: '800', fontSize: '14px', color: 'var(--text-h)' }}>
+                  {aiContent?.name ?? 'EMEKSON AI'}
+                </div>
+                <div style={{ fontSize: '11px', color: 'var(--accent)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent)', display: 'inline-block' }}></span>
+                  {aiContent?.status ?? 'Online & Ready'}
+                </div>
+              </div>
             </div>
+
+            <button
+              onClick={() => setIsOpen(false)}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: 'var(--text)',
+                cursor: 'pointer',
+                fontSize: '16px'
+              }}
+              aria-label="Close Chat"
+            >
+              <FaTimes />
+            </button>
           </div>
 
           {/* Messages Area */}
           <div style={{
             flex: 1,
             overflowY: 'auto',
-            padding: '20px',
+            padding: '16px',
             display: 'flex',
             flexDirection: 'column',
-            gap: '16px',
+            gap: '14px',
             backgroundColor: 'var(--bg-subtle)'
           }}>
             {messages.map(msg => (
@@ -165,17 +202,18 @@ export default function AIAssistant({ portfolio, aiContent }) {
               }}>
                 <div style={{
                   padding: '10px 14px',
-                  borderRadius: msg.sender === 'user' ? '18px 18px 2px 18px' : '18px 18px 18px 2px',
-                  backgroundColor: msg.sender === 'user' ? 'var(--accent)' : 'var(--bg)',
-                  color: msg.sender === 'user' ? '#000' : 'var(--text)',
+                  borderRadius: msg.sender === 'user' ? '16px 16px 2px 16px' : '16px 16px 16px 2px',
+                  backgroundColor: msg.sender === 'user' ? 'var(--accent)' : 'rgba(255, 255, 255, 0.05)',
+                  color: msg.sender === 'user' ? '#030706' : 'var(--text-h)',
                   fontSize: '13px',
                   lineHeight: '1.5',
+                  fontWeight: msg.sender === 'user' ? '600' : '400',
                   border: msg.sender === 'user' ? 'none' : '1px solid var(--border)',
                   boxShadow: 'var(--shadow-sm)'
                 }}>
                   {msg.text}
                 </div>
-                <div style={{ fontSize: '9px', opacity: 0.5, marginTop: '4px' }}>{msg.time}</div>
+                <div style={{ fontSize: '9px', opacity: 0.5, marginTop: '4px', color: 'var(--text)' }}>{msg.time}</div>
               </div>
             ))}
             {isTyping && (
@@ -188,28 +226,28 @@ export default function AIAssistant({ portfolio, aiContent }) {
 
           {/* Input Area */}
           <form onSubmit={handleSend} style={{
-            padding: '16px',
+            padding: '12px 16px',
             borderTop: '1px solid var(--border)',
             display: 'flex',
-            gap: '10px',
-            backgroundColor: 'var(--bg-subtle)'
+            gap: '8px',
+            backgroundColor: 'var(--bg)'
           }}>
             <input
               type="text"
-              className="input"
+              className="modern-input"
               value={inputValue}
               onChange={e => setInputValue(e.target.value)}
-              placeholder={aiContent?.placeholder ?? "Ask me anything..."}
-              style={{ padding: '8px 14px', borderRadius: '20px', fontSize: '13px' }}
+              placeholder={aiContent?.placeholder ?? "Ask about projects, skills..."}
+              style={{ padding: '8px 14px', borderRadius: '12px', fontSize: '13px' }}
             />
             <button type="submit" className="btn btn-primary" style={{
-              width: '40px',
-              height: '40px',
+              width: '38px',
+              height: '38px',
               padding: 0,
-              borderRadius: '50%',
+              borderRadius: '10px',
               flexShrink: 0
-            }}>
-              <FaPaperPlane />
+            }} aria-label="Send">
+              <FaPaperPlane fontSize="13px" />
             </button>
           </form>
         </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { FaLock, FaSignInAlt, FaArrowLeft } from 'react-icons/fa'
+import { FaSignInAlt, FaArrowLeft } from 'react-icons/fa'
+import logoImg from '../assets/logo.png'
 
 export default function AdminLogin({ onLogin }) {
   const [password, setPassword] = useState('')
@@ -32,22 +33,27 @@ export default function AdminLogin({ onLogin }) {
   }
 
   return (
-    <div className="admin-page" style={{ maxWidth: '400px', textAlign: 'center' }}>
-      <h1 className="section-title"><FaLock style={{ color: 'var(--accent)', marginRight: '12px' }} />Admin Access</h1>
+    <div className="admin-page" style={{ maxWidth: '420px', margin: '40px auto', textAlign: 'center' }}>
+      <img 
+        src={logoImg} 
+        alt="EMEKSON Logo" 
+        style={{ width: '64px', height: '64px', borderRadius: '16px', marginBottom: '16px', border: '2px solid var(--accent-border)' }} 
+      />
+      <h1 className="section-title" style={{ fontSize: '26px' }}>Admin Dashboard</h1>
       <p className="muted" style={{ marginBottom: '24px' }}>Security check required.</p>
       
       <form className="card" onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <input
           type="password"
-          className="input"
+          className="modern-input"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
+          placeholder="Enter administrator password..."
           autoFocus
         />
         {error && <p className="contact-note-error" style={{ fontSize: '14px' }}>{error}</p>}
-        <button className="btn btn-primary" type="submit" disabled={loading}>
-          {loading ? 'Verifying...' : <><FaSignInAlt style={{ marginRight: '8px' }} /> Access Panel</>}
+        <button className="btn btn-primary" type="submit" disabled={loading} style={{ borderRadius: '12px' }}>
+          {loading ? 'Verifying...' : <><FaSignInAlt style={{ marginRight: '8px' }} /> Access Admin Panel</>}
         </button>
       </form>
       
