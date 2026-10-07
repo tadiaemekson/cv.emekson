@@ -8,8 +8,8 @@ export const portfolio = {
       contact: 'Contact',
     },
     hero: {
-      kicker: 'Full-Stack Developer Student',
-      tagline: 'Building modern full-stack web applications with React.',
+      kicker: 'Software Engineer | Full-Stack Developer',
+      tagline: 'Building modern full-stack web applications with React, Laravel, and Node.js.',
       viewProjects: 'View Projects',
       contactMe: 'Contact Me',
       stats: {
@@ -21,7 +21,7 @@ export const portfolio = {
     about: {
       kicker: 'About Me',
       title: "A quick story about what I'm building",
-      bio: "Motivated and passionate Software Engineering student at the College of Technology, University of Buea, with a strong interest in web development and digital solutions. Skilled in both frontend and backend development, with experience building responsive and functional web applications through academic and personal projects. \n\nDynamic, adaptable, and eager to learn, I enjoy transforming ideas into clean and user-friendly applications while continuously improving my technical and professional skills. I work effectively in teams and always strive to deliver quality results.",
+      bio: "Motivated Software Engineer graduate (B-TECH 2025–2026) from the College of Technology, University of Buea, currently undertaking a Professional Internship at IFP PRONOTE COMPANY. Skilled in full-stack architecture, API design, and modern database management with a track record of building resilient web applications.\n\nAdaptable and passionate about building real-world digital solutions, I work effectively across the stack from responsive interfaces to scalable backends while continuously driving value and quality in team environments.",
       extra: "I enjoy working across the stack: frontend UI, backend APIs, and databases. I'm currently focusing on building projects that are clean, responsive, and easy to maintain.",
       valuesTitle: 'What I care about',
       exploreProjects: 'Explore my projects',
@@ -29,7 +29,7 @@ export const portfolio = {
     profile: {
       name: 'TADIA FONGE EMEKSON',
       matricule: 'CT22A133',
-      role: 'Software Engineering Student | Junior Full-Stack Developer',
+      role: 'Software Engineer | Full-Stack Developer',
       location: 'Buea, Cameroon',
       highlights: ['React', 'Laravel', 'Node.js', 'SQL', 'Offline-First'],
       values: ['Clean UI', 'Practical backend', 'Good teamwork'],
@@ -137,20 +137,20 @@ export const portfolio = {
     education: {
       title: 'Education',
       school: 'College of Technology – University of Buea',
-      degree: 'B-TECH in Software Engineering (In Progress)',
+      degree: 'B-TECH in Software Engineering',
       department: 'Software Department',
       location: 'Molyko, Buea, Cameroon',
-      summary: 'Focused on building real-world web applications across frontend, backend, and databases.',
+      summary: 'Completed Bachelor of Technology in Software Engineering (Academic Year 2025–2026), focusing on full-stack architecture, backend systems, and database engineering.',
       gpa: '...',
       highlights: ['Capstone projects', 'Team work', 'Hands-on labs'],
-      period: '2023 – Present',
+      period: '2023 – 2026',
     },
     educationHistory: [
       {
-        degree: 'B-TECH in Software Engineering (In Progress)',
+        degree: 'B-TECH in Software Engineering',
         school: 'College of Technology – University of Buea',
         location: 'Molyko, Buea, Cameroon',
-        period: '2022 – Present',
+        period: '2023 – 2026',
       },
       {
         degree: 'Scientific Baccalaureate – Series D',
@@ -179,6 +179,16 @@ export const portfolio = {
     ],
     experience: [
       {
+        title: 'Professional Internship – Software Developer',
+        company: 'IFP PRONOTE COMPANY',
+        location: 'Cameroon',
+        period: '2026 – Present',
+        details: [
+          'Applied for and currently undertaking a professional internship in software development and full-stack solutions.',
+          'Contributing to software development, application architecture, database management, and agile team workflows.'
+        ],
+      },
+      {
         title: 'Academic Internship',
         company: 'KIAMA SA',
         location: 'Douala, Cameroon',
@@ -200,13 +210,6 @@ export const portfolio = {
           'Assisted in IT maintenance and network administration.'
         ],
         certKey: 'sigeris',
-      },
-      {
-        title: 'Family Assistance – Construction Works',
-        company: '',
-        location: 'Bafoussam, Cameroon',
-        period: '',
-        details: ['Masonry', 'Glass installation', 'Welding'],
       },
       {
         title: 'Family Business Assistance – Commerce',
@@ -317,8 +320,8 @@ export const portfolio = {
       contact: 'Contact',
     },
     hero: {
-      kicker: 'Étudiant Développeur Full-Stack',
-      tagline: "Création d'applications web full-stack modernes avec React.",
+      kicker: 'Ingénieur Logiciel | Développeur Full-Stack',
+      tagline: "Création d'applications web full-stack modernes avec React, Laravel et Node.js.",
       viewProjects: 'Voir les Projets',
       contactMe: 'Me Contacter',
       stats: {
@@ -330,7 +333,7 @@ export const portfolio = {
     about: {
       kicker: 'À propos de moi',
       title: 'Une petite histoire sur ce que je construis',
-      bio: "Étudiant en Génie Logiciel motivé et passionné à la College of Technology, Université de Buea, avec un fort intérêt pour le développement web et les solutions numériques. Compétent en développement frontend et backend, avec de l'expérience dans la création d'applications web réactives et fonctionnelles à travers des projets académiques et personnels. \n\nDynamique, adaptable et avide d'apprendre, j'aime transformer des idées en applications propres et conviviales tout en améliorant continuellement mes compétences techniques et professionnelles. Je travaille efficacement en équipe et m'efforce toujours de fournir des résultats de qualité.",
+      bio: "Ingénieur Logiciel diplômé (B-TECH 2025–2026) du College of Technology, Université de Buea, effectuant actuellement un Stage Professionnel chez IFP PRONOTE COMPANY. Compétent en architecture logicielle full-stack, conception d'APIs et gestion de bases de données modernes.\n\nPassionné par la conception de solutions numériques à fort impact, j'interviens sur toute la chaîne applicative, des interfaces réactives aux architectures backend résilientes, avec rigueur et esprit d'équipe.",
       extra: "J'aime travailler sur toute la pile : interface utilisateur frontend, APIs backend et bases de données. Je me concentre actuellement sur la construction de projets propres, réactifs et faciles à maintenir.",
       valuesTitle: 'Ce qui me tient à cœur',
       exploreProjects: 'Explorer mes projets',
@@ -338,7 +341,7 @@ export const portfolio = {
     profile: {
       name: 'TADIA FONGE EMEKSON',
       matricule: 'CT22A133',
-      role: 'Étudiant en Génie Logiciel | Développeur Full-Stack Junior',
+      role: 'Ingénieur Logiciel | Développeur Full-Stack',
       location: 'Buea, Cameroun',
       highlights: ['React', 'Laravel', 'Node.js', 'SQL', 'Offline-First'],
       values: ['Interface propre', 'Backend pratique', "Bon travail d'équipe"],
@@ -446,20 +449,20 @@ export const portfolio = {
     education: {
       title: 'Éducation',
       school: 'College of Technology – Université de Buea',
-      degree: 'B-TECH en Génie Logiciel (En cours)',
+      degree: 'B-TECH en Génie Logiciel',
       department: 'Département Logiciel',
       location: 'Molyko, Buea, Cameroun',
-      summary: "Axé sur la création d'applications web réelles sur le frontend, le backend et les bases de données.",
+      summary: "Diplômé en B-TECH Génie Logiciel (Année Académique 2025–2026), avec une spécialisation en architecture full-stack, ingénierie logicielle et gestion de bases de données.",
       gpa: '...',
       highlights: ["Projets de fin d'études", "Travail d'équipe", 'Travaux pratiques'],
-      period: '2023 – Présent',
+      period: '2023 – 2026',
     },
     educationHistory: [
       {
-        degree: 'B-TECH en Génie Logiciel (En cours)',
+        degree: 'B-TECH en Génie Logiciel',
         school: 'College of Technology – Université de Buea',
         location: 'Molyko, Buea, Cameroun',
-        period: '2022 – Present',
+        period: '2023 – 2026',
       },
       {
         degree: 'Baccalauréat Scientifique – Série D',
@@ -488,6 +491,16 @@ export const portfolio = {
     ],
     experience: [
       {
+        title: 'Stage Professionnel – Développeur Logiciel',
+        company: 'IFP PRONOTE COMPANY',
+        location: 'Cameroun',
+        period: '2026 – Présent',
+        details: [
+          'Candidature et réalisation d\'un stage professionnel en développement logiciel et ingénierie full-stack.',
+          'Contribution active au développement de solutions applicatives, à l\'architecture logicielle et à la gestion de bases de données.'
+        ],
+      },
+      {
         title: 'Stage Académique',
         company: 'KIAMA SA',
         location: 'Douala, Cameroun',
@@ -509,13 +522,6 @@ export const portfolio = {
           'Aide à la maintenance informatique et à l\'administration réseau.'
         ],
         certKey: 'sigeris',
-      },
-      {
-        title: 'Assistance Familiale – Travaux de Construction',
-        company: '',
-        location: 'Bafoussam, Cameroun',
-        period: '',
-        details: ['Maçonnerie', 'Pose de vitres', 'Soudure'],
       },
       {
         title: 'Assistance Entreprise Familiale – Commerce',
