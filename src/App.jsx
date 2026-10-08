@@ -132,7 +132,13 @@ function App() {
       </div>
       <CustomCursor />
       <ScrollProgress />
-      <AIAssistant key={lang} portfolio={content} aiContent={content.ai} />
+      <AIAssistant 
+        key={lang} 
+        portfolio={content} 
+        aiContent={content.ai} 
+        portfolioData={portfolioData}
+        lang={lang}
+      />
       <a href="#main-content" className="skip-link">
         Skip to content
       </a>

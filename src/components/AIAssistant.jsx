@@ -1,18 +1,154 @@
 import { useState, useEffect, useRef } from 'react'
-import { FaTimes, FaPaperPlane } from 'react-icons/fa'
+import { 
+  FaTimes, FaTrashAlt, FaRobot, FaMagic, 
+  FaExternalLinkAlt 
+} from 'react-icons/fa'
+import { IoSend } from 'react-icons/io5'
 import logoImg from '../assets/logo.png'
+import { queryAIAgent } from '../utils/aiKnowledgeAgent'
+import { portfolio as defaultPortfolio } from '../data/portfolio'
 
-export default function AIAssistant({ portfolio, aiContent }) {
+// Lightweight inline markdown formatter for rich chat bubbles
+function FormattedMessage({ text }) {
+  if (!text) return null
+
+  // Split lines
+  const lines = text.split('\n')
+
+  return (
+    <div className="ai-formatted-content">
+      {lines.map((line, idx) => {
+        if (!line.trim()) {
+          return <div key={idx} style={{ height: '8px' }} />
+        }
+
+        // Bullet point detection
+        const isBullet = line.trim().startsWith('•') || line.trim().startsWith('-')
+        const cleanLine = isBullet ? line.trim().substring(1).trim() : line
+
+        // Parse markdown formatting: **bold**, `code`, [link](url)
+        const parts = []
+        let keyCounter = 0
+
+        // Regex for markdown components
+        const regex = /(\*\*([^*]+)\*\*)|(`([^`]+)`)|(\[([^\]]+)\]\(([^)]+)\))/g
+        let lastIndex = 0
+        let match
+
+        while ((match = regex.exec(cleanLine)) !== null) {
+          // Push text before match
+          if (match.index > lastIndex) {
+            parts.push(cleanLine.substring(lastIndex, match.index))
+          }
+
+          if (match[1]) {
+            // **bold**
+            parts.push(<strong key={keyCounter++} style={{ color: 'var(--text-h)', fontWeight: '700' }}>{match[2]}</strong>)
+          } else if (match[3]) {
+            // `code`
+            parts.push(
+              <code key={keyCounter++} style={{
+                background: 'rgba(16, 185, 129, 0.15)',
+                color: 'var(--accent)',
+                padding: '2px 6px',
+                borderRadius: '4px',
+                fontSize: '0.9em',
+                fontFamily: 'monospace'
+              }}>
+                {match[4]}
+              </code>
+            )
+          } else if (match[5]) {
+            // [text](url)
+            const linkText = match[6]
+            const linkUrl = match[7]
+            const isExternal = linkUrl.startsWith('http') || linkUrl.startsWith('mailto:') || linkUrl.startsWith('tel:')
+
+            parts.push(
+              <a 
+                key={keyCounter++} 
+                href={linkUrl} 
+                target={isExternal ? '_blank' : '_self'} 
+                rel="noreferrer"
+                style={{
+                  color: 'var(--accent-cyan)',
+                  textDecoration: 'underline',
+                  fontWeight: '600',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '3px'
+                }}
+              >
+                {linkText}
+                {isExternal && <FaExternalLinkAlt style={{ fontSize: '9px' }} />}
+              </a>
+            )
+          }
+
+          lastIndex = regex.lastIndex
+        }
+
+        if (lastIndex < cleanLine.length) {
+          parts.push(cleanLine.substring(lastIndex))
+        }
+
+        if (isBullet) {
+          return (
+            <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', marginBottom: '4px' }}>
+              <span style={{ color: 'var(--accent)', fontWeight: 'bold' }}>•</span>
+              <span style={{ flex: 1 }}>{parts}</span>
+            </div>
+          )
+        }
+
+        return <p key={idx} style={{ margin: '0 0 6px 0' }}>{parts}</p>
+      })}
+    </div>
+  )
+}
+
+function formatCurrentTime() {
+  if (typeof window === 'undefined') return '12:00'
+  return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+}
+
+export default function AIAssistant({ aiContent, portfolioData, lang = 'en' }) {
   const [isOpen, setIsOpen] = useState(false)
-  const [messages, setMessages] = useState([{
+  const isFR = lang === 'fr'
+  const fullData = portfolioData || defaultPortfolio
+  const msgIdCounter = useRef(100)
+
+  const initialGreeting = isFR
+    ? `Bonjour ! 👋 Je suis l'assistant IA intelligent de **TADIA FONGE EMEKSON**.\n\nPosez-moi vos questions sur ses projets (SaaS, Offline-First), ses compétences techniques (React, Laravel, Node.js), ses stages (IFP PRONOTE, KIAMA, SIGERIS) ou ses disponibilités pour embauche.`
+    : `Hello! 👋 I am **TADIA FONGE EMEKSON**'s intelligent AI Assistant.\n\nAsk me anything about his engineering projects (SaaS, Offline-First), technical skills (React, Laravel, Node.js), internships (IFP PRONOTE, KIAMA, SIGERIS), or availability for hire.`
+
+  const defaultSuggestions = isFR ? [
+    '🚀 Projets d’ingénierie majeurs',
+    '💼 Expériences de stage en entreprise',
+    '🛠️ Stack technique & Compétences',
+    '📞 Comment contacter Emekson ?',
+    '📄 Comment télécharger son CV ?'
+  ] : [
+    '🚀 Major engineering projects',
+    '💼 Industry internships & experience',
+    '🛠️ Technical skills & arsenal',
+    '📞 How to contact Emekson?',
+    '📄 How to download his resume?'
+  ]
+
+  const [messages, setMessages] = useState(() => [{
     id: 1,
-    text: aiContent?.initial ?? "Hi there! I'm Emekson's AI Assistant. How can I help you?",
+    text: initialGreeting,
     sender: 'ai',
-    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    time: formatCurrentTime(),
+    suggestions: defaultSuggestions
   }])
+
   const [inputValue, setInputValue] = useState('')
   const [isTyping, setIsTyping] = useState(false)
+  const [unreadCount, setUnreadCount] = useState(0)
   const messagesEndRef = useRef(null)
+  const inputRef = useRef(null)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -22,128 +158,172 @@ export default function AIAssistant({ portfolio, aiContent }) {
     scrollToBottom()
   }, [messages, isTyping])
 
-  const generateResponse = (userText) => {
-    const input = userText.toLowerCase()
-    let response = aiContent?.fallback ?? "I'm still learning."
-    let shouldClose = false
-
-    if (input.includes('hello') || input.includes('hi') || input.includes('bonjour') || input.includes('salut')) {
-      response = aiContent?.hello
-    } else if (input.includes('thank') || input.includes('merci')) {
-      response = aiContent?.thanks
-    } else if (input.includes('bye') || input.includes('au revoir') || input.includes('close')) {
-      response = aiContent?.bye
-      shouldClose = true
-    } else if (input.includes('project') || input.includes('build') || input.includes('projet')) {
-      const list = portfolio.projects.map(p => p.title).join(', ')
-      response = aiContent?.projects.replace('{list}', list)
-    } else if (input.includes('skill') || input.includes('tech') || input.includes('compétence')) {
-      const top = portfolio.skills[0].tags.slice(0, 3).join(', ')
-      response = aiContent?.skills.replace('{top}', top)
-    } else if (input.includes('contact') || input.includes('email') || input.includes('reach')) {
-      response = aiContent?.contact.replace('{email}', portfolio.contact.email)
-    } else if (input.includes('who') || input.includes('about') || input.includes('qui')) {
-      response = portfolio.profile.bio
-    } else if (input.includes('education') || input.includes('study') || input.includes('étude')) {
-      response = aiContent?.education.replace('{degree}', portfolio.education.degree).replace('{school}', portfolio.education.school)
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => inputRef.current?.focus(), 250)
     }
+  }, [isOpen])
 
-    return { text: response || aiContent?.fallback, shouldClose }
+  const toggleOpen = () => {
+    setIsOpen(prev => {
+      const next = !prev
+      if (next) setUnreadCount(0)
+      return next
+    })
   }
 
-  const handleSend = (e) => {
-    e.preventDefault()
-    if (!inputValue.trim()) return
+  const handleSendMessage = (textToSend) => {
+    const text = (textToSend || inputValue).trim()
+    if (!text) return
 
+    msgIdCounter.current += 1
     const userMessage = {
-      id: Date.now(),
-      text: inputValue,
+      id: msgIdCounter.current,
+      text,
       sender: 'user',
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      time: formatCurrentTime()
     }
 
     setMessages(prev => [...prev, userMessage])
     setInputValue('')
     setIsTyping(true)
 
-    // Simulate AI thinking
+    // AI Reasoning & Processing with natural slight delay
     setTimeout(() => {
-      const { text, shouldClose } = generateResponse(inputValue)
+      const result = queryAIAgent(text, fullData, lang)
+      msgIdCounter.current += 1
+
       const aiMessage = {
-        id: Date.now() + 1,
-        text,
+        id: msgIdCounter.current,
+        text: result?.text || (isFR ? "Je reste à votre disposition. Que souhaitez-vous savoir d'autre ?" : "I'm here to help. What else would you like to know?"),
         sender: 'ai',
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        time: formatCurrentTime(),
+        suggestions: result?.suggestions || defaultSuggestions
       }
+
       setMessages(prev => [...prev, aiMessage])
       setIsTyping(false)
 
-      if (shouldClose) {
-        setTimeout(() => setIsOpen(false), 3000)
+      if (!isOpen) {
+        setUnreadCount(c => c + 1)
       }
-    }, 1000)
+
+      if (result?.shouldClose) {
+        setTimeout(() => setIsOpen(false), 3200)
+      }
+    }, 600)
+  }
+
+  const handleClearChat = () => {
+    msgIdCounter.current += 1
+    setMessages([{
+      id: msgIdCounter.current,
+      text: initialGreeting,
+      sender: 'ai',
+      time: formatCurrentTime(),
+      suggestions: defaultSuggestions
+    }])
   }
 
   return (
     <>
-      {/* Floating Toggle Button with Logo */}
+      {/* Floating Toggle Button with Glowing Badge */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleOpen}
         className="ai-toggle-btn"
         style={{
           position: 'fixed',
           bottom: '28px',
           right: '28px',
-          width: '58px',
-          height: '58px',
+          width: '60px',
+          height: '60px',
           borderRadius: '50%',
           backgroundColor: 'var(--bg-subtle)',
           border: '2px solid var(--accent)',
-          boxShadow: '0 4px 24px rgba(16, 185, 129, 0.4)',
+          boxShadow: '0 8px 32px rgba(16, 185, 129, 0.45)',
           cursor: 'pointer',
           zIndex: 1000,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           padding: '4px',
-          transition: 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+          transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
         }}
-        aria-label="AI Assistant"
-        onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
-        onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+        aria-label={isFR ? "Ouvrir l'assistant IA" : "Open AI Assistant"}
+        title={isFR ? "Discuter avec l'assistant IA d'Emekson" : "Chat with Emekson's AI Assistant"}
       >
         {isOpen ? (
-          <FaTimes style={{ color: 'var(--accent)', fontSize: '20px' }} />
+          <FaTimes style={{ color: 'var(--accent)', fontSize: '22px' }} />
         ) : (
-          <img 
-            src={logoImg} 
-            alt="AI Assistant" 
-            style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} 
-          />
+          <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img 
+              src={logoImg} 
+              alt="AI Assistant" 
+              style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} 
+            />
+            {unreadCount > 0 && (
+              <span style={{
+                position: 'absolute',
+                top: '-4px',
+                right: '-4px',
+                background: '#ef4444',
+                color: '#fff',
+                fontSize: '11px',
+                fontWeight: '800',
+                width: '20px',
+                height: '20px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 2px 8px rgba(239, 68, 68, 0.6)'
+              }}>
+                {unreadCount}
+              </span>
+            )}
+            <div style={{
+              position: 'absolute',
+              bottom: '-2px',
+              right: '-2px',
+              width: '14px',
+              height: '14px',
+              borderRadius: '50%',
+              backgroundColor: '#10b981',
+              border: '2px solid #030706'
+            }} />
+          </div>
         )}
       </button>
 
-      {/* Chat Window */}
+      {/* Modern AI Chat Window */}
       {isOpen && (
-        <div className="ai-chat-window card" style={{
-          position: 'fixed',
-          bottom: '96px',
-          right: '28px',
-          width: '350px',
-          height: '490px',
-          zIndex: 1000,
-          display: 'flex',
-          flexDirection: 'column',
-          padding: 0,
-          overflow: 'hidden',
-          animation: 'fadeInUp 0.3s ease',
-          border: '1px solid var(--accent-border)',
-          boxShadow: 'var(--shadow-lg)'
-        }}>
+        <div 
+          className="ai-chat-window card" 
+          style={{
+            position: 'fixed',
+            bottom: '98px',
+            right: '24px',
+            width: '400px',
+            maxWidth: 'calc(100vw - 36px)',
+            height: '560px',
+            maxHeight: 'calc(100vh - 120px)',
+            zIndex: 1000,
+            display: 'flex',
+            flexDirection: 'column',
+            padding: 0,
+            overflow: 'hidden',
+            borderRadius: '24px',
+            border: '1px solid var(--accent-border)',
+            background: 'rgba(9, 14, 18, 0.94)',
+            backdropFilter: 'blur(20px)',
+            boxShadow: '0 24px 64px rgba(0, 0, 0, 0.7), 0 0 32px rgba(16, 185, 129, 0.15)',
+            animation: 'fadeInUp 0.35s cubic-bezier(0.16, 1, 0.3, 1)'
+          }}
+        >
           {/* Header */}
           <div style={{
             padding: '14px 18px',
-            backgroundColor: 'var(--bg)',
+            backgroundColor: 'rgba(16, 185, 129, 0.08)',
             borderBottom: '1px solid var(--border)',
             display: 'flex',
             alignItems: 'center',
@@ -151,35 +331,77 @@ export default function AIAssistant({ portfolio, aiContent }) {
             gap: '12px'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <img 
-                src={logoImg} 
-                alt="AI Assistant Logo" 
-                style={{ width: '32px', height: '32px', borderRadius: '8px', objectFit: 'cover', border: '1px solid var(--accent-border)' }} 
-              />
+              <div style={{ position: 'relative' }}>
+                <img 
+                  src={logoImg} 
+                  alt="AI Assistant Logo" 
+                  style={{ width: '36px', height: '36px', borderRadius: '10px', objectFit: 'cover', border: '1px solid var(--accent-border)' }} 
+                />
+                <span style={{
+                  position: 'absolute',
+                  bottom: '-2px',
+                  right: '-2px',
+                  width: '10px',
+                  height: '10px',
+                  borderRadius: '50%',
+                  background: 'var(--accent)',
+                  border: '2px solid #030706'
+                }} />
+              </div>
               <div>
-                <div style={{ fontWeight: '800', fontSize: '14px', color: 'var(--text-h)' }}>
+                <div style={{ fontWeight: '800', fontSize: '15px', color: 'var(--text-h)', display: 'flex', alignItems: 'center', gap: '6px' }}>
                   {aiContent?.name ?? 'EMEKSON AI'}
+                  <span style={{ fontSize: '10px', padding: '2px 6px', borderRadius: '999px', background: 'var(--accent-bg)', color: 'var(--accent)', border: '1px solid var(--accent-border)', fontWeight: '700' }}>
+                    PRO
+                  </span>
                 </div>
                 <div style={{ fontSize: '11px', color: 'var(--accent)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent)', display: 'inline-block' }}></span>
-                  {aiContent?.status ?? 'Online & Ready'}
+                  <FaMagic style={{ fontSize: '9px' }} />
+                  {isFR ? 'Entraîné sur le Portfolio' : 'Trained on Full Portfolio'}
                 </div>
               </div>
             </div>
 
-            <button
-              onClick={() => setIsOpen(false)}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: 'var(--text)',
-                cursor: 'pointer',
-                fontSize: '16px'
-              }}
-              aria-label="Close Chat"
-            >
-              <FaTimes />
-            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <button
+                onClick={handleClearChat}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'var(--text-muted)',
+                  cursor: 'pointer',
+                  padding: '8px',
+                  borderRadius: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.2s ease'
+                }}
+                title={isFR ? 'Effacer la conversation' : 'Clear conversation'}
+                aria-label="Clear chat"
+              >
+                <FaTrashAlt style={{ fontSize: '13px' }} />
+              </button>
+
+              <button
+                onClick={() => setIsOpen(false)}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'var(--text-muted)',
+                  cursor: 'pointer',
+                  padding: '8px',
+                  borderRadius: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.2s ease'
+                }}
+                aria-label="Close Chat"
+              >
+                <FaTimes style={{ fontSize: '16px' }} />
+              </button>
+            </div>
           </div>
 
           {/* Messages Area */}
@@ -189,35 +411,102 @@ export default function AIAssistant({ portfolio, aiContent }) {
             padding: '16px',
             display: 'flex',
             flexDirection: 'column',
-            gap: '14px',
-            backgroundColor: 'var(--bg-subtle)'
+            gap: '16px',
+            backgroundColor: 'transparent'
           }}>
-            {messages.map(msg => (
-              <div key={msg.id} style={{
-                alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
-                maxWidth: '85%',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: msg.sender === 'user' ? 'flex-end' : 'flex-start'
-              }}>
+            {messages.map((msg) => (
+              <div 
+                key={msg.id} 
+                style={{
+                  alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
+                  maxWidth: '90%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: msg.sender === 'user' ? 'flex-end' : 'flex-start'
+                }}
+              >
                 <div style={{
-                  padding: '10px 14px',
-                  borderRadius: msg.sender === 'user' ? '16px 16px 2px 16px' : '16px 16px 16px 2px',
-                  backgroundColor: msg.sender === 'user' ? 'var(--accent)' : 'rgba(255, 255, 255, 0.05)',
-                  color: msg.sender === 'user' ? '#030706' : 'var(--text-h)',
-                  fontSize: '13px',
-                  lineHeight: '1.5',
+                  padding: '12px 16px',
+                  borderRadius: msg.sender === 'user' ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
+                  backgroundColor: msg.sender === 'user' ? 'var(--accent)' : 'rgba(255, 255, 255, 0.04)',
+                  color: msg.sender === 'user' ? '#030706' : 'var(--text)',
+                  fontSize: '13.5px',
+                  lineHeight: '1.6',
                   fontWeight: msg.sender === 'user' ? '600' : '400',
-                  border: msg.sender === 'user' ? 'none' : '1px solid var(--border)',
+                  border: msg.sender === 'user' ? 'none' : '1px solid rgba(255, 255, 255, 0.08)',
                   boxShadow: 'var(--shadow-sm)'
                 }}>
-                  {msg.text}
+                  {msg.sender === 'user' ? (
+                    msg.text
+                  ) : (
+                    <FormattedMessage text={msg.text} />
+                  )}
                 </div>
-                <div style={{ fontSize: '9px', opacity: 0.5, marginTop: '4px', color: 'var(--text)' }}>{msg.time}</div>
+
+                <div style={{ fontSize: '10px', opacity: 0.5, marginTop: '4px', color: 'var(--text)', padding: '0 4px' }}>
+                  {msg.time}
+                </div>
+
+                {/* Contextual Suggestion Prompt Chips */}
+                {msg.sender === 'ai' && msg.suggestions && msg.suggestions.length > 0 && (
+                  <div style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '6px',
+                    marginTop: '10px',
+                    paddingLeft: '2px'
+                  }}>
+                    {msg.suggestions.map((suggestion, sIdx) => (
+                      <button
+                        key={sIdx}
+                        onClick={() => handleSendMessage(suggestion.replace(/^[^\w\s]+/, '').trim())}
+                        style={{
+                          background: 'rgba(16, 185, 129, 0.08)',
+                          border: '1px solid rgba(16, 185, 129, 0.25)',
+                          color: 'var(--text-h)',
+                          fontSize: '11.5px',
+                          fontWeight: '600',
+                          padding: '6px 12px',
+                          borderRadius: '999px',
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '5px',
+                          transition: 'all 0.2s ease',
+                          textAlign: 'left'
+                        }}
+                        onMouseEnter={e => {
+                          e.currentTarget.style.background = 'rgba(16, 185, 129, 0.2)'
+                          e.currentTarget.style.borderColor = 'var(--accent)'
+                        }}
+                        onMouseLeave={e => {
+                          e.currentTarget.style.background = 'rgba(16, 185, 129, 0.08)'
+                          e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.25)'
+                        }}
+                      >
+                        {suggestion}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
+
             {isTyping && (
-              <div style={{ alignSelf: 'flex-start', display: 'flex', gap: '4px', padding: '4px' }}>
+              <div style={{
+                alignSelf: 'flex-start',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '10px 14px',
+                borderRadius: '16px 16px 16px 4px',
+                backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid rgba(255, 255, 255, 0.08)'
+              }}>
+                <FaRobot style={{ color: 'var(--accent)', fontSize: '13px' }} />
+                <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                  {isFR ? 'Emekson AI réfléchit...' : 'Emekson AI is thinking...'}
+                </span>
                 <div className="dot-typing" />
               </div>
             )}
@@ -225,29 +514,55 @@ export default function AIAssistant({ portfolio, aiContent }) {
           </div>
 
           {/* Input Area */}
-          <form onSubmit={handleSend} style={{
-            padding: '12px 16px',
-            borderTop: '1px solid var(--border)',
-            display: 'flex',
-            gap: '8px',
-            backgroundColor: 'var(--bg)'
-          }}>
+          <form 
+            onSubmit={(e) => {
+              e.preventDefault()
+              handleSendMessage()
+            }} 
+            style={{
+              padding: '12px 14px',
+              borderTop: '1px solid var(--border)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              backgroundColor: 'rgba(9, 14, 18, 0.98)'
+            }}
+          >
             <input
+              ref={inputRef}
               type="text"
               className="modern-input"
               value={inputValue}
               onChange={e => setInputValue(e.target.value)}
-              placeholder={aiContent?.placeholder ?? "Ask about projects, skills..."}
-              style={{ padding: '8px 14px', borderRadius: '12px', fontSize: '13px' }}
+              placeholder={isFR ? "Posez une question sur ses projets, son parcours..." : "Ask about projects, stack, experience, contact..."}
+              style={{
+                flex: 1,
+                padding: '10px 14px',
+                borderRadius: '12px',
+                fontSize: '13px',
+                border: '1px solid var(--border)',
+                background: 'rgba(255, 255, 255, 0.03)'
+              }}
             />
-            <button type="submit" className="btn btn-primary" style={{
-              width: '38px',
-              height: '38px',
-              padding: 0,
-              borderRadius: '10px',
-              flexShrink: 0
-            }} aria-label="Send">
-              <FaPaperPlane fontSize="13px" />
+            <button 
+              type="submit" 
+              className="btn btn-primary" 
+              disabled={!inputValue.trim() || isTyping}
+              style={{
+                width: '42px',
+                height: '42px',
+                padding: 0,
+                borderRadius: '12px',
+                flexShrink: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                opacity: (!inputValue.trim() || isTyping) ? 0.5 : 1,
+                cursor: (!inputValue.trim() || isTyping) ? 'not-allowed' : 'pointer'
+              }} 
+              aria-label={isFR ? "Envoyer le message" : "Send message"}
+            >
+              <IoSend fontSize="15px" />
             </button>
           </form>
         </div>
@@ -257,23 +572,23 @@ export default function AIAssistant({ portfolio, aiContent }) {
         .dot-typing {
           position: relative;
           left: -9999px;
-          width: 6px;
-          height: 6px;
+          width: 5px;
+          height: 5px;
           border-radius: 5px;
           background-color: var(--accent);
           color: var(--accent);
-          box-shadow: 9984px 0 0 0 var(--accent), 9996px 0 0 0 var(--accent), 10008px 0 0 0 var(--accent);
-          animation: dotTyping 1.5s infinite linear;
+          box-shadow: 9984px 0 0 0 var(--accent), 9994px 0 0 0 var(--accent), 10004px 0 0 0 var(--accent);
+          animation: dotTyping 1.4s infinite linear;
         }
 
         @keyframes dotTyping {
-          0% { box-shadow: 9984px 0 0 0 var(--accent), 9996px 0 0 0 var(--accent), 10008px 0 0 0 var(--accent); }
-          16.667% { box-shadow: 9984px -6px 0 0 var(--accent), 9996px 0 0 0 var(--accent), 10008px 0 0 0 var(--accent); }
-          33.333% { box-shadow: 9984px 0 0 0 var(--accent), 9996px 0 0 0 var(--accent), 10008px 0 0 0 var(--accent); }
-          50% { box-shadow: 9984px 0 0 0 var(--accent), 9996px -6px 0 0 var(--accent), 10008px 0 0 0 var(--accent); }
-          66.667% { box-shadow: 9984px 0 0 0 var(--accent), 9996px 0 0 0 var(--accent), 10008px 0 0 0 var(--accent); }
-          83.333% { box-shadow: 9984px 0 0 0 var(--accent), 9996px 0 0 0 var(--accent), 10008px -6px 0 0 var(--accent); }
-          100% { box-shadow: 9984px 0 0 0 var(--accent), 9996px 0 0 0 var(--accent), 10008px 0 0 0 var(--accent); }
+          0% { box-shadow: 9984px 0 0 0 var(--accent), 9994px 0 0 0 var(--accent), 10004px 0 0 0 var(--accent); }
+          16.667% { box-shadow: 9984px -5px 0 0 var(--accent), 9994px 0 0 0 var(--accent), 10004px 0 0 0 var(--accent); }
+          33.333% { box-shadow: 9984px 0 0 0 var(--accent), 9994px 0 0 0 var(--accent), 10004px 0 0 0 var(--accent); }
+          50% { box-shadow: 9984px 0 0 0 var(--accent), 9994px -5px 0 0 var(--accent), 10004px 0 0 0 var(--accent); }
+          66.667% { box-shadow: 9984px 0 0 0 var(--accent), 9994px 0 0 0 var(--accent), 10004px 0 0 0 var(--accent); }
+          83.333% { box-shadow: 9984px 0 0 0 var(--accent), 9994px 0 0 0 var(--accent), 10004px -5px 0 0 var(--accent); }
+          100% { box-shadow: 9984px 0 0 0 var(--accent), 9994px 0 0 0 var(--accent), 10004px 0 0 0 var(--accent); }
         }
       `}</style>
     </>
