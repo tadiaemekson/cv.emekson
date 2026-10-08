@@ -35,7 +35,7 @@ export default function Education({
         <p className="kicker">{educationSection?.title ?? 'Journey & Credentials'}</p>
         <h2 className="section-title">{educationSection?.subtitle ?? "Academic Journey & Industry Experience"}</h2>
         <p className="section-subtitle">
-          Continuous learning path combining rigorous university software engineering with hands-on enterprise internships.
+          {educationSection?.description ?? 'Continuous learning path combining rigorous university software engineering with hands-on enterprise internships.'}
         </p>
       </div>
 
@@ -49,7 +49,9 @@ export default function Education({
                 <FaGraduationCap />
               </div>
               <div>
-                <span className="kicker" style={{ fontSize: '11px', margin: 0 }}>University Degree</span>
+                <span className="kicker" style={{ fontSize: '11px', margin: 0 }}>
+                  {educationSection?.universityDegreeTitle ?? 'University Degree'}
+                </span>
               </div>
             </div>
 
@@ -82,7 +84,9 @@ export default function Education({
                 <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(6, 182, 212, 0.1)', border: '1px solid rgba(6, 182, 212, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-cyan)' }}>
                   <FaBriefcase />
                 </div>
-                <h3 className="card-title" style={{ margin: 0 }}>Industry Internships</h3>
+                <h3 className="card-title" style={{ margin: 0 }}>
+                  {educationSection?.internshipsTitle ?? 'Industry Internships'}
+                </h3>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>

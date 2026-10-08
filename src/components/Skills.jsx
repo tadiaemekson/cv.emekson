@@ -26,42 +26,43 @@ const skillIcons = {
   'Git & GitHub': <FaGitAlt style={{ color: '#f05032' }} />,
 }
 
-const categoryIcons = {
-  'Frontend Development': <FaLaptopCode />,
-  'Backend Development': <FaServer />,
-  'Database Management': <FaDatabase />,
-  'Tools & Technologies': <FaTools />,
-  'AI Tools Used': <FaRobot />,
+function getCategoryIcon(title) {
+  const t = (title || '').toLowerCase()
+  if (t.includes('front')) return <FaLaptopCode />
+  if (t.includes('back')) return <FaServer />
+  if (t.includes('data') || t.includes('base') || t.includes('donnée')) return <FaDatabase />
+  if (t.includes('ai') || t.includes('ia') || t.includes('intelligence')) return <FaRobot />
+  return <FaTools />
 }
 
-export default function Skills({ skills }) {
+export default function Skills({ skills, skillsSection }) {
   const [activeFilter, setActiveFilter] = useState('all')
 
   const filterMap = {
-    'all': 'All Skills',
-    'frontend': 'Frontend',
-    'backend': 'Backend',
-    'database': 'Databases',
-    'tools': 'Tools & AI'
+    all: skillsSection?.filters?.all ?? 'All Skills',
+    frontend: skillsSection?.filters?.frontend ?? 'Frontend',
+    backend: skillsSection?.filters?.backend ?? 'Backend',
+    database: skillsSection?.filters?.database ?? 'Databases',
+    tools: skillsSection?.filters?.tools ?? 'Tools & AI'
   }
 
   const filteredCategories = (skills ?? []).filter(cat => {
     if (activeFilter === 'all') return true
     const title = cat.title.toLowerCase()
-    if (activeFilter === 'frontend') return title.includes('frontend')
-    if (activeFilter === 'backend') return title.includes('backend')
-    if (activeFilter === 'database') return title.includes('database')
-    if (activeFilter === 'tools') return title.includes('tool') || title.includes('ai')
+    if (activeFilter === 'frontend') return title.includes('front')
+    if (activeFilter === 'backend') return title.includes('back')
+    if (activeFilter === 'database') return title.includes('data') || title.includes('base') || title.includes('donnée')
+    if (activeFilter === 'tools') return title.includes('tool') || title.includes('outil') || title.includes('ai') || title.includes('ia')
     return true
   })
 
   return (
     <section id="skills" className="section">
       <div className="section-head">
-        <p className="kicker">Skills & Arsenal</p>
-        <h2 className="section-title">Tools I use to build scalable products</h2>
+        <p className="kicker">{skillsSection?.kicker ?? 'Skills & Arsenal'}</p>
+        <h2 className="section-title">{skillsSection?.title ?? 'Tools I use to build scalable products'}</h2>
         <p className="section-subtitle">
-          Technologies and tools I work with daily across frontend, backend, database architectures, and development workflows.
+          {skillsSection?.subtitle ?? 'Technologies and tools I work with daily across frontend, backend, database architectures, and development workflows.'}
         </p>
       </div>
 
@@ -105,7 +106,7 @@ export default function Skills({ skills }) {
           <div key={cat.title} className="card skill-category-card">
             <div className="skill-category-header">
               <div className="skill-cat-icon">
-                {categoryIcons[cat.title] || <FaTools />}
+                {getCategoryIcon(cat.title)}
               </div>
               <h3 className="skill-cat-title">{cat.title}</h3>
             </div>

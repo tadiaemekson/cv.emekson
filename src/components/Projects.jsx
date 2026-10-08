@@ -102,6 +102,13 @@ export default function Projects({ projects, projectsSection, ui }) {
   const [selectedProject, setSelectedProject] = useState(null)
   const [activeFilter, setActiveFilter] = useState('all')
 
+  const filterLabels = {
+    all: projectsSection?.filters?.all ?? 'All Projects',
+    saas: projectsSection?.filters?.saas ?? 'SaaS & Fintech',
+    health: projectsSection?.filters?.health ?? 'HealthTech & Systems',
+    fullstack: projectsSection?.filters?.fullstack ?? 'Full-Stack Stack'
+  }
+
   const filteredProjects = (projects ?? []).filter((p) => {
     if (activeFilter === 'all') return true
     const title = p.title.toLowerCase()
@@ -109,13 +116,13 @@ export default function Projects({ projects, projectsSection, ui }) {
     const tech = (p.tech || []).join(' ').toLowerCase()
 
     if (activeFilter === 'saas') {
-      return title.includes('exchange') || title.includes('restaurant') || desc.includes('saas')
+      return title.includes('exchange') || title.includes('restaurant') || title.includes('restauration') || desc.includes('saas') || desc.includes('fintech')
     }
     if (activeFilter === 'health') {
-      return title.includes('partocare') || title.includes('clinic') || desc.includes('health')
+      return title.includes('partocare') || title.includes('clinic') || title.includes('clinique') || desc.includes('health') || desc.includes('santé') || desc.includes('maternité')
     }
     if (activeFilter === 'fullstack') {
-      return tech.includes('react') || tech.includes('laravel') || tech.includes('node')
+      return tech.includes('react') || tech.includes('laravel') || tech.includes('node') || tech.includes('full-stack')
     }
     return true
   })
@@ -126,7 +133,7 @@ export default function Projects({ projects, projectsSection, ui }) {
         <p className="kicker">{projectsSection?.kicker ?? 'Featured Projects'}</p>
         <h2 className="section-title">{projectsSection?.title ?? "Featured Work & Engineering Projects"}</h2>
         <p className="section-subtitle">
-          Real-world applications spanning SaaS financial tools, offline-first digital healthcare, and full-stack web platforms.
+          {projectsSection?.subtitle ?? 'Real-world applications spanning SaaS financial tools, offline-first digital healthcare, and full-stack web platforms.'}
         </p>
       </div>
 
@@ -136,25 +143,25 @@ export default function Projects({ projects, projectsSection, ui }) {
           className={`filter-tab ${activeFilter === 'all' ? 'active' : ''}`}
           onClick={() => setActiveFilter('all')}
         >
-          <FaLayerGroup /> All Projects ({(projects ?? []).length})
+          <FaLayerGroup /> {filterLabels.all} ({(projects ?? []).length})
         </button>
         <button 
           className={`filter-tab ${activeFilter === 'saas' ? 'active' : ''}`}
           onClick={() => setActiveFilter('saas')}
         >
-          <FaRocket /> SaaS & Fintech
+          <FaRocket /> {filterLabels.saas}
         </button>
         <button 
           className={`filter-tab ${activeFilter === 'health' ? 'active' : ''}`}
           onClick={() => setActiveFilter('health')}
         >
-          <FaHeartbeat /> HealthTech & Systems
+          <FaHeartbeat /> {filterLabels.health}
         </button>
         <button 
           className={`filter-tab ${activeFilter === 'fullstack' ? 'active' : ''}`}
           onClick={() => setActiveFilter('fullstack')}
         >
-          <FaCode /> Full-Stack Stack
+          <FaCode /> {filterLabels.fullstack}
         </button>
       </div>
 

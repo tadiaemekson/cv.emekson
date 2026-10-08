@@ -90,7 +90,7 @@ export default function Contact({ contact, contactSection, lang = 'en' }) {
         <p className="kicker">{contactSection?.kicker ?? 'Get in Touch'}</p>
         <h2 className="section-title">{contactSection?.title ?? "Let's Build Something Exceptional Together"}</h2>
         <p className="section-subtitle">
-          Have an exciting project, internship opportunity, or question? Send a message or reach out directly.
+          {contactSection?.subtitle ?? 'Have an exciting project, internship opportunity, or question? Send a message or reach out directly.'}
         </p>
       </div>
 
@@ -106,7 +106,7 @@ export default function Contact({ contact, contactSection, lang = 'en' }) {
             <div className="quick-contact-info">
               <FaEnvelope className="quick-contact-icon" />
               <div>
-                <p className="quick-contact-label">Email</p>
+                <p className="quick-contact-label">{contactSection?.labels?.email ?? 'Email'}</p>
                 <a href={`mailto:${emailTo}`} className="quick-contact-val text-link" style={{ color: 'var(--text-h)' }}>
                   {emailTo}
                 </a>
@@ -115,9 +115,9 @@ export default function Contact({ contact, contactSection, lang = 'en' }) {
             <button 
               className="btn-copy-action"
               onClick={() => handleCopy(emailTo, 'email')}
-              title="Copy Email"
+              title={copiedField === 'email' ? (contactSection?.labels?.copied ?? 'Copied') : (contactSection?.labels?.copy ?? 'Copy')}
             >
-              {copiedField === 'email' ? <><FaCheck /> Copied</> : <><FaCopy /> Copy</>}
+              {copiedField === 'email' ? <><FaCheck /> {contactSection?.labels?.copied ?? 'Copied'}</> : <><FaCopy /> {contactSection?.labels?.copy ?? 'Copy'}</>}
             </button>
           </div>
 
@@ -127,7 +127,7 @@ export default function Contact({ contact, contactSection, lang = 'en' }) {
               <div className="quick-contact-info">
                 <FaPhoneAlt className="quick-contact-icon" />
                 <div>
-                  <p className="quick-contact-label">Phone {idx + 1}</p>
+                  <p className="quick-contact-label">{contactSection?.labels?.phone ?? 'Phone'} {idx + 1}</p>
                   <a href={`tel:${phone.replace(/\s+/g, '')}`} className="quick-contact-val text-link" style={{ color: 'var(--text-h)' }}>
                     {phone}
                   </a>
@@ -136,9 +136,9 @@ export default function Contact({ contact, contactSection, lang = 'en' }) {
               <button 
                 className="btn-copy-action"
                 onClick={() => handleCopy(phone, `phone-${idx}`)}
-                title="Copy Phone"
+                title={copiedField === `phone-${idx}` ? (contactSection?.labels?.copied ?? 'Copied') : (contactSection?.labels?.copy ?? 'Copy')}
               >
-                {copiedField === `phone-${idx}` ? <><FaCheck /> Copied</> : <><FaCopy /> Copy</>}
+                {copiedField === `phone-${idx}` ? <><FaCheck /> {contactSection?.labels?.copied ?? 'Copied'}</> : <><FaCopy /> {contactSection?.labels?.copy ?? 'Copy'}</>}
               </button>
             </div>
           ))}
@@ -182,30 +182,30 @@ export default function Contact({ contact, contactSection, lang = 'en' }) {
             </div>
 
             <h3 className="celebration-title">
-              {lang === 'fr' 
-                ? `Merci beaucoup, ${lastSubmitted.name || 'cher visiteur'} ! 🎉` 
-                : `Thank You, ${lastSubmitted.name || 'Friend'}! 🎉`}
+              {(contact?.celebration?.title ?? (lang === 'fr' ? 'Merci Beaucoup, {name} ! 🎉' : 'Thank You, {name}! 🎉'))
+                .replace('{name}', lastSubmitted.name || (lang === 'fr' ? 'cher visiteur' : 'Friend'))}
             </h3>
 
             <p className="celebration-desc">
-              {lang === 'fr'
-                ? `Votre message a bien été transmis. Une notification a été envoyée sur mon téléphone et je vous répondrai à ${lastSubmitted.email || 'votre adresse email'} dès que possible.`
-                : `Your message has been delivered directly to my inbox. An instant notification was dispatched to my phone and I will get back to you at ${lastSubmitted.email || 'your email'} shortly.`}
+              {(contact?.celebration?.desc ?? (lang === 'fr' 
+                ? 'Votre message a bien été transmis. Une notification a été envoyée et je vous répondrai à {email} très rapidement.' 
+                : 'Your message has been delivered directly to my inbox. I will get back to you at {email} shortly.'))
+                .replace('{email}', lastSubmitted.email || (lang === 'fr' ? 'votre adresse email' : 'your email'))}
             </p>
 
             <div className="celebration-info-box">
               <div className="celebration-info-item">
                 <FaPaperPlane style={{ color: 'var(--accent)' }} />
                 <span>
-                  <strong>{lang === 'fr' ? 'Statut :' : 'Delivery Status:'}</strong>{' '}
-                  {lang === 'fr' ? 'Email transmis & Enregistré' : 'Email Dispatched & Stored'}
+                  <strong>{contact?.celebration?.statusLabel ?? (lang === 'fr' ? 'Statut :' : 'Delivery Status:')}</strong>{' '}
+                  {contact?.celebration?.statusValue ?? (lang === 'fr' ? 'Email transmis & Enregistré' : 'Email Dispatched & Stored')}
                 </span>
               </div>
               <div className="celebration-info-item">
                 <FaClock style={{ color: 'var(--accent-cyan)' }} />
                 <span>
-                  <strong>{lang === 'fr' ? 'Délai de réponse estimé :' : 'Estimated Response Time:'}</strong>{' '}
-                  {lang === 'fr' ? 'Moins de 24 heures' : 'Within 12 – 24 Hours'}
+                  <strong>{contact?.celebration?.timeLabel ?? (lang === 'fr' ? 'Délai de réponse estimé :' : 'Estimated Response Time:')}</strong>{' '}
+                  {contact?.celebration?.timeValue ?? (lang === 'fr' ? 'Sous 12 à 24 Heures' : 'Within 12 – 24 Hours')}
                 </span>
               </div>
             </div>
@@ -218,7 +218,7 @@ export default function Contact({ contact, contactSection, lang = 'en' }) {
                 className="celebration-whatsapp-btn"
               >
                 <FaWhatsapp fontSize="18px" />
-                {lang === 'fr' ? 'Échange direct sur WhatsApp' : 'Quick Chat on WhatsApp'}
+                {contact?.celebration?.whatsappBtn ?? (lang === 'fr' ? 'Échange direct sur WhatsApp' : 'Quick Chat on WhatsApp')}
               </a>
 
               <button 
@@ -227,29 +227,29 @@ export default function Contact({ contact, contactSection, lang = 'en' }) {
                 style={{ borderRadius: '999px', padding: '12px 22px', fontSize: '14px' }}
               >
                 <FaRedo style={{ marginRight: '6px' }} />
-                {lang === 'fr' ? 'Envoyer un autre message' : 'Send Another Message'}
+                {contact?.celebration?.resetBtn ?? (lang === 'fr' ? 'Envoyer un autre message' : 'Send Another Message')}
               </button>
             </div>
           </div>
         ) : (
           <form className="card contact-form-modern" onSubmit={handleSubmit}>
             <h3 className="card-title" style={{ marginBottom: '8px', fontSize: '20px' }}>
-              {contact?.form?.send ?? 'Send a Message'}
+              {contact?.form?.title ?? (lang === 'fr' ? 'Envoyer un Message' : 'Send a Message')}
             </h3>
             <p className="muted" style={{ fontSize: '14px', marginBottom: '16px' }}>
-              {lang === 'fr' ? 'Je réponds généralement sous 24 heures.' : 'I typically respond within 24 hours.'}
+              {contact?.form?.subtitle ?? (lang === 'fr' ? 'Je réponds généralement sous 24 heures.' : 'I typically respond within 24 hours.')}
             </p>
 
             <div className="form-group">
               <label className="form-label" htmlFor="contact-name">
-                {contact?.form?.name ?? 'Your Name'}
+                {contact?.form?.name ?? (lang === 'fr' ? 'Votre Nom' : 'Your Name')}
               </label>
               <input
                 id="contact-name"
                 className="modern-input"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder={lang === 'fr' ? 'Ex. Jean Dupont' : 'e.g. Alex Johnson'}
+                placeholder={contact?.form?.namePlaceholder ?? (lang === 'fr' ? 'Ex. Jean Dupont' : 'e.g. Alex Johnson')}
                 autoComplete="name"
                 required
               />
@@ -257,7 +257,7 @@ export default function Contact({ contact, contactSection, lang = 'en' }) {
 
             <div className="form-group">
               <label className="form-label" htmlFor="contact-email">
-                {contact?.form?.email ?? 'Your Email'}
+                {contact?.form?.email ?? (lang === 'fr' ? 'Votre Email' : 'Your Email')}
               </label>
               <input
                 id="contact-email"
@@ -265,7 +265,7 @@ export default function Contact({ contact, contactSection, lang = 'en' }) {
                 className="modern-input"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder={lang === 'fr' ? 'Ex. jean@societe.com' : 'e.g. alex@company.com'}
+                placeholder={contact?.form?.emailPlaceholder ?? (lang === 'fr' ? 'Ex. jean@societe.com' : 'e.g. alex@company.com')}
                 autoComplete="email"
                 required
               />
@@ -273,14 +273,14 @@ export default function Contact({ contact, contactSection, lang = 'en' }) {
 
             <div className="form-group">
               <label className="form-label" htmlFor="contact-message">
-                {contact?.form?.message ?? 'Your Message'}
+                {contact?.form?.message ?? (lang === 'fr' ? 'Votre Message' : 'Your Message')}
               </label>
               <textarea
                 id="contact-message"
                 className="modern-textarea"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder={lang === 'fr' ? 'Décrivez votre projet, opportunité ou question...' : 'Tell me about your project, goals, or inquiry...'}
+                placeholder={contact?.form?.messagePlaceholder ?? (lang === 'fr' ? 'Décrivez votre projet, opportunité ou question...' : 'Tell me about your project, goals, or inquiry...')}
                 rows={5}
                 required
               />
@@ -293,11 +293,11 @@ export default function Contact({ contact, contactSection, lang = 'en' }) {
               style={{ width: '100%', marginTop: '6px', borderRadius: '12px', padding: '14px' }}
             >
               {status === 'loading' ? (
-                contact?.form?.sending ?? 'Sending Message...'
+                contact?.form?.sending ?? (lang === 'fr' ? 'Envoi en cours...' : 'Sending Message...')
               ) : (
                 <>
                   <IoSend style={{ marginRight: '6px' }} />
-                  {contact?.form?.send ?? 'Send Message'}
+                  {contact?.form?.send ?? (lang === 'fr' ? 'Envoyer le Message' : 'Send Message')}
                 </>
               )}
             </button>

@@ -43,7 +43,7 @@ export default function Hero({ profile, heroContent, content, ui, lang }) {
         <div className="hero-copy">
           <div className="availability-tag">
             <span className="dot"></span>
-            {lang === 'en' ? 'OPEN FOR WORK • BUEA, CAMEROON' : 'DISPONIBLE EN DIRECT • BUEA, CAMEROUN'}
+            {heroContent?.availability ?? (lang === 'en' ? 'OPEN FOR WORK • BUEA, CAMEROON' : 'DISPONIBLE EN DIRECT • BUEA, CAMEROUN')}
           </div>
 
           <h1 className="hero-title">
@@ -56,10 +56,10 @@ export default function Hero({ profile, heroContent, content, ui, lang }) {
 
           <div className="hero-actions">
             <a href="#contact" className="btn btn-gradient-pill">
-              <FaEnvelope /> {heroContent?.contactMe ?? 'Contact Me'}
+              <FaEnvelope /> {heroContent?.contactMe ?? (lang === 'en' ? 'Contact Me' : 'Me Contacter')}
             </a>
             <a href="#projects" className="btn btn-glass-pill">
-              <FaProjectDiagram /> {heroContent?.viewProjects ?? 'View Projects'}
+              <FaProjectDiagram /> {heroContent?.viewProjects ?? (lang === 'en' ? 'View Projects' : 'Voir les Projets')}
             </a>
             <ResumeButton portfolio={content} ui={ui} />
           </div>
@@ -67,7 +67,7 @@ export default function Hero({ profile, heroContent, content, ui, lang }) {
           <div style={{ marginTop: '20px', marginBottom: '8px' }}>
             <a href="#education" className="btn-cert-cta">
               <FaCertificate />
-              {lang === 'en' ? 'View my verified certifications →' : 'Voir mes certifications vérifiées →'}
+              {heroContent?.viewCertifications ?? (lang === 'en' ? 'View my verified certifications →' : 'Voir mes certifications vérifiées →')}
             </a>
           </div>
 
@@ -75,22 +75,22 @@ export default function Hero({ profile, heroContent, content, ui, lang }) {
             <div className="stat-card">
               <FaLaptopCode className="stat-card-icon" />
               <span className="stat-number">{profile?.stats?.years ?? '3+'}</span>
-              <span className="stat-desc">{lang === 'en' ? 'Years Exp' : "Années d'études"}</span>
+              <span className="stat-desc">{heroContent?.stats?.years ?? (lang === 'en' ? 'Years Exp' : "Années d'exp")}</span>
             </div>
             <div className="stat-card">
               <FaProjectDiagram className="stat-card-icon" />
               <span className="stat-number">{profile?.stats?.projects ?? '8+'}</span>
-              <span className="stat-desc">{lang === 'en' ? 'Projects Built' : 'Projets réalisés'}</span>
+              <span className="stat-desc">{heroContent?.stats?.projects ?? (lang === 'en' ? 'Projects Built' : 'Projets Réalisés')}</span>
             </div>
             <div className="stat-card">
               <FaAward className="stat-card-icon" />
               <span className="stat-number">{profile?.stats?.skills ?? '12+'}</span>
-              <span className="stat-desc">{lang === 'en' ? 'Core Skills' : 'Compétences'}</span>
+              <span className="stat-desc">{heroContent?.stats?.skills ?? (lang === 'en' ? 'Core Skills' : 'Compétences Clés')}</span>
             </div>
             <div className="stat-card">
               <FaRocket className="stat-card-icon" />
               <span className="stat-number">100%</span>
-              <span className="stat-desc">{lang === 'en' ? 'Dedication' : 'Engagement'}</span>
+              <span className="stat-desc">{heroContent?.stats?.commitment ?? (lang === 'en' ? 'Dedication' : 'Engagement')}</span>
             </div>
           </div>
         </div>

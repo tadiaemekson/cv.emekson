@@ -1,12 +1,14 @@
 import { FaArrowUp } from 'react-icons/fa'
 import logoImg from '../assets/logo.png'
 
-export default function Footer({ profile }) {
+export default function Footer({ profile, footerLabels, ui }) {
   const currentYear = new Date().getFullYear()
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
+
+  const tagline = (footerLabels?.tagline ?? 'Full-Stack Developer • © {year} All rights reserved.').replace('{year}', currentYear)
 
   return (
     <footer className="footer">
@@ -28,7 +30,7 @@ export default function Footer({ profile }) {
               {profile?.name ?? 'TADIA FONGE EMEKSON'}
             </p>
             <p className="muted" style={{ fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              Full-Stack Developer • © {currentYear} All rights reserved.
+              {tagline}
             </p>
           </div>
         </div>
@@ -36,9 +38,9 @@ export default function Footer({ profile }) {
         <button 
           onClick={scrollToTop} 
           className="btn-back-to-top"
-          aria-label="Back to top"
+          aria-label={ui?.backToTop ?? footerLabels?.backToTop ?? 'Back to top'}
         >
-          <FaArrowUp /> Back to top
+          <FaArrowUp /> {ui?.backToTop ?? footerLabels?.backToTop ?? 'Back to top'}
         </button>
       </div>
     </footer>

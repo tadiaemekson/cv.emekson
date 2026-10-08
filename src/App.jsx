@@ -158,7 +158,10 @@ function App() {
           />
         </div>
         <div className="animate-in" style={{ animationDelay: '0.3s' }}>
-          <Skills skills={content.skills} />
+          <Skills 
+            skills={content.skills} 
+            skillsSection={content.skillsSection}
+          />
         </div>
         <div className="animate-in" style={{ animationDelay: '0.4s' }}>
           <Projects 
@@ -191,6 +194,7 @@ function App() {
         profile={content.profile} 
         footerLabels={content.footer} 
         navLabels={content.nav}
+        ui={content.ui}
       />
     </div>
   )

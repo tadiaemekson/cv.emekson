@@ -13,7 +13,7 @@ export default function About({ profile, aboutContent }) {
         <div className="card bento-card-main">
           <div>
             <div className="bento-quote">
-              "Transforming ideas into resilient, user-friendly, and high-performance applications."
+              "{aboutContent?.quote ?? 'Transforming ideas into resilient, user-friendly, and high-performance applications.'}"
             </div>
             <p className="bento-bio-text">
               {aboutContent?.bio ?? profile?.bio ?? "Motivated and passionate Software Engineering student at the College of Technology, University of Buea, specializing in full-stack web architectures."}
@@ -23,11 +23,11 @@ export default function About({ profile, aboutContent }) {
           <div className="bento-meta-row">
             <div className="bento-meta-item">
               <FaMapMarkerAlt style={{ color: 'var(--accent)' }} />
-              <span>Buea, Cameroon</span>
+              <span>{aboutContent?.locationText ?? 'Buea, Cameroon'}</span>
             </div>
             <div className="bento-meta-item">
               <FaGraduationCap style={{ color: 'var(--accent-cyan)' }} />
-              <span>College of Technology</span>
+              <span>{aboutContent?.schoolText ?? 'College of Technology, University of Buea'}</span>
             </div>
           </div>
         </div>
@@ -54,7 +54,7 @@ export default function About({ profile, aboutContent }) {
         <div className="card">
           <h3 className="card-title" style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <FaCode style={{ color: 'var(--accent-cyan)' }} />
-            Current Focus
+            {aboutContent?.focusTitle ?? 'Current Focus'}
           </h3>
           <p className="muted" style={{ fontSize: '14px', marginBottom: '16px' }}>
             {aboutContent?.extra ?? "Building modern full-stack web platforms, exploring Offline-First local synchronization (Dexie.js / IndexedDB), and developing real-time fintech SaaS engines."}
