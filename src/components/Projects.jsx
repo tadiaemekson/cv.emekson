@@ -1,16 +1,24 @@
 import { useEffect, useState } from 'react'
-import { FaGithub, FaExternalLinkAlt, FaStar, FaCodeBranch, FaLayerGroup, FaRocket, FaHeartbeat, FaCode } from 'react-icons/fa'
+import { FaGithub, FaStar, FaCodeBranch, FaLayerGroup, FaRocket, FaHeartbeat, FaCode, FaRobot, FaBrain } from 'react-icons/fa'
 import { SiLaravel, SiReact, SiNodedotjs, SiPhp } from 'react-icons/si'
 import ProjectModal from './ProjectModal'
 
 const projectHeaderIcons = {
+  'EMEKSON AI — Conversational Reasoning Agent': <FaRobot style={{ color: 'var(--accent-bright)' }} />,
+  'EMEKSON AI — Agent de Raisonnement Conversationnel': <FaRobot style={{ color: 'var(--accent-bright)' }} />,
   'ExchangeCompare Africa': <SiLaravel />,
   'PartoCare': <FaHeartbeat />,
   'Gourmet Restaurant Platform': <SiReact />,
+  'Plateforme de Restauration Gourmet': <SiReact />,
+  'Premium Personal Portfolio & 3D Showcase': <FaRocket />,
+  'Portfolio Personnel Premium & Vitrine 3D': <FaRocket />,
   'Premium Personal Portfolio': <FaRocket />,
   'Clinic Management System': <SiPhp />,
+  'Système de Gestion de Clinique': <SiPhp />,
   'B-TECH Academic Project': <FaCode />,
+  'Projet Académique B-TECH': <FaCode />,
   'Node.js Practice Server': <SiNodedotjs />,
+  "Serveur d'Entraînement Node.js": <SiNodedotjs />,
 }
 
 function ProjectCard({ project, onClick, projectsSection }) {
@@ -36,7 +44,7 @@ function ProjectCard({ project, onClick, projectsSection }) {
     }
   }, [project.github])
 
-  const icon = projectHeaderIcons[project.title] || <FaRocket />
+  const icon = projectHeaderIcons[project.title] || (project.title.toLowerCase().includes('ai') ? <FaRobot /> : <FaRocket />)
 
   return (
     <article className="card project-card-modern" onClick={onClick}>
@@ -86,7 +94,7 @@ function ProjectCard({ project, onClick, projectsSection }) {
               className="project-btn-github" 
               href={project.github} 
               target="_blank" 
-              rel="noreferrer"
+              rel="noreferrer" 
               title="GitHub Repository"
             >
               <FaGithub /> {projectsSection?.source ?? 'Code'}
@@ -104,7 +112,7 @@ export default function Projects({ projects, projectsSection, ui }) {
 
   const filterLabels = {
     all: projectsSection?.filters?.all ?? 'All Projects',
-    saas: projectsSection?.filters?.saas ?? 'SaaS & Fintech',
+    ai: projectsSection?.filters?.ai ?? 'AI & SaaS Systems',
     health: projectsSection?.filters?.health ?? 'HealthTech & Systems',
     fullstack: projectsSection?.filters?.fullstack ?? 'Full-Stack Stack'
   }
@@ -115,8 +123,8 @@ export default function Projects({ projects, projectsSection, ui }) {
     const desc = (p.description + (p.details || '')).toLowerCase()
     const tech = (p.tech || []).join(' ').toLowerCase()
 
-    if (activeFilter === 'saas') {
-      return title.includes('exchange') || title.includes('restaurant') || title.includes('restauration') || desc.includes('saas') || desc.includes('fintech')
+    if (activeFilter === 'ai') {
+      return title.includes('ai') || title.includes('ia') || title.includes('agent') || title.includes('exchange') || desc.includes('nlp') || desc.includes('saas') || desc.includes('intelligence')
     }
     if (activeFilter === 'health') {
       return title.includes('partocare') || title.includes('clinic') || title.includes('clinique') || desc.includes('health') || desc.includes('santé') || desc.includes('maternité')
@@ -131,9 +139,9 @@ export default function Projects({ projects, projectsSection, ui }) {
     <section id="projects" className="section">
       <div className="section-head">
         <p className="kicker">{projectsSection?.kicker ?? 'Featured Projects'}</p>
-        <h2 className="section-title">{projectsSection?.title ?? "Featured Work & Engineering Projects"}</h2>
+        <h2 className="section-title">{projectsSection?.title ?? "Featured Work & Engineering Creations"}</h2>
         <p className="section-subtitle">
-          {projectsSection?.subtitle ?? 'Real-world applications spanning SaaS financial tools, offline-first digital healthcare, and full-stack web platforms.'}
+          {projectsSection?.subtitle ?? 'Real-world applications spanning autonomous AI agents, financial SaaS platforms, offline-first digital healthcare, and full-stack web architectures.'}
         </p>
       </div>
 
@@ -146,10 +154,10 @@ export default function Projects({ projects, projectsSection, ui }) {
           <FaLayerGroup /> {filterLabels.all} ({(projects ?? []).length})
         </button>
         <button 
-          className={`filter-tab ${activeFilter === 'saas' ? 'active' : ''}`}
-          onClick={() => setActiveFilter('saas')}
+          className={`filter-tab ${activeFilter === 'ai' ? 'active' : ''}`}
+          onClick={() => setActiveFilter('ai')}
         >
-          <FaRocket /> {filterLabels.saas}
+          <FaBrain style={{ color: 'var(--accent-bright)' }} /> {filterLabels.ai}
         </button>
         <button 
           className={`filter-tab ${activeFilter === 'health' ? 'active' : ''}`}

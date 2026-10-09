@@ -1,5 +1,5 @@
 import profileImg from '../assets/profile.jpg'
-import { FaEnvelope, FaProjectDiagram, FaLaptopCode, FaAward, FaRocket, FaCertificate } from 'react-icons/fa'
+import { FaEnvelope, FaProjectDiagram, FaLaptopCode, FaAward, FaRocket, FaCertificate, FaBrain } from 'react-icons/fa'
 import { SiReact, SiNodedotjs, SiLaravel, SiPostgresql } from 'react-icons/si'
 
 import ResumeButton from './ResumeButton'
@@ -23,6 +23,9 @@ export default function Hero({ profile, heroContent, content, ui, lang }) {
               />
 
               {/* Orbiting Badges */}
+              <div className="floating-badge badge-ai">
+                <FaBrain /> <span>AI Creation</span>
+              </div>
               <div className="floating-badge badge-react">
                 <SiReact /> <span>React</span>
               </div>
