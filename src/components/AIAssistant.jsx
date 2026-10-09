@@ -119,19 +119,19 @@ export default function AIAssistant({ aiContent, portfolioData, lang = 'en' }) {
   const msgIdCounter = useRef(100)
 
   const initialGreeting = isFR
-    ? `Bonjour ! 👋 Je suis l'assistant IA intelligent de **TADIA FONGE EMEKSON**.\n\nPosez-moi vos questions sur ses projets (SaaS, Offline-First), ses compétences techniques (React, Laravel, Node.js), ses stages (IFP PRONOTE, KIAMA, SIGERIS) ou ses disponibilités pour embauche.`
-    : `Hello! 👋 I am **TADIA FONGE EMEKSON**'s intelligent AI Assistant.\n\nAsk me anything about his engineering projects (SaaS, Offline-First), technical skills (React, Laravel, Node.js), internships (IFP PRONOTE, KIAMA, SIGERIS), or availability for hire.`
+    ? `Bonjour ! 👋 Je suis le guide interactif du portfolio de **TADIA FONGE EMEKSON**.\n\nPosez-moi vos questions sur ses projets réels (ExchangeCompare, PartoCare), ses compétences techniques (React 19, Laravel 12, Node.js), son stage chez **IFP PRONOTE** ou ses coordonnées.`
+    : `Hello! 👋 I am the interactive portfolio guide for **TADIA FONGE EMEKSON**.\n\nFeel free to ask me anything about his real-world projects (ExchangeCompare, PartoCare), his core tech stack (React 19, Laravel 12, Node.js), his internship at **IFP PRONOTE**, or his contact details.`
 
   const defaultSuggestions = isFR ? [
     '🚀 Projets d’ingénierie majeurs',
-    '💼 Expériences de stage en entreprise',
+    '💼 Stage chez IFP PRONOTE',
     '🛠️ Stack technique & Compétences',
     '📞 Comment contacter Emekson ?',
     '📄 Comment télécharger son CV ?'
   ] : [
     '🚀 Major engineering projects',
-    '💼 Industry internships & experience',
-    '🛠️ Technical skills & arsenal',
+    '💼 Internship at IFP PRONOTE',
+    '🛠️ Technical skills & stack',
     '📞 How to contact Emekson?',
     '📄 How to download his resume?'
   ]
@@ -350,14 +350,14 @@ export default function AIAssistant({ aiContent, portfolioData, lang = 'en' }) {
               </div>
               <div>
                 <div style={{ fontWeight: '800', fontSize: '15px', color: 'var(--text-h)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  {aiContent?.name ?? 'EMEKSON AI'}
+                  {aiContent?.name ?? (isFR ? "Guide Portfolio" : "Portfolio Guide")}
                   <span style={{ fontSize: '10px', padding: '2px 6px', borderRadius: '999px', background: 'var(--accent-bg)', color: 'var(--accent)', border: '1px solid var(--accent-border)', fontWeight: '700' }}>
-                    PRO
+                    GUIDE
                   </span>
                 </div>
                 <div style={{ fontSize: '11px', color: 'var(--accent)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <FaMagic style={{ fontSize: '9px' }} />
-                  {isFR ? 'Entraîné sur le Portfolio' : 'Trained on Full Portfolio'}
+                  {isFR ? 'Assistant Interactif' : 'Interactive Portfolio Guide'}
                 </div>
               </div>
             </div>
