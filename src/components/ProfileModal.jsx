@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { FaTimes, FaDownload } from 'react-icons/fa'
 
 export default function ProfileModal({ isOpen, onClose, imageSrc, name, role, location }) {
@@ -9,17 +10,20 @@ export default function ProfileModal({ isOpen, onClose, imageSrc, name, role, lo
       if (e.key === 'Escape') onClose()
     }
     window.addEventListener('keydown', handleEsc)
+    
+    // Prevent background scrolling while modal is open
+    const originalOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
 
     return () => {
       window.removeEventListener('keydown', handleEsc)
-      document.body.style.overflow = ''
+      document.body.style.overflow = originalOverflow
     }
   }, [isOpen, onClose])
 
-  if (!isOpen) return null
+  if (!isOpen || typeof document === 'undefined') return null
 
-  return (
+  const modalContent = (
     <div 
       className="profile-modal-backdrop" 
       onClick={onClose}
@@ -43,7 +47,7 @@ export default function ProfileModal({ isOpen, onClose, imageSrc, name, role, lo
 
         {/* Modal Header */}
         <div className="profile-modal-header">
-          <div>
+          <div className="profile-modal-header-text">
             <h3 className="profile-modal-title">{name || 'Tadia Fonge Emekson'}</h3>
             <p className="profile-modal-subtitle">{role || 'Software Engineer | Full-Stack & Web Developer'}</p>
           </div>
@@ -68,7 +72,7 @@ export default function ProfileModal({ isOpen, onClose, imageSrc, name, role, lo
             download="tadia-fonge-emekson.jpg"
             className="btn btn-secondary profile-modal-btn"
           >
-            <FaDownload /> Download Full Photo
+            <FaDownload /> <span>Download</span>
           </a>
           <button 
             type="button" 
@@ -81,4 +85,6 @@ export default function ProfileModal({ isOpen, onClose, imageSrc, name, role, lo
       </div>
     </div>
   )
+
+  return createPortal(modalContent, document.body)
 }
