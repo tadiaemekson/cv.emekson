@@ -1,11 +1,16 @@
+import { useState } from 'react'
 import profileImg from '../assets/profile.jpg'
+import profileFullImg from '../assets/profile-full.jpg'
 import { FaEnvelope, FaProjectDiagram, FaLaptopCode, FaAward, FaRocket, FaCertificate } from 'react-icons/fa'
 import { SiReact, SiNodedotjs, SiLaravel, SiPostgresql, SiTypescript } from 'react-icons/si'
 
 import ResumeButton from './ResumeButton'
 import TechScene from './TechScene'
+import ProfileModal from './ProfileModal'
 
 export default function Hero({ profile, heroContent, content, ui, lang }) {
+  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false)
+
   return (
     <section id="home" className="section hero-section">
       <div className="hero-grid">
@@ -16,10 +21,21 @@ export default function Hero({ profile, heroContent, content, ui, lang }) {
             
             <div className="profile-container">
               <div className="profile-glow-ring"></div>
+              
               <img 
-                className="profile-img" 
+                className="profile-img clickable-profile-img" 
                 src={profileImg} 
-                alt={`${profile?.name ?? 'Student'} profile`} 
+                alt={`${profile?.name ?? 'Profile'} profile`} 
+                onClick={() => setIsPhotoModalOpen(true)}
+                title={lang === 'fr' ? 'Cliquer pour voir la photo complète' : 'Click to view full photo'}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    setIsPhotoModalOpen(true)
+                  }
+                }}
               />
 
               {/* Orbiting Badges */}
@@ -98,6 +114,16 @@ export default function Hero({ profile, heroContent, content, ui, lang }) {
           </div>
         </div>
       </div>
+
+      {/* Full-size Profile Photo Lightbox Modal */}
+      <ProfileModal
+        isOpen={isPhotoModalOpen}
+        onClose={() => setIsPhotoModalOpen(false)}
+        imageSrc={profileFullImg}
+        name={profile?.name}
+        role={profile?.role}
+        location={profile?.location}
+      />
     </section>
   )
 }

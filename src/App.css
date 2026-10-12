@@ -544,10 +544,182 @@
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
+  object-position: center;
   border: 4px solid var(--bg);
   position: relative;
   z-index: 2;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  display: block;
+}
+
+.clickable-profile-img {
+  cursor: pointer;
+  cursor: zoom-in;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease, filter 0.25s ease;
+}
+
+.clickable-profile-img:hover {
+  transform: scale(1.05);
+  filter: brightness(1.05);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(16, 185, 129, 0.45);
+}
+
+.clickable-profile-img:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--accent), 0 0 30px rgba(16, 185, 129, 0.5);
+  transform: scale(1.04);
+}
+
+.clickable-profile-img:active {
+  transform: scale(0.98);
+}
+
+/* Profile Full-Size Modal Lightbox */
+.profile-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 6, 11, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.profile-modal-card {
+  position: relative;
+  max-width: 520px;
+  width: 100%;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  background: rgba(13, 20, 32, 0.95);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), 0 0 50px rgba(16, 185, 129, 0.15);
+  animation: modalScaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+[data-theme="light"] .profile-modal-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(16, 185, 129, 0.3);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2), 0 0 35px rgba(16, 185, 129, 0.1);
+}
+
+.profile-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-color, #ffffff);
+  font-size: 16px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.profile-modal-close:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #ef4444;
+  transform: rotate(90deg);
+}
+
+.profile-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-right: 48px;
+}
+
+.profile-modal-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-color, #ffffff);
+  letter-spacing: -0.01em;
+}
+
+.profile-modal-subtitle {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.profile-modal-location-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  color: var(--accent);
+  border-radius: 999px;
+  white-space: nowrap;
+  align-self: flex-start;
+}
+
+.profile-modal-image-wrapper {
+  flex: 1;
+  min-height: 250px;
+  max-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 9, 15, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 10px;
+  overflow: hidden;
+}
+
+[data-theme="light"] .profile-modal-image-wrapper {
+  background: rgba(240, 244, 248, 0.8);
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+.profile-modal-image {
+  max-width: 100%;
+  max-height: 58vh;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  display: block;
+}
+
+.profile-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+}
+
+.profile-modal-btn {
+  border-radius: 999px !important;
+  font-size: 13px !important;
+  padding: 8px 18px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 /* Floating Tech Badges */
