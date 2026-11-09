@@ -251,10 +251,10 @@ export const portfolio = {
     ],
     interests: [
       'Full-Stack Web Engineering',
-      'Offline-First Applications & HealthTech',
-      'Open Source Development',
-      'UI/UX Design Systems',
-      'Database Modeling & Performance',
+      'Football',
+      'Music',
+      'Video Games',
+      'Reading Books & Society News',
     ],
     contactSection: {
       kicker: 'Get in Touch',
@@ -593,10 +593,10 @@ export const portfolio = {
     ],
     interests: [
       'Développement Web Full-Stack',
-      'Applications Offline-First & Santé Numérique',
-      'Open Source & Projets Collaboratifs',
-      'Design Systems & Ergonomie UI/UX',
-      'Modélisation et Optimisation de Bases de Données',
+      'Football',
+      'Musique',
+      'Jeux Vidéo',
+      'Lecture & Actualités de la Société',
     ],
     contactSection: {
       kicker: 'Prendre Contact',

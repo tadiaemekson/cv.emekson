@@ -301,6 +301,28 @@ export function queryAIAgent(userQuery, portfolioData, currentLang = 'en') {
     }
   }
 
+  // --- Intent 11: Hobbies & Interests ---
+  if (/hobby|hobbies|interest|interests|passion|passions|loisir|loisirs|football|music|musique|game|games|jeu|jeux|book|books|livre|livres|société|society/i.test(query)) {
+    if (isFR) {
+      return {
+        text: `**Centres d'Intérêt & Loisirs** 🎯\n\nEn dehors du code et du développement web Full-Stack, Emekson aime :\n• **Le Football** ⚽\n• **La Musique** 🎵\n• **Les Jeux Vidéo** 🎮\n• **La Lecture & s'informer sur l'actualité et la société** 📚🌍`,
+        suggestions: [
+          '🚀 Voir ses projets',
+          '🛠️ Stack technique',
+          '📞 Le contacter'
+        ]
+      }
+    }
+    return {
+      text: `**Interests & Hobbies** 🎯\n\nApart from coding and full-stack web engineering, Emekson enjoys:\n• **Football** ⚽\n• **Music** 🎵\n• **Video Games** 🎮\n• **Reading books & staying informed about society** 📚🌍`,
+      suggestions: [
+        '🚀 View featured projects',
+        '🛠️ Tech stack',
+        '📞 Contact details'
+      ]
+    }
+  }
+
   // --- Default Fallback ---
   if (isFR) {
     return {

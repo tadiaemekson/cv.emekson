@@ -20,7 +20,28 @@ import { portfolio as defaultPortfolio } from './data/portfolio'
 
 const LANG_STORAGE_KEY = 'portfolio-lang'
 const ADMIN_TOKEN_KEY = 'admin-token'
-const PORTFOLIO_CUSTOM_KEY = 'portfolio-custom-data'
+const PORTFOLIO_CUSTOM_KEY = 'portfolio-custom-data-v2'
+
+function normalizePortfolioData(raw) {
+  if (!raw?.en || !raw?.fr) return defaultPortfolio
+  return {
+    ...raw,
+    en: {
+      ...defaultPortfolio.en,
+      ...raw.en,
+      languages: defaultPortfolio.en.languages,
+      educationHistory: defaultPortfolio.en.educationHistory,
+      interests: defaultPortfolio.en.interests,
+    },
+    fr: {
+      ...defaultPortfolio.fr,
+      ...raw.fr,
+      languages: defaultPortfolio.fr.languages,
+      educationHistory: defaultPortfolio.fr.educationHistory,
+      interests: defaultPortfolio.fr.interests,
+    },
+  }
+}
 
 function getInitialLang() {
   if (typeof window === 'undefined') return 'en'
@@ -37,10 +58,11 @@ function getInitialAdminToken() {
 function getInitialPortfolio() {
   if (typeof window === 'undefined') return defaultPortfolio
   try {
+    window.localStorage.removeItem('portfolio-custom-data')
     const saved = window.localStorage.getItem(PORTFOLIO_CUSTOM_KEY)
     if (saved) {
       const parsed = JSON.parse(saved)
-      if (parsed?.en && parsed?.fr) return parsed
+      if (parsed?.en && parsed?.fr) return normalizePortfolioData(parsed)
     }
   } catch {
     // fallback
@@ -68,8 +90,9 @@ function App() {
       .then(res => res.json())
       .then(data => {
         if (data?.portfolio?.en && data?.portfolio?.fr) {
-          setPortfolioData(data.portfolio)
-          window.localStorage.setItem(PORTFOLIO_CUSTOM_KEY, JSON.stringify(data.portfolio))
+          const normalized = normalizePortfolioData(data.portfolio)
+          setPortfolioData(normalized)
+          window.localStorage.setItem(PORTFOLIO_CUSTOM_KEY, JSON.stringify(normalized))
         }
       })
       .catch(() => {
