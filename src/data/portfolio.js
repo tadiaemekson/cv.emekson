@@ -210,8 +210,7 @@ export const portfolio = {
         period: '2026 – Present',
         details: [
           'Initially served as a technical trainer and mentor for new students applying for and undertaking academic internships within the company.',
-          'Undertaking a professional internship in software development, full-stack architectures, and web applications.',
-          'Contributing to software development, application architecture, database management, and agile team workflows.'
+          'Undertaking a professional internship in software development, full-stack architectures, and web applications.'
         ],
       },
       {
@@ -220,7 +219,7 @@ export const portfolio = {
         location: 'Douala, Cameroon',
         period: 'July – September 2024',
         details: [
-          'Worked on a project of building a website to help track workers availability to work and show different task of the company.',
+          'Worked on the "KIAMA 360" project: building a web platform to track workers\' availability and manage company tasks.',
           'Participated in software development and administrative tasks.'
         ],
         certKey: 'kiama',
@@ -557,8 +556,7 @@ export const portfolio = {
         period: '2026 – Présent',
         details: [
           'A d\'abord exercé en tant que formateur et encadreur technique pour les nouveaux étudiants ayant postulé pour un stage académique au sein de l\'entreprise.',
-          'Réalisation d\'un stage professionnel en développement logiciel, architectures full-stack et applications web.',
-          'Contribution active au développement de solutions applicatives, à l\'architecture logicielle et à la gestion de bases de données.'
+          'Réalisation d\'un stage professionnel en développement logiciel, architectures full-stack et applications web.'
         ],
       },
       {
@@ -567,7 +565,7 @@ export const portfolio = {
         location: 'Douala, Cameroun',
         period: 'Juillet – Septembre 2024',
         details: [
-          'Participation au développement d\'un site web de suivi des disponibilités et d\'attribution des tâches pour l\'entreprise.',
+          'Travail sur le projet « KIAMA 360 » : développement d\'une plateforme web de suivi des disponibilités des employés et de gestion des tâches de l\'entreprise.',
           'Participation au développement logiciel et aux opérations informatiques.'
         ],
         certKey: 'kiama',

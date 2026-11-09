@@ -20,7 +20,7 @@ import { portfolio as defaultPortfolio } from './data/portfolio'
 
 const LANG_STORAGE_KEY = 'portfolio-lang'
 const ADMIN_TOKEN_KEY = 'admin-token'
-const PORTFOLIO_CUSTOM_KEY = 'portfolio-custom-data-v4'
+const PORTFOLIO_CUSTOM_KEY = 'portfolio-custom-data-v5'
 
 function normalizePortfolioData(raw) {
   if (!raw?.en || !raw?.fr) return defaultPortfolio

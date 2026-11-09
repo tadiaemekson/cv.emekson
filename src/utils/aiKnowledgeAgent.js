@@ -195,7 +195,7 @@ export function queryAIAgent(userQuery, portfolioData, currentLang = 'en') {
   if (/experience|expérience|stage|internship|pronote|kiama|sigeris|travail|work|career|trainer|formateur/i.test(query)) {
     if (isFR) {
       return {
-        text: `**Parcours Professionnel & Stages en Entreprise** 💼\n\n1. **IFP PRONOTE COMPANY (2026 – Présent) :**\n   • A d'abord exercé comme **formateur et encadreur technique** pour les nouveaux étudiants en stage académique au sein de l'entreprise.\n   • Stage Professionnel en développement logiciel et architectures web full-stack.\n   • Conception applicative, gestion de bases de données et collaboration au sein d'une équipe agile.\n\n2. **KIAMA SA — Douala (Juil – Sept 2024) :**\n   • Développement d'une plateforme web pour suivre la disponibilité des employés et planifier les missions.\n\n3. **SIGERIS Sarl — Bafoussam (Juin – Août 2023) :**\n   • Implémentation de modules CRUD avec PHP et Grocery CRUD, modélisation de bases de données et maintenance système.`,
+        text: `**Parcours Professionnel & Stages en Entreprise** 💼\n\n1. **IFP PRONOTE COMPANY (2026 – Présent) :**\n   • A d'abord exercé comme **formateur et encadreur technique** pour les nouveaux étudiants en stage académique au sein de l'entreprise.\n   • Stage Professionnel en développement logiciel et architectures web full-stack.\n\n2. **KIAMA SA — Douala (Juil – Sept 2024) :**\n   • Travail sur le projet **KIAMA 360** : développement d'une plateforme web pour suivre la disponibilité des employés et planifier les missions de l'entreprise.\n\n3. **SIGERIS Sarl — Bafoussam (Juin – Août 2023) :**\n   • Implémentation de modules CRUD avec PHP et Grocery CRUD, modélisation de bases de données et maintenance système.`,
         suggestions: [
           '🎓 Sa formation universitaire (B-TECH)',
           '🚀 Voir ses projets réalisés',
@@ -204,7 +204,7 @@ export function queryAIAgent(userQuery, portfolioData, currentLang = 'en') {
       }
     }
     return {
-      text: `**Industry Experience & Internships** 💼\n\n1. **IFP PRONOTE COMPANY (2026 – Present):**\n   • Initially served as a **technical trainer and mentor** for new students undertaking academic internships in the company.\n   • Professional Internship in software development, full-stack architecture, and database modeling.\n   • Actively contributing to software design, API implementations, and agile team workflows.\n\n2. **KIAMA SA — Douala (July – Sept 2024):**\n   • Developed an internal web application to manage employee availability and company task allocation.\n\n3. **SIGERIS Sarl — Bafoussam (June – August 2023):**\n   • Built CRUD database interfaces using PHP and Grocery CRUD, assisted in network and IT administration.`,
+      text: `**Industry Experience & Internships** 💼\n\n1. **IFP PRONOTE COMPANY (2026 – Present):**\n   • Initially served as a **technical trainer and mentor** for new students undertaking academic internships in the company.\n   • Professional Internship in software development, full-stack architectures, and web applications.\n\n2. **KIAMA SA — Douala (July – Sept 2024):**\n   • Worked on the **KIAMA 360** project: developed an internal web application to manage employee availability and company task allocation.\n\n3. **SIGERIS Sarl — Bafoussam (June – August 2023):**\n   • Built CRUD database interfaces using PHP and Grocery CRUD, assisted in network and IT administration.`,
       suggestions: [
         '🎓 University Education (B-TECH)',
         '🚀 Explore featured projects',
