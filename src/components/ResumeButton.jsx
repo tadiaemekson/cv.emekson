@@ -141,9 +141,9 @@ export default function ResumeButton({ portfolio, ui }) {
       y += 2
     })
 
-    // --- Projects ---
+    // --- Projects (Top 4 Featured Projects) ---
     renderSectionHeader(nav.projects)
-    projects.forEach(project => {
+    ;(projects || []).slice(0, 4).forEach(project => {
       doc.setFont(FONT_FAMILY, 'italic')
       doc.setFontSize(9.5)
       const techText = `Technologies: ${(project.tech || []).join(', ')}`
