@@ -170,10 +170,10 @@ export function queryAIAgent(userQuery, portfolioData, currentLang = 'en') {
   }
 
   // --- Intent 5: Skills & Tech Stack ---
-  if (/skill|stack|technologie|competence|compétence|react|laravel|node|typescript|javascript|php|sql|database|mongo|dexie|git|docker/i.test(query)) {
+  if (/skill|stack|technologie|competence|compétence|react|laravel|node|typescript|javascript|php|sql|database|mongo|dexie|git|docker|ai|ia|agent|antigravity|gemini|claude|chatgpt|copilot|cursor|outil|tool/i.test(query)) {
     if (isFR) {
       return {
-        text: `**Compétences Techniques & Technologies d'Emekson** 🛠️\n\n• **Frontend :** React 19, TypeScript, JavaScript (ES6+), Tailwind CSS, Bootstrap 5, HTML5/CSS3, Design Réactif.\n• **Backend & APIs :** PHP 8+, Laravel 12, Node.js, Express, Conception d'APIs RESTful, Authentification JWT & Sécurité RBAC.\n• **Bases de Données :** MySQL, PostgreSQL, Supabase, MongoDB Atlas, IndexedDB (Dexie.js pour le offline-first).\n• **Outils & Méthodes :** Git & GitHub, Postman API, Docker (bases), Three.js / WebGL, Méthodes Agiles.\n\nIl applique toujours une grande rigueur sur la propreté du code et l'expérience utilisateur finale.`,
+        text: `**Compétences Techniques & Technologies d'Emekson** 🛠️\n\n• **Frontend :** React 19, TypeScript, JavaScript (ES6+), Tailwind CSS, Bootstrap 5, HTML5/CSS3, Design Réactif.\n• **Backend & APIs :** PHP 8+, Laravel 12, Node.js, Express, Conception d'APIs RESTful, Authentification JWT & Sécurité RBAC.\n• **Bases de Données :** MySQL, PostgreSQL, Supabase, MongoDB Atlas, IndexedDB (Dexie.js pour le offline-first).\n• **Outils, DevOps & Agents IA :** Antigravity (Google DeepMind), Google Gemini & Gemini CLI, Claude Code & Claude AI, ChatGPT (OpenAI), GitHub Copilot, Cursor AI, Git & GitHub, VS Code, Postman API, Docker, Three.js / WebGL.\n\nIl applique toujours une grande rigueur sur la propreté du code et l'expérience utilisateur finale.`,
         suggestions: [
           '🚀 Voir ses projets réalisés',
           '💼 Son parcours chez IFP Pronote',
@@ -182,7 +182,7 @@ export function queryAIAgent(userQuery, portfolioData, currentLang = 'en') {
       }
     }
     return {
-      text: `**Technical Skills & Stack for ${name}** 🛠️\n\n• **Frontend:** React 19, TypeScript, JavaScript (ES6+), Tailwind CSS, Bootstrap 5, HTML5/CSS3, Responsive UI/UX.\n• **Backend & APIs:** PHP 8+, Laravel 12, Node.js, Express, RESTful API Design, JWT Authentication & RBAC Security.\n• **Databases:** MySQL, PostgreSQL, Supabase, MongoDB Atlas, IndexedDB (Dexie.js for offline sync).\n• **Tools & Workflows:** Git & GitHub, Postman API, Docker (basics), Three.js / WebGL, Agile workflows.\n\nHe emphasizes maintainable code architecture, thoughtful UX, and reliable system performance.`,
+      text: `**Technical Skills & Stack for ${name}** 🛠️\n\n• **Frontend:** React 19, TypeScript, JavaScript (ES6+), Tailwind CSS, Bootstrap 5, HTML5/CSS3, Responsive UI/UX.\n• **Backend & APIs:** PHP 8+, Laravel 12, Node.js, Express, RESTful API Design, JWT Authentication & RBAC Security.\n• **Databases:** MySQL, PostgreSQL, Supabase, MongoDB Atlas, IndexedDB (Dexie.js for offline sync).\n• **Tools, DevOps & AI Agents:** Antigravity (Google DeepMind), Google Gemini & Gemini CLI, Claude Code & Claude AI, ChatGPT (OpenAI), GitHub Copilot, Cursor AI, Git & GitHub, VS Code, Postman API, Docker (basics), Three.js / WebGL.\n\nHe emphasizes maintainable code architecture, thoughtful UX, and reliable system performance.`,
       suggestions: [
         '🚀 View his featured projects',
         '💼 Experience at IFP Pronote',

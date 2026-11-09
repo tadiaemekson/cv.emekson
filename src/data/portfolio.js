@@ -72,8 +72,8 @@ export const portfolio = {
         tags: ['MySQL', 'PostgreSQL', 'Supabase', 'MongoDB Atlas', 'IndexedDB (Dexie.js)', 'Database Schema Design & Query Optimization'],
       },
       {
-        title: 'Tools & DevOps',
-        tags: ['Git & GitHub', 'VS Code', 'Postman API', 'Docker Basics', 'Three.js / WebGL', 'jsPDF', 'Modern AI Dev Tools'],
+        title: 'Tools, DevOps & AI Agents',
+        tags: ['Antigravity (Google DeepMind)', 'Google Gemini & Gemini CLI', 'Claude Code & Claude AI', 'ChatGPT (OpenAI)', 'GitHub Copilot', 'Cursor AI', 'Git & GitHub', 'VS Code', 'Postman API', 'Docker Basics', 'Three.js / WebGL', 'jsPDF'],
       },
     ],
     projectsSection: {
@@ -418,8 +418,8 @@ export const portfolio = {
         tags: ['MySQL', 'PostgreSQL', 'Supabase', 'MongoDB Atlas', 'IndexedDB (Dexie.js)', 'Conception de Schémas & Optimisation de Requêtes'],
       },
       {
-        title: 'Outils & DevOps',
-        tags: ['Git & GitHub', 'VS Code', 'Postman API', 'Bases de Docker', 'Three.js / WebGL', 'jsPDF', 'Outils de Développement Modernes'],
+        title: 'Outils, DevOps & Agents IA',
+        tags: ['Antigravity (Google DeepMind)', 'Google Gemini & Gemini CLI', 'Claude Code & Claude AI', 'ChatGPT (OpenAI)', 'GitHub Copilot', 'Cursor AI', 'Git & GitHub', 'VS Code', 'Postman API', 'Bases de Docker', 'Three.js / WebGL', 'jsPDF'],
       },
     ],
     projectsSection: {

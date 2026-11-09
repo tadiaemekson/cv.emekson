@@ -20,7 +20,7 @@ import { portfolio as defaultPortfolio } from './data/portfolio'
 
 const LANG_STORAGE_KEY = 'portfolio-lang'
 const ADMIN_TOKEN_KEY = 'admin-token'
-const PORTFOLIO_CUSTOM_KEY = 'portfolio-custom-data-v5'
+const PORTFOLIO_CUSTOM_KEY = 'portfolio-custom-data-v6'
 
 function normalizePortfolioData(raw) {
   if (!raw?.en || !raw?.fr) return defaultPortfolio
@@ -29,6 +29,7 @@ function normalizePortfolioData(raw) {
     en: {
       ...defaultPortfolio.en,
       ...raw.en,
+      skills: defaultPortfolio.en.skills,
       languages: defaultPortfolio.en.languages,
       educationHistory: defaultPortfolio.en.educationHistory,
       interests: defaultPortfolio.en.interests,
@@ -37,6 +38,7 @@ function normalizePortfolioData(raw) {
     fr: {
       ...defaultPortfolio.fr,
       ...raw.fr,
+      skills: defaultPortfolio.fr.skills,
       languages: defaultPortfolio.fr.languages,
       educationHistory: defaultPortfolio.fr.educationHistory,
       interests: defaultPortfolio.fr.interests,
