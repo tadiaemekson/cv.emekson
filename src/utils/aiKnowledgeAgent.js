@@ -305,7 +305,7 @@ export function queryAIAgent(userQuery, portfolioData, currentLang = 'en') {
   if (/hobby|hobbies|interest|interests|passion|passions|loisir|loisirs|football|music|musique|game|games|jeu|jeux|book|books|livre|livres|société|society/i.test(query)) {
     if (isFR) {
       return {
-        text: `**Centres d'Intérêt & Loisirs** 🎯\n\nEn dehors du code et du développement web Full-Stack, Emekson aime :\n• **Le Football** ⚽\n• **La Musique** 🎵\n• **Les Jeux Vidéo** 🎮\n• **La Lecture & s'informer sur l'actualité et la société** 📚🌍`,
+        text: `**Centres d'Intérêt & Loisirs** 🎯\n\n**Passions Techniques :**\n• Développement Web Full-Stack, Applications Offline-First & Santé Numérique, Open Source, Design Systems UI/UX et Bases de Données.\n\n**En dehors du code :**\n• **Football** ⚽\n• **Musique** 🎵\n• **Jeux Vidéo** 🎮\n• **Lecture de livres & s'informer sur la société** 📚🌍`,
         suggestions: [
           '🚀 Voir ses projets',
           '🛠️ Stack technique',
@@ -314,7 +314,7 @@ export function queryAIAgent(userQuery, portfolioData, currentLang = 'en') {
       }
     }
     return {
-      text: `**Interests & Hobbies** 🎯\n\nApart from coding and full-stack web engineering, Emekson enjoys:\n• **Football** ⚽\n• **Music** 🎵\n• **Video Games** 🎮\n• **Reading books & staying informed about society** 📚🌍`,
+      text: `**Interests & Hobbies** 🎯\n\n**Engineering Interests:**\n• Full-Stack Web Engineering, Offline-First Applications & HealthTech, Open Source Development, UI/UX Design Systems, and Database Modeling.\n\n**Apart from coding:**\n• **Football** ⚽\n• **Music** 🎵\n• **Video Games** 🎮\n• **Reading books & staying informed about society** 📚🌍`,
       suggestions: [
         '🚀 View featured projects',
         '🛠️ Tech stack',
