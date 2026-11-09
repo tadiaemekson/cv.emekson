@@ -20,7 +20,7 @@ import { portfolio as defaultPortfolio } from './data/portfolio'
 
 const LANG_STORAGE_KEY = 'portfolio-lang'
 const ADMIN_TOKEN_KEY = 'admin-token'
-const PORTFOLIO_CUSTOM_KEY = 'portfolio-custom-data-v3'
+const PORTFOLIO_CUSTOM_KEY = 'portfolio-custom-data-v4'
 
 function normalizePortfolioData(raw) {
   if (!raw?.en || !raw?.fr) return defaultPortfolio
@@ -32,6 +32,7 @@ function normalizePortfolioData(raw) {
       languages: defaultPortfolio.en.languages,
       educationHistory: defaultPortfolio.en.educationHistory,
       interests: defaultPortfolio.en.interests,
+      experience: defaultPortfolio.en.experience,
     },
     fr: {
       ...defaultPortfolio.fr,
@@ -39,6 +40,7 @@ function normalizePortfolioData(raw) {
       languages: defaultPortfolio.fr.languages,
       educationHistory: defaultPortfolio.fr.educationHistory,
       interests: defaultPortfolio.fr.interests,
+      experience: defaultPortfolio.fr.experience,
     },
   }
 }

@@ -204,12 +204,13 @@ export const portfolio = {
     ],
     experience: [
       {
-        title: 'Professional Internship – Software Developer',
+        title: 'Professional Internship – Software Developer & Intern Trainer',
         company: 'IFP PRONOTE COMPANY',
         location: 'Cameroon',
         period: '2026 – Present',
         details: [
-          'Applied for and currently undertaking a professional internship in software development, full-stack architectures, and web applications.',
+          'Initially served as a technical trainer and mentor for new students applying for and undertaking academic internships within the company.',
+          'Undertaking a professional internship in software development, full-stack architectures, and web applications.',
           'Contributing to software development, application architecture, database management, and agile team workflows.'
         ],
       },
@@ -550,12 +551,13 @@ export const portfolio = {
     ],
     experience: [
       {
-        title: 'Stage Professionnel – Développeur Logiciel',
+        title: 'Stage Professionnel – Développeur Logiciel & Formateur de Stagiaires',
         company: 'IFP PRONOTE COMPANY',
         location: 'Cameroun',
         period: '2026 – Présent',
         details: [
-          'Candidature et réalisation d\'un stage professionnel en développement logiciel, architectures full-stack et applications web.',
+          'A d\'abord exercé en tant que formateur et encadreur technique pour les nouveaux étudiants ayant postulé pour un stage académique au sein de l\'entreprise.',
+          'Réalisation d\'un stage professionnel en développement logiciel, architectures full-stack et applications web.',
           'Contribution active au développement de solutions applicatives, à l\'architecture logicielle et à la gestion de bases de données.'
         ],
       },
