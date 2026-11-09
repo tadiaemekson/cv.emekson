@@ -190,7 +190,7 @@ export const portfolio = {
         period: '2020 – 2021',
       },
       {
-        degree: 'BEPC – Series A4 Spanish',
+        degree: 'BEPC',
         school: 'Government Bilingual High School Bafoussam Rural',
         location: 'Bafoussam, Cameroon',
         period: '2016 – 2017',
@@ -245,9 +245,9 @@ export const portfolio = {
       'Attention to Detail & Performance',
     ],
     languages: [
-      { name: 'English', level: 'Working Proficiency' },
-      { name: 'French', level: 'Working Proficiency' },
-      { name: 'Spanish', level: 'Basic' },
+      { name: 'French', level: 'Fluent' },
+      { name: 'English', level: 'Intermediate' },
+      { name: 'Mbouda', level: 'Native / Fluent' },
     ],
     interests: [
       'Full-Stack Web Engineering',
@@ -532,7 +532,7 @@ export const portfolio = {
         period: '2020 – 2021',
       },
       {
-        degree: 'BEPC – Série A4 Espagnol',
+        degree: 'BEPC',
         school: 'Lycée Bilingue de Bafoussam Rural',
         location: 'Bafoussam, Cameroun',
         period: '2016 – 2017',
@@ -587,9 +587,9 @@ export const portfolio = {
       'Rigueur & Souci de la Performance',
     ],
     languages: [
-      { name: 'Anglais', level: 'Courant' },
       { name: 'Français', level: 'Courant' },
-      { name: 'Espagnol', level: 'Notions de base' },
+      { name: 'Anglais', level: 'Intermédiaire' },
+      { name: 'Mbouda', level: 'Langue maternelle (Courant)' },
     ],
     interests: [
       'Développement Web Full-Stack',

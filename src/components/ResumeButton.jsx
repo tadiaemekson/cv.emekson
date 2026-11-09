@@ -95,16 +95,22 @@ export default function ResumeButton({ portfolio, ui }) {
     // --- Technical Skills ---
     renderSectionHeader(nav.skills)
     doc.setFontSize(10) // Document Structure
+    const skillLabelColWidth = 55
     skills.forEach(skillGroup => {
-      checkPageEnd(12)
       doc.setFont(FONT_FAMILY, 'bold')
-      doc.text(`${skillGroup.title}:`, margin, y)
-      
+      const splitLabel = doc.splitTextToSize(`${skillGroup.title}:`, skillLabelColWidth - 3)
       doc.setFont(FONT_FAMILY, 'normal')
       const skillList = skillGroup.tags.join(', ')
-      const splitSkills = doc.splitTextToSize(skillList, contentWidth - 50)
-      doc.text(splitSkills, margin + 50, y)
-      y += Math.max(5, (splitSkills.length * 5))
+      const splitSkills = doc.splitTextToSize(skillList, contentWidth - skillLabelColWidth)
+      const rowHeight = Math.max(splitLabel.length * 5, splitSkills.length * 5)
+
+      checkPageEnd(rowHeight + 4)
+
+      doc.setFont(FONT_FAMILY, 'bold')
+      doc.text(splitLabel, margin, y)
+      doc.setFont(FONT_FAMILY, 'normal')
+      doc.text(splitSkills, margin + skillLabelColWidth, y)
+      y += rowHeight + 1.5
     })
     y += 2
 
@@ -138,20 +144,30 @@ export default function ResumeButton({ portfolio, ui }) {
     // --- Projects ---
     renderSectionHeader(nav.projects)
     projects.forEach(project => {
-      const splitDesc = doc.splitTextToSize(project.description, contentWidth)
-      checkPageEnd(splitDesc.length * 5 + 15)
+      doc.setFont(FONT_FAMILY, 'italic')
+      doc.setFontSize(9.5)
+      const techText = `Technologies: ${(project.tech || []).join(', ')}`
+      const splitTech = doc.splitTextToSize(techText, contentWidth)
+
+      doc.setFont(FONT_FAMILY, 'normal')
+      doc.setFontSize(10)
+      const splitDesc = doc.splitTextToSize(project.description || '', contentWidth)
+
+      checkPageEnd((splitTech.length * 4.5) + (splitDesc.length * 5) + 14)
       
       doc.setFont(FONT_FAMILY, 'bold')
       doc.setFontSize(12) // Subtitle (Project Title)
+      doc.setTextColor(...MAIN_TEXT)
       doc.text(project.title, margin, y)
       
-      doc.setFont(FONT_FAMILY, 'normal')
-      doc.setFontSize(10) // Document Structure
+      y += 5
+      doc.setFont(FONT_FAMILY, 'italic')
+      doc.setFontSize(9.5) // Technologies line beneath title to prevent overlap
       doc.setTextColor(...SECONDARY_TEXT)
-      const techText = `Technologies: ${project.tech.join(', ')}`
-      doc.text(techText, pageWidth - margin, y, { align: 'right' })
+      doc.text(splitTech, margin, y)
       
-      y += 6
+      y += (splitTech.length * 4.5) + 1
+      doc.setFont(FONT_FAMILY, 'normal')
       doc.setFontSize(10) // Document Structure
       doc.setTextColor(...MAIN_TEXT)
       doc.text(splitDesc, margin, y)
@@ -177,30 +193,35 @@ export default function ResumeButton({ portfolio, ui }) {
     })
 
     // --- Languages & Personal ---
-    checkPageEnd(40)
+    checkPageEnd(45)
     renderSectionHeader(isEN ? 'Additional Information' : 'Informations Complémentaires')
     
+    const infoLabelColWidth = 42
     doc.setFontSize(10) // Document Structure
     doc.setFont(FONT_FAMILY, 'bold')
     doc.text(`${educationSection.languages}:`, margin, y)
     doc.setFont(FONT_FAMILY, 'normal')
     const langText = languages.map(l => `${l.name} (${l.level})`).join('  •  ')
-    doc.text(langText, margin + 35, y)
+    const splitLang = doc.splitTextToSize(langText, contentWidth - infoLabelColWidth)
+    doc.text(splitLang, margin + infoLabelColWidth, y)
     
-    y += 8
+    y += (splitLang.length * 5) + 3
     doc.setFont(FONT_FAMILY, 'bold')
-    doc.text(`${educationSection.qualities}:`, margin, y)
+    const splitQualLabel = doc.splitTextToSize(`${educationSection.qualities}:`, infoLabelColWidth - 3)
+    doc.text(splitQualLabel, margin, y)
     doc.setFont(FONT_FAMILY, 'normal')
     const qualText = qualities.join(', ')
-    const splitQual = doc.splitTextToSize(qualText, contentWidth - 35)
-    doc.text(splitQual, margin + 35, y)
+    const splitQual = doc.splitTextToSize(qualText, contentWidth - infoLabelColWidth)
+    doc.text(splitQual, margin + infoLabelColWidth, y)
     
-    y += (splitQual.length * 5) + 3
+    y += Math.max(splitQualLabel.length * 5, splitQual.length * 5) + 3
     doc.setFont(FONT_FAMILY, 'bold')
-    doc.text(`${educationSection.interests}:`, margin, y)
+    const splitIntLabel = doc.splitTextToSize(`${educationSection.interests}:`, infoLabelColWidth - 3)
+    doc.text(splitIntLabel, margin, y)
     doc.setFont(FONT_FAMILY, 'normal')
     const intText = interests.join(', ')
-    doc.text(intText, margin + 35, y)
+    const splitInt = doc.splitTextToSize(intText, contentWidth - infoLabelColWidth)
+    doc.text(splitInt, margin + infoLabelColWidth, y)
 
     doc.save(`Resume_${profile.name.replace(/\s+/g, '_')}_${isEN ? 'EN' : 'FR'}.pdf`)
   }

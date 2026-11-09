@@ -279,6 +279,28 @@ export function queryAIAgent(userQuery, portfolioData, currentLang = 'en') {
     }
   }
 
+  // --- Intent 10: Languages Spoken ---
+  if (/langue|langues|language|languages|french|français|francais|english|anglais|mbouda|parle|speak/i.test(query)) {
+    if (isFR) {
+      return {
+        text: `**Compétences Linguistiques** 🌍\n\n• **Français :** Courant\n• **Anglais :** Intermédiaire\n• **Mbouda :** Langue maternelle (Courant)`,
+        suggestions: [
+          '🎓 Sa formation universitaire',
+          '💼 Ses stages en entreprise',
+          '📞 Comment le contacter ?'
+        ]
+      }
+    }
+    return {
+      text: `**Languages Spoken** 🌍\n\n• **French:** Fluent\n• **English:** Intermediate\n• **Mbouda:** Native / Fluent`,
+      suggestions: [
+        '🎓 Academic background',
+        '💼 Industry internships',
+        '📞 How to contact him?'
+      ]
+    }
+  }
+
   // --- Default Fallback ---
   if (isFR) {
     return {
