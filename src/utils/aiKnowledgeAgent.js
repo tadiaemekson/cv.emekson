@@ -42,6 +42,7 @@ export function queryAIAgent(userQuery, portfolioData, currentLang = 'en') {
   const phones = data?.contact?.phones || ['+237 655 648 766', '+237 674 725 952']
   const whatsappUrl = data?.contact?.whatsapp || 'https://wa.me/237655648766'
   const name = data?.profile?.name || 'TADIA FONGE EMEKSON'
+  const location = data?.profile?.location || data?.contact?.location || (isFR ? 'Buea, Cameroun' : 'Buea, Cameroon')
 
   // --- Intent 1: Greetings & Identity ---
   if (/^(hi|hello|hey|greetings|good\s*(morning|afternoon|evening)|yo|salut|bonjour|bonsoir|coucou|hola)\b/i.test(query) || query === 'hi' || query === 'hello' || query === 'bonjour') {
@@ -236,10 +237,10 @@ export function queryAIAgent(userQuery, portfolioData, currentLang = 'en') {
   }
 
   // --- Intent 8: Contact, Hiring & Availability ---
-  if (/contact|reach|email|phone|whatsapp|hire|recruter|embaucher|disponible|disponibilité|message|appel/i.test(query)) {
+  if (/contact|reach|email|phone|whatsapp|hire|recruter|embaucher|disponible|disponibilité|message|appel|location|localisation|area|zone|ou\b|où|where/i.test(query)) {
     if (isFR) {
       return {
-        text: `**Coordonnées & Disponibilité d'Emekson** 📬\n\nEmekson est actuellement **disponible pour des opportunités professionnelles** (postes à temps plein, stages avancés et projets freelance) :\n\n• **Email :** [${email}](mailto:${email})\n• **Téléphone :** ${phones.join(' / ')}\n• **WhatsApp :** [Discuter en direct](${whatsappUrl})\n• **Localisation :** Buea, Cameroun\n\nVous pouvez également lui envoyer un message directement via le formulaire de contact en bas de page !`,
+        text: `**Coordonnées & Disponibilité d'Emekson** 📬\n\nEmekson est actuellement **disponible pour des opportunités professionnelles** (postes à temps plein, stages avancés et projets freelance) :\n\n• **Zone d'activité / Localisation :** ${location}\n• **Email :** [${email}](mailto:${email})\n• **Téléphone :** ${phones.join(' / ')}\n• **WhatsApp :** [Discuter en direct](${whatsappUrl})\n\nVous pouvez également lui envoyer un message directement via le formulaire de contact en bas de page !`,
         suggestions: [
           '📄 Télécharger son CV',
           '🚀 Voir ses projets',
@@ -248,7 +249,7 @@ export function queryAIAgent(userQuery, portfolioData, currentLang = 'en') {
       }
     }
     return {
-      text: `**Contact Details & Availability** 📬\n\nEmekson is currently **open for software engineering roles, internships, and project collaborations**:\n\n• **Email:** [${email}](mailto:${email})\n• **Phone:** ${phones.join(' / ')}\n• **WhatsApp:** [Chat on WhatsApp](${whatsappUrl})\n• **Location:** Buea, Cameroon\n\nFeel free to also use the contact form at the bottom of the page to reach out directly!`,
+      text: `**Contact Details & Availability** 📬\n\nEmekson is currently **open for software engineering roles, internships, and project collaborations**:\n\n• **Current Area of Activity / Location:** ${location}\n• **Email:** [${email}](mailto:${email})\n• **Phone:** ${phones.join(' / ')}\n• **WhatsApp:** [Chat on WhatsApp](${whatsappUrl})\n\nFeel free to also use the contact form at the bottom of the page to reach out directly!`,
       suggestions: [
         '📄 Download Resume',
         '🚀 View featured projects',

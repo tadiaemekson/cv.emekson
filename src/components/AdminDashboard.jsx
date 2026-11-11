@@ -3,7 +3,7 @@ import {
   FaUser, FaProjectDiagram, FaTools, FaGraduationCap, FaEnvelope,
   FaSignOutAlt, FaSave, FaTrash, FaPlus, FaExternalLinkAlt, FaSync,
   FaCheckCircle, FaSearch, FaArrowLeft, FaEye, FaDownload, FaUpload,
-  FaUndo, FaClock, FaLayerGroup, FaChevronRight
+  FaUndo, FaClock, FaLayerGroup, FaChevronRight, FaMapMarkerAlt
 } from 'react-icons/fa'
 import logoImg from '../assets/logo.png'
 import { portfolio as defaultPortfolio } from '../data/portfolio'
@@ -92,15 +92,12 @@ export default function AdminDashboard({ token, onLogout, initialPortfolio, onPo
       if (res.ok) {
         showToast('Portfolio changes saved and synced successfully!')
         if (onPortfolioUpdate) onPortfolioUpdate(portfolioData)
-        window.localStorage.setItem('portfolio-custom-data', JSON.stringify(portfolioData))
       } else {
         const err = await res.json().catch(() => ({}))
         throw new Error(err?.error || 'Save failed')
       }
     } catch (e) {
       showToast(`Error saving: ${e.message}`, 'error')
-      // Save locally as backup
-      window.localStorage.setItem('portfolio-custom-data', JSON.stringify(portfolioData))
       if (onPortfolioUpdate) onPortfolioUpdate(portfolioData)
     } finally {
       setSaving(false)
@@ -195,6 +192,37 @@ export default function AdminDashboard({ token, onLogout, initialPortfolio, onPo
         }
       }
     }))
+  }
+
+  // Update Area of Activity across all sections & both languages (EN + FR)
+  const updateActivityArea = (enLocation, frLocation = enLocation) => {
+    setPortfolioData(prev => {
+      const nextEnLoc = enLocation
+      const nextFrLoc = frLocation
+      return {
+        ...prev,
+        en: {
+          ...prev.en,
+          profile: { ...prev.en.profile, location: nextEnLoc },
+          about: { ...prev.en.about, locationText: nextEnLoc },
+          contact: { ...prev.en.contact, location: nextEnLoc },
+          hero: {
+            ...prev.en.hero,
+            availability: `OPEN FOR WORK • ${nextEnLoc.toUpperCase()}`,
+          },
+        },
+        fr: {
+          ...prev.fr,
+          profile: { ...prev.fr.profile, location: nextFrLoc },
+          about: { ...prev.fr.about, locationText: nextFrLoc },
+          contact: { ...prev.fr.contact, location: nextFrLoc },
+          hero: {
+            ...prev.fr.hero,
+            availability: `DISPONIBLE EN DIRECT • ${nextFrLoc.toUpperCase()}`,
+          },
+        },
+      }
+    })
   }
 
   // Project Handlers
@@ -453,6 +481,89 @@ export default function AdminDashboard({ token, onLogout, initialPortfolio, onPo
             </div>
           </div>
 
+          {/* Current Area of Activity & Availability Quick Switcher */}
+          <div className="card" style={{ border: '1px solid rgba(16, 185, 129, 0.3)', background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.06), rgba(6, 182, 212, 0.04))' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '14px' }}>
+              <div>
+                <h3 style={{ fontSize: '18px', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <FaMapMarkerAlt style={{ color: 'var(--accent)' }} /> Area of Activity & Availability
+                </h3>
+                <p className="muted" style={{ fontSize: '13px', margin: '4px 0 0' }}>
+                  Change where you are currently available for work (updates Hero badge, About, Contact, PDF Resume & AI Guide in EN/FR).
+                </p>
+              </div>
+              <span className="tag-pill" style={{ background: 'rgba(16, 185, 129, 0.15)', color: 'var(--accent)', fontWeight: '700', padding: '6px 14px' }}>
+                📍 Active: {cur.profile?.location || 'Buea, Cameroon'}
+              </span>
+            </div>
+
+            {/* Quick City Presets */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
+              {[
+                { label: 'Buea', en: 'Buea, Cameroon', fr: 'Buea, Cameroun' },
+                { label: 'Douala', en: 'Douala, Cameroon', fr: 'Douala, Cameroun' },
+                { label: 'Yaoundé', en: 'Yaoundé, Cameroon', fr: 'Yaoundé, Cameroun' },
+                { label: 'Bafoussam', en: 'Bafoussam, Cameroon', fr: 'Bafoussam, Cameroun' },
+                { label: 'Limbe', en: 'Limbe, Cameroon', fr: 'Limbé, Cameroun' },
+                { label: 'Remote / Anywhere', en: 'Remote / Worldwide', fr: 'À Distance / International' },
+              ].map((preset) => {
+                const isSelected = (portfolioData.en?.profile?.location || '').toLowerCase() === preset.en.toLowerCase()
+                return (
+                  <button
+                    key={preset.label}
+                    type="button"
+                    onClick={() => {
+                      updateActivityArea(preset.en, preset.fr)
+                      showToast(`Area of activity set to ${preset.label}! Click "Save & Publish" to make it live.`)
+                    }}
+                    style={{
+                      padding: '7px 15px',
+                      borderRadius: '999px',
+                      fontSize: '12px',
+                      fontWeight: '700',
+                      cursor: 'pointer',
+                      border: '1px solid',
+                      borderColor: isSelected ? 'var(--accent)' : 'var(--border)',
+                      background: isSelected ? 'var(--accent)' : 'rgba(255,255,255,0.04)',
+                      color: isSelected ? '#030706' : 'var(--text-h)',
+                      transition: 'all 0.2s ease',
+                    }}
+                  >
+                    📍 {preset.label}
+                  </button>
+                )
+              })}
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px', alignItems: 'end' }}>
+              <div className="form-group" style={{ margin: 0 }}>
+                <label className="form-label" style={{ fontSize: '12px' }}>Custom Area of Activity ({editingLang.toUpperCase()})</label>
+                <input
+                  className="modern-input"
+                  placeholder="e.g. Douala, Cameroon"
+                  value={cur.profile?.location || ''}
+                  onChange={e => {
+                    const val = e.target.value
+                    updateProfile('location', val)
+                    updateCur('about', { ...cur.about, locationText: val })
+                    updateCur('contact', { ...cur.contact, location: val })
+                    const prefix = editingLang === 'fr' ? 'DISPONIBLE EN DIRECT • ' : 'OPEN FOR WORK • '
+                    updateCur('hero', { ...cur.hero, availability: `${prefix}${val.toUpperCase()}` })
+                  }}
+                />
+              </div>
+              <div className="form-group" style={{ margin: 0 }}>
+                <label className="form-label" style={{ fontSize: '12px' }}>Hero Availability Badge ({editingLang.toUpperCase()})</label>
+                <input
+                  className="modern-input"
+                  placeholder="e.g. OPEN FOR WORK • DOUALA, CAMEROON"
+                  value={cur.hero?.availability || ''}
+                  onChange={e => updateCur('hero', { ...cur.hero, availability: e.target.value })}
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Quick Actions */}
           <div className="card">
             <h3 style={{ fontSize: '18px', marginBottom: '16px' }}>⚡ Quick Actions</h3>
@@ -556,13 +667,30 @@ export default function AdminDashboard({ token, onLogout, initialPortfolio, onPo
             </div>
 
             <div className="form-group">
-              <label className="form-label">Location</label>
+              <label className="form-label">Area of Activity / Current Location</label>
               <input
                 className="modern-input"
                 value={cur.profile?.location || ''}
-                onChange={e => updateProfile('location', e.target.value)}
+                onChange={e => {
+                  const val = e.target.value
+                  updateProfile('location', val)
+                  updateCur('about', { ...cur.about, locationText: val })
+                  updateCur('contact', { ...cur.contact, location: val })
+                  const prefix = editingLang === 'fr' ? 'DISPONIBLE EN DIRECT • ' : 'OPEN FOR WORK • '
+                  updateCur('hero', { ...cur.hero, availability: `${prefix}${val.toUpperCase()}` })
+                }}
               />
             </div>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Hero Availability Badge Text ({editingLang.toUpperCase()})</label>
+            <input
+              className="modern-input"
+              placeholder="e.g. OPEN FOR WORK • BUEA, CAMEROON"
+              value={cur.hero?.availability || ''}
+              onChange={e => updateCur('hero', { ...cur.hero, availability: e.target.value })}
+            />
           </div>
 
           <div className="form-group">
